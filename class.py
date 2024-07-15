@@ -18,17 +18,18 @@ class TextData:
     font_size: int
     color: Tuple[int, int, int]  # (R, G, B) color
     align: str 
+    fonts: str
 
 def create_instagram_story(texts: List[TextData], output_path: str):
     # Créer une image vierge
-    image = Image.new('RGB', (1080, 1350), color=(0, 0, 0))
+    image = Image.new('RGB', (1080, 1920), color=(0, 0, 0))
 
     draw = ImageDraw.Draw(image)
 
     # Ajouter les textes à l'image
     for text in texts:
         try:
-            font = ImageFont.truetype(font = "armn", size=text.font_size)
+            font = ImageFont.truetype(font = text.fonts, size=text.font_size)
         except IOError:
             font = ImageFont.load_default()
             print(IOError)
@@ -41,7 +42,7 @@ def create_instagram_story(texts: List[TextData], output_path: str):
 res = Response(name="Jeu de devinette",clues="",language="fr",person="",theme="Sport")
 
 texts = [
-    TextData(content=res.name, position=(540, 675), font_size=50, color=(255, 255, 255),align="center"),
+    TextData(content=res.name, position=(240, 960), font_size=125, color=(255, 255, 255),align="center",fonts="./fonts/BebasNeue-Regular.ttf"),
 ]
 
 create_instagram_story(texts, "instagram_story.png")
