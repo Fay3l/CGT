@@ -22,7 +22,7 @@ class TextData:
 
 def create_instagram_story(texts: List[TextData], output_path: str):
     # Créer une image vierge
-    image = Image.new('RGB', (1080, 1920), color=(0, 0, 0))
+    image = Image.new('RGB', (1080, 1920), color=(217, 217, 217))
 
     draw = ImageDraw.Draw(image)
 
@@ -42,7 +42,7 @@ def create_instagram_story(texts: List[TextData], output_path: str):
 res = Response(name="Jeu de devinette",clues="",language="fr",person="",theme="Sport")
 
 texts = [
-    TextData(content=res.name, position=(240, 960), font_size=125, color=(255, 255, 255),align="center",fonts="./fonts/BebasNeue-Regular.ttf"),
+    TextData(content=res.name, position=(200, 960), font_size=90, color=(0, 0, 0),align="center",fonts="./fonts/Sans.ttf"),
 ]
 
 create_instagram_story(texts, "instagram_story.png")
