@@ -22,10 +22,11 @@ class TextData:
 @dataclass
 class ImageData:
     content:List[TextData]
+    path:str
 
 
 
-def create_instagram_story(images: List[ImageData], output_path: str):
+def create_instagram_story(images: List[ImageData]):
     # Créer les images vierges
     for image in images:
         new_image = Image.new('RGB', (1080, 1920), color=(217, 217, 217))
@@ -39,13 +40,16 @@ def create_instagram_story(images: List[ImageData], output_path: str):
                 print(IOError)
             draw.text(text.position, text.text, font=font, fill=text.color,align=text.align)
     # Enregistrer l'image
-        new_image.save(output_path)
+        new_image.save(image.path)
 
 # Exemple d'utilisation
-res = Response(name="Jeu de devinette",clues="",language="fr",person="",theme="Sport")
+res = Response(name="Jeu\n\n de\n\n devinette",clues="",language="fr",person="",theme="Sport")
+res1 = Response(name="Qui suis-je ?",clues="",language="fr",person="",theme="Sport")
 
 images = [
-    TextData(text=res.name, position=(200, 960), font_size=90, color=(0, 0, 0),align="center",fonts="./fonts/Sans.ttf"),
+    ImageData(path="story.png",content=[TextData(text=res.name, position=(300, 960), font_size=100, color=(0, 0, 0),align="center",fonts="./fonts/Sans.ttf"),
+                                        TextData(text=res1.name, position=(300, 980), font_size=100, color=(0, 0, 0),align="center",fonts="./fonts/Sans.ttf")])
+
 ]
 
-create_instagram_story(texts, "instagram_story.png")
+create_instagram_story(images)
