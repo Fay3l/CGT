@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Tuple,List
+from typing import Tuple,List,Optional
 from PIL import Image, ImageDraw, ImageFont
 
 @dataclass
@@ -13,18 +13,19 @@ class Response:
 @dataclass
 class ImageData:
     path: str
-    image:str | None
+    image:Optional[str]
     
 @dataclass
 class ContentData:
     text: str
-    image:str | None
+    image:Optional[str]
     position: Tuple[int, int]  # (x, y) position
     font_size: int
     color: Tuple[int, int, int]  # (R, G, B) color
     align: str 
     fonts: str
-    language:str
+    language:Optional[str]
+    clue_number:Optional[int]
 
 @dataclass
 class TemplateData:
@@ -57,29 +58,32 @@ def open_instagram_story(content: List[ContentData]):
     # Créer les images vierges
         # Ajouter les textes à l'image
     for count,data in enumerate(content):
-        match
+        if data.language == "fr":
+            template = Image.open(f"./template/{data.language}/{count+1}.jpg")
+            draw = ImageDraw.Draw(template)
         
         try:
             font = ImageFont.truetype(font = data.fonts, size=data.font_size)
         except IOError:
             font = ImageFont.load_default()
             print(IOError)
+        
         draw.text(data.position, data.text, font=font, fill=data.color,align=data.align)
-# Enregistrer l'image
-    new_image.save(image.path)
+        template.save(f"Clue_{count}_{data.language}.jpg")
+    
 
 # Exemple d'utilisation
 res = Response(name="Jeu\n\n de\n\n devinette",clues="",language="fr",person="",theme="Sport")
 res1 = Response(name="Qui suis-je ?",clues="",language="fr",person="",theme="Sport")
 
-images = [
-    TemplateData(path="français.png",content=[ContentData(text="Jeu\n\nde\n\ndevinettes", position=(210, 800), font_size=140, color=(0, 0, 0),align="center",fonts="./fonts/Sans.ttf"),
-                                        ContentData(text="Qui suis-je ?", position=(300, 1600), font_size=80, color=(0, 0, 0),align="center",fonts="./fonts/Sans.ttf"),
-                                        ContentData(text="",image="./images/drapeau_fr.png")])
+# images = [
+#     TemplateData(path="français.png",content=[ContentData(text="Jeu\n\nde\n\ndevinettes", position=(210, 800), font_size=140, color=(0, 0, 0),align="center",fonts="./fonts/Sans.ttf"),
+#                                         ContentData(text="Qui suis-je ?", position=(300, 1600), font_size=80, color=(0, 0, 0),align="center",fonts="./fonts/Sans.ttf"),
+#                                         ContentData(text="",)])]
 
-]
-content=[ContentData(text="Jeu\n\nde\n\ndevinettes", position=(210, 800), font_size=140, color=(0, 0, 0),align="center",fonts="./fonts/Sans.ttf"),
-                                        ContentData(text="Qui suis-je ?", position=(300, 1600), font_size=80, color=(0, 0, 0),align="center",fonts="./fonts/Sans.ttf"),
-                                        ContentData(text="",image="./images/drapeau_fr.png")]
 
-create_instagram_story(images)
+content=[ContentData(text="Jeu\n\nde\n\ndevinettes",language="fr", position=(210, 800),image="",clue_number=0, font_size=140, color=(0, 0, 0),align="center",fonts="./fonts/Sans.ttf"),
+        ContentData(text="Qui suis-je ?",language="fr", position=(300, 1600),image="",clue_number=0 ,font_size=80, color=(0, 0, 0),align="center",fonts="./fonts/Sans.ttf"),]
+
+# create_instagram_story(images)
+open_instagram_story(content)
