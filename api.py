@@ -1,25 +1,41 @@
-from openai import OpenAI
+from mistralai import Mistral
 import os
 from dotenv import load_dotenv
-import requests
 
 load_dotenv()
 
 # text-embedding-3-large
 
-client = OpenAI(
-  organization='org-CFNQXvAhOG0r6WSBlnFgbj78',
-  project=os.getenv("PROJECT_ID"),
-  api_key=os.getenv("OPENAI_KEY")
+# client = OpenAI(
+#   organization='org-CFNQXvAhOG0r6WSBlnFgbj78',
+#   project=os.getenv("PROJECT_ID"),
+#   api_key=os.getenv("OPENAI_KEY")
+# )
+
+# prompt = f"Créer un jeu 'Qui suis-je?' sur sportif connu avec 5 indices."
+# response = client.completions.create(
+#     model="gpt-3.5-turbo",  # Utilisez un modèle approprié pour du text embedding
+#     prompt=prompt,
+#     max_tokens=20
+# )
+
+# indices = response.choices[0].text.strip().split('\n')
+
+# print(indices)
+from mistralai import Mistral
+
+api_key = os.getenv("MISTRALAPI_KEY")
+model = "open-mistral-7b"
+
+client = Mistral(api_key=api_key)
+
+chat_response = client.chat.complete(
+    model= model,
+    messages = [
+        {
+            "role": "user",
+            "content": f"Créer un jeu 'Qui suis-je?' sur un sportif connu avec 5 indices numérotés. Donné la réponse",
+        },
+    ]
 )
-
-url = "https://chatgpt-api.shn.hk/v1/"
-data = {
-  "model": "gpt-3.5-turbo",
-  "messages": [{"role": "user", "content": "Hello, how are you?"}]
-}
-headers={'Content-Type': 'application/json'}
-
-response = requests.post(url=url,data=data,headers=headers)
-
-print(response)
+print(chat_response.choices[0].message.content)
