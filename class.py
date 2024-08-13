@@ -4,7 +4,7 @@ from PIL import Image, ImageDraw, ImageFont
 
 @dataclass
 class Response:
-    clues:str
+    clues:List[str]
     language:str
     person:str
     theme:str
@@ -17,7 +17,7 @@ class ImageData:
     
 @dataclass
 class ContentData:
-    text: str
+    clue_text: str
     image:Optional[str]
     position: Tuple[int, int]  # (x, y) position
     font_size: int
@@ -50,7 +50,7 @@ def create_instagram_story(template: List[TemplateData]):
             except IOError:
                 font = ImageFont.load_default()
                 print(IOError)
-            draw.text(text.position, text.text, font=font, fill=text.color,align=text.align)
+            draw.text(text.position, text.clue_text, font=font, fill=text.color,align=text.align)
     # Enregistrer l'image
         new_image.save(image.path)
 
@@ -68,7 +68,7 @@ def open_instagram_story(content: List[ContentData]):
             font = ImageFont.load_default()
             print(IOError)
         
-        draw.text(data.position, data.text, font=font, fill=data.color,align=data.align)
+        draw.text(data.position, data.clue_text, font=font, fill=data.color,align=data.align)
         template.save(f"Clue_{count}_{data.language}.jpg")
     
 
@@ -82,8 +82,8 @@ res1 = Response(name="Qui suis-je ?",clues="",language="fr",person="",theme="Spo
 #                                         ContentData(text="",)])]
 
 
-content=[ContentData(text="Jeu\n\nde\n\ndevinettes",language="fr", position=(210, 800),image="",clue_number=0, font_size=140, color=(0, 0, 0),align="center",fonts="./fonts/Sans.ttf"),
-        ContentData(text="Qui suis-je ?",language="fr", position=(300, 1600),image="",clue_number=0 ,font_size=80, color=(0, 0, 0),align="center",fonts="./fonts/Sans.ttf"),]
+content=[ContentData(clue_text="Jeu\n\nde\n\ndevinettes",language="fr", position=(210, 800),image="",clue_number=0, font_size=140, color=(0, 0, 0),align="center",fonts="./fonts/Sans.ttf"),
+        ContentData(clue_text="Qui suis-je ?",language="fr", position=(300, 1600),image="",clue_number=0 ,font_size=80, color=(0, 0, 0),align="center",fonts="./fonts/Sans.ttf"),]
 
 # create_instagram_story(images)
 open_instagram_story(content)
