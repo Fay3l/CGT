@@ -3,11 +3,15 @@ from typing import Tuple,List,Optional
 from PIL import Image, ImageDraw, ImageFont
 
 @dataclass
+class Clues:
+    numero:int
+    français:str
+    anglais:str
+    allemand:str
+
+@dataclass
 class Response:
-    clues:List[str]
-    language:str
-    person:str
-    theme:str
+    clues:List[Clues]
     name:str
 
 @dataclass
@@ -72,14 +76,6 @@ def open_instagram_story(content: List[ContentData]):
         template.save(f"Clue_{count}_{data.language}.jpg")
     
 
-# Exemple d'utilisation
-res = Response(name="Jeu\n\n de\n\n devinette",clues="",language="fr",person="",theme="Sport")
-res1 = Response(name="Qui suis-je ?",clues="",language="fr",person="",theme="Sport")
-
-# images = [
-#     TemplateData(path="français.png",content=[ContentData(text="Jeu\n\nde\n\ndevinettes", position=(210, 800), font_size=140, color=(0, 0, 0),align="center",fonts="./fonts/Sans.ttf"),
-#                                         ContentData(text="Qui suis-je ?", position=(300, 1600), font_size=80, color=(0, 0, 0),align="center",fonts="./fonts/Sans.ttf"),
-#                                         ContentData(text="",)])]
 
 
 content=[ContentData(clue_text="Jeu\n\nde\n\ndevinettes",language="fr", position=(210, 800),image="",clue_number=0, font_size=140, color=(0, 0, 0),align="center",fonts="./fonts/Sans.ttf"),

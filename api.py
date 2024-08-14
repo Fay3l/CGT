@@ -2,6 +2,9 @@ from mistralai import Mistral
 import os
 from dotenv import load_dotenv
 import re
+import json
+
+from classes import Clues, Response
 
 load_dotenv()
 from mistralai import Mistral
@@ -15,15 +18,60 @@ chat_response = client.chat.complete(
     model= model,
     messages = [
         {
-            "role": "user",
-            "content": f"Créer un jeu 'Qui suis-je?' sur un sportif connu avec 5 indices numérotés.Traduire en anglais et allemand. Donné la réponse",
+          "role": "user",
+          "content": """Créer un jeu 'Qui suis-je?' sur un sportif connu avec 5 indices numérotés en français,en anglais et en alemand.la réponse en JSON avec ce format
+          {
+            "reponse": "",
+            "clues":[ 
+            {
+              "numero": 1,
+              "francais": "",
+              "anglais": "",
+              "allemand": ""
+            },
+            {
+              "numero": 2,
+              "francais": "",
+              "anglish": "",
+              "allemand": ""
+            },
+            {
+              "numero": 3,
+              "francais": "",
+              "anglish": "",
+              "allemand": ""
+            },
+            {
+              "numero": 4,
+              "francais": "",
+              "anglish": "",
+              "allemand": ""
+            },
+            {
+              "numero": 5,
+              "francais": "",
+              "anglish": "",
+              "allemand": ""
+            }
+          ]
+          }
+          }""",
         },
-    ]
+    ],
+    response_format = {
+          "type": "json_object",
+    }
 )
 
 response = chat_response.choices[0].message.content
+try:
+    json_loads = json.loads(response)
+except json.JSONDecodeError as e:
+    print(f"Erreur lors de la conversion du JSON: {e}")
 
-indices = re.findall(r'\d+\.\s*(.+)', response)
+print(json_loads)
 
-for i, indice in enumerate(indices, start=1):
-    print(f"{i}. {indice}")
+clues_list = [Clues(**clue) for clue in json_loads['clues']]
+response_data = Response(clues=clues_list, reponse=json_loads['reponse'])
+
+print(response_data)
