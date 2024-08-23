@@ -14,6 +14,22 @@ model = "open-mistral-7b"
 
 client = Mistral(api_key=api_key)
 
+def create_template_clues(content: ContentData):
+    # Créer les images vierges
+        # Ajouter les textes à l'image
+      if content.language == "fr":
+          template = Image.open(f"./template/{content.language}/{content.clue_number}.jpg")
+          draw = ImageDraw.Draw(template)
+      
+      try:
+          font = ImageFont.truetype(font = content.fonts, size=content.font_size)
+      except IOError:
+          font = ImageFont.load_default()
+          print(IOError)
+      
+      draw.text(content.position, content.clue_text, font=font, fill=content.color,align=content.align)
+      template.save(f"Clue_{content.clue_number}_{content.language}.jpg")
+
 chat_response = client.chat.complete(
     model= model,
     messages = [
@@ -32,25 +48,25 @@ chat_response = client.chat.complete(
             {
               "numero": 2,
               "francais": "",
-              "anglish": "",
+              "anglais": "",
               "allemand": ""
             },
             {
               "numero": 3,
               "francais": "",
-              "anglish": "",
+              "anglais": "",
               "allemand": ""
             },
             {
               "numero": 4,
               "francais": "",
-              "anglish": "",
+              "anglais": "",
               "allemand": ""
             },
             {
               "numero": 5,
               "francais": "",
-              "anglish": "",
+              "anglais": "",
               "allemand": ""
             }
           ]
@@ -70,6 +86,11 @@ except json.JSONDecodeError as e:
     print(f"Erreur lors de la conversion du JSON: {e}")
 
 response_data = Response(clues=json_loads['clues'],name=json_loads['reponse'])
+
+
+for content in response_data.clues:
+  content_data = ContentData(clue_text=content["francais"], position=(100,800), font_size=70 , color=(0,0,0), align="center", fonts="./fonts/Sans.ttf",language="fr",clue_number=content["numero"])
+  create_template_clues(content_data)
 
 
 def create_instagram_story(template: List[TemplateData]):
@@ -92,23 +113,7 @@ def create_instagram_story(template: List[TemplateData]):
     # Enregistrer l'image
         new_image.save(image.path)
 
-def open_instagram_story(content: List[ContentData]):
-    # Créer les images vierges
-        # Ajouter les textes à l'image
-    for count,data in enumerate(content):
-        if data.language == "fr":
-            template = Image.open(f"./template/{data.language}/{count+1}.jpg")
-            draw = ImageDraw.Draw(template)
-        
-        try:
-            font = ImageFont.truetype(font = data.fonts, size=data.font_size)
-        except IOError:
-            font = ImageFont.load_default()
-            print(IOError)
-        
-        draw.text(data.position, data.clue_text, font=font, fill=data.color,align=data.align)
-        template.save(f"Clue_{count}_{data.language}.jpg")
+
     
 
 
-print(response_data.clues)

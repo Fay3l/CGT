@@ -22,7 +22,6 @@ class ImageData:
 @dataclass
 class ContentData:
     clue_text: str
-    image:Optional[str]
     position: Tuple[int, int]  # (x, y) position
     font_size: int
     color: Tuple[int, int, int]  # (R, G, B) color
