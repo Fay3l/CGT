@@ -101,7 +101,7 @@ chat_response = client.chat.complete(
     messages = [
         {
           "role": "user",
-          "content": """Créer un jeu 'Qui suis-je?' sur un sportif connu avec 5 indices numérotés en français,en anglais et en alemand.la réponse en JSON avec ce format
+          "content": """Créer un jeu 'Qui suis-je?' sur un sportif avec 5 indices numérotés en français,en anglais et en alemand. La réponse en JSON avec ce format
           {
             "reponse": "",
             "clues":[ 
