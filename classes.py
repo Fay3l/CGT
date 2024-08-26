@@ -29,6 +29,7 @@ class ContentData:
     fonts: str
     language:Optional[str]
     clue_number:Optional[int]
+    response:str
 
 @dataclass
 class TemplateData:
