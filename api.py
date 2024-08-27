@@ -3,6 +3,7 @@ import os
 from dotenv import load_dotenv
 import json
 from PIL import Image, ImageDraw, ImageFont
+import requests
 from classes import Response, ContentData
 from mistralai import Mistral
 load_dotenv()
@@ -57,7 +58,7 @@ def create_template_clues(content: ContentData):
         x = (box_width - line_width) // 2
         y = y_start + sum(line_heights[:i])
         draw.text((x, y), line, font=font, fill=content.color)
-    template.save(f"Clue_{content.clue_number}_{content.language}.jpg")
+    template.save(f"./upload/{content.language}/Clue_{content.clue_number}_{content.language}.jpg")
     # Supposons que res est votre image et content.response est votre texte
     res = Image.open(f"./template/{content.language}/10.jpg")
     draw_res = ImageDraw.Draw(res)
@@ -76,7 +77,7 @@ def create_template_clues(content: ContentData):
     text_y = center_y - text_height // 2
 
     draw_res.text((text_x, text_y), content.response, font=font, fill=content.color, align=content.align)
-    res.save(f"Response_{content.language}.jpg")
+    res.save(f"./upload/{content.language}/Response_{content.language}.jpg")
 
 
 chat_response = client.chat.complete(
@@ -142,7 +143,8 @@ for content in response_data.clues:
   create_template_clues(content_data)
 
 
-
+def upload():
+  request = requests.post()
     
 
 
