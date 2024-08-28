@@ -1,0 +1,33 @@
+services:
+  caddy:
+    image: caddy:2.8-alpine
+    restart: always
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - ./localhost.pem:/etc/caddy/certs/localhost.pem
+      - ./localhost-key.pem:/etc/caddy/certs/localhost-key.pem
+    depends_on:
+      - app
+    ports:
+      - "8080:8080"
+      - "443:443"
+    networks:
+      - network-bridge
+  
+  app:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "5000:5000"
+    networks:
+      - network-bridge
+
+
+volumes:
+  caddy_data:
+  caddy_config:
+networks:
+  network-bridge:
+    driver: bridge

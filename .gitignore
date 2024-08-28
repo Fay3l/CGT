@@ -1,4 +1,3 @@
 .env
-/template
 /upload
-/images
+*.pem

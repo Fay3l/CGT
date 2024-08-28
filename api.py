@@ -3,17 +3,16 @@ import os
 from dotenv import load_dotenv
 import json
 from PIL import Image, ImageDraw, ImageFont
-import requests
 from classes import Response, ContentData
-from mistralai import Mistral
 load_dotenv()
 
 
 api_key = os.getenv("MISTRALAPI_KEY")
+client_key = os.getenv("CLIENT_KEY")
+client_secret =os.getenv("CLIENT_SECRET")
 model = "open-mistral-7b"
 
 client = Mistral(api_key=api_key)
-
 
 def create_template_clues(content: ContentData):
     # Créer les images vierges
@@ -142,9 +141,5 @@ for content in response_data.clues:
   content_data = ContentData(clue_text=content["francais"], position=(500,800), font_size=70 , color=(0,0,0), align="center", fonts="./fonts/Sans.ttf",language="fr",clue_number=content["numero"],response=response_data.name)
   create_template_clues(content_data)
 
-
-def upload():
-  request = requests.post()
-    
 
 
