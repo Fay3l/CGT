@@ -3,7 +3,7 @@ import os
 from dotenv import load_dotenv
 import json
 from PIL import Image, ImageDraw, ImageFont
-from classes import Response, ContentData
+from classes import Response, ContentData,Theme
 load_dotenv()
 
 
@@ -13,21 +13,16 @@ client_secret =os.getenv("CLIENT_SECRET")
 model = "open-mistral-7b"
 
 client = Mistral(api_key=api_key)
-import enum
 import random
 
-class Profession(enum.Enum):
-    un_sportif = 1
-    un_personnage_historique = 2
-    une_sportive = 4
-    un_personnage_de_film=6
-    un_personnage_de_manga= 7
+
 
 # Fonction pour choisir une valeur aléatoire parmi les membres de l'énumération
 def choisir_profession_aleatoire():
-    return random.choice(list(Profession))
+    themes = ["un_sportif","un_personnage_historique","une_sportive","un_personnage_de_film","un_personnage_de_manga"]
+    return Theme(random.choice(themes))
 
-def create_template_clues(content: ContentData,theme:Profession):
+def create_template_clues(content: ContentData,theme:str):
     # Créer les images vierges
     # Ajouter les textes à l'image
     template = Image.open(f"./template/{content.language}/{content.clue_number}.jpg")
@@ -101,97 +96,124 @@ def create_template_clues(content: ContentData,theme:Profession):
       theme_manga = Image.open(f"./template/{content.language}/theme_manga_fr.jpg")
       theme_manga.save(f"./upload/{content.language}/theme_manga_fr.jpg")
 
-def database(reponse:str,theme:str):
-  filename = "./data.json"
+def database(reponse: str, theme: str):
+    filename = "data.json"
+    data = []
+    # Vérifier si le fichier existe et n'est pas vide
+    if not os.path.exists(filename) or os.path.getsize(filename) == 0:
+        data = []
+    else:
+        with open(filename, 'r', encoding='utf-8') as f:
+            data = json.load(f)
 
-  with open(filename, 'r',encoding='utf-8') as f:
-    data = json.load(f)
-  print("data",data)
-  # Vérifier si la structure du JSON est une liste d'objets
-  if isinstance(data, list):
-      # Trouver la valeur maximale de la clé 'id'
-      max_id = max(item.get("id", 0) for item in data)
-      print(f"La valeur maximale de l'id est : {max_id}")
-      json_data = {
-        "id": max_id+1,
-        "reponse":reponse,
-        "theme": theme,
-      }
-  else:
-      print("Le fichier JSON ne contient pas une liste d'objets.")
-  # Vérifier si la réponse est "Usain Bolt" et le thème est "Sport"
-  if data.get("reponse") == reponse and data.get("theme") == theme:
-      print("La réponse est 'Usain Bolt' et le thème est 'Sport'.")
-  else:
-    with open(filename, 'w', encoding='utf-8') as json_file:
-      json.dump(json_data, json_file, ensure_ascii=False, indent=4)
+    print("data", data)
 
+    # Vérifier si la structure du JSON est une liste d'objets
+    
 
-profession_aleatoire = choisir_profession_aleatoire()
-print(f"Profession choisie aléatoirement : {profession_aleatoire.name.replace('_',' ')}")
-
-chat_response = client.chat.complete(
-    model= model,
-    messages = [
-        {
-          "role": "user",
-          "content": f"Créer un jeu 'Qui suis-je?' sur {profession_aleatoire.name.replace('_',' ')} avec 5 indices numérotés en français,en anglais et en alemand. La réponse en JSON avec ce format"+
-          """{
-            "reponse": "",
-            "clues":[ 
-            {
-              "numero": 1,
-              "francais": "",
-              "anglais": "",
-              "allemand": ""
-            },
-            {
-              "numero": 2,
-              "francais": "",
-              "anglais": "",
-              "allemand": ""
-            },
-            {
-              "numero": 3,
-              "francais": "",
-              "anglais": "",
-              "allemand": ""
-            },
-            {
-              "numero": 4,
-              "francais": "",
-              "anglais": "",
-              "allemand": ""
-            },
-            {
-              "numero": 5,
-              "francais": "",
-              "anglais": "",
-              "allemand": ""
-            }
-          ]
+    # Vérifier si la réponse est dans le fichier JSON 
+    if any(item.get("reponse") == reponse and item.get("theme") == theme for item in data):
+        print("La réponse est déjà dans le fichier JSON.")
+        return True
+    else:
+        print("La réponse n'est pas dans le fichier JSON.")
+        # Écrire les données mises à jour dans le fichier JSON
+        if isinstance(data, list):
+        # Trouver la valeur maximale de la clé 'id'
+          max_id = max(item.get("id", 0) for item in data) if data else 0
+          print(f"La valeur maximale de l'id est : {max_id}")
+          json_data = {
+              "id": max_id + 1,
+              "reponse": reponse,
+              "theme": theme,
           }
-          }""",
-        },
-    ],
-    response_format = {
-          "type": "json_object",
-    }
-)
-response = chat_response.choices[0].message.content
-print(response)
-try:
-    json_loads = json.loads(response)
-except json.JSONDecodeError as e:
-    print(f"Erreur lors de la conversion du JSON: {e}")
+          data.append(json_data)
+        else:
+            print("Le fichier JSON ne contient pas une liste d'objets.")
+        with open(filename, 'w', encoding='utf-8') as json_file:
+            json.dump(data, json_file, ensure_ascii=False, indent=4)
+        return False
 
-response_data = Response(clues=json_loads['clues'],name=json_loads['reponse'])
 
+theme_aleatoire = choisir_profession_aleatoire()
+print(f"Theme choisi aléatoirement : {theme_aleatoire.name.replace('_',' ')}")
+
+while True:
+    difficulté = ["connu","peu connu","moins connu"]
+    difficulté_choisie = random.choice(difficulté)
+    chat_response = client.chat.complete(
+        model=model,
+        messages=[
+            {
+                "role": "user",
+                "content": f"Créer un jeu 'Qui suis-je?' sur {theme_aleatoire.name.replace('_',' ')} {difficulté_choisie} avec 5 indices numérotés en français,en anglais et en alemand. La réponse en JSON avec ce format" +
+                """{
+                  "reponse": "",
+                  "clues":[
+                  {
+                    "numero": 1,
+                    "francais": "",
+                    "anglais": "",
+                    "allemand": ""
+                  },
+                  {
+                    "numero": 2,
+                    "francais": "",
+                    "anglais": "",
+                    "allemand": ""
+                  },
+                  {
+                    "numero": 3,
+                    "francais": "",
+                    "anglais": "",
+                    "allemand": ""
+                  },
+                  {
+                    "numero": 4,
+                    "francais": "",
+                    "anglais": "",
+                    "allemand": ""
+                  },
+                  {
+                    "numero": 5,
+                    "francais": "",
+                    "anglais": "",
+                    "allemand": ""
+                  }
+                ]
+                }
+                }""",
+            },
+        ],
+        response_format={
+            "type": "json_object",
+        }
+    )
+    response = chat_response.choices[0].message.content
+    print(response)
+    try:
+        json_loads = json.loads(response)
+    except json.JSONDecodeError as e:
+        print(f"Erreur lors de la conversion du JSON: {e}")
+        continue
+
+    response_data = Response(clues=json_loads['clues'], name=json_loads['reponse'])
+
+    if not database(reponse=response_data.name, theme=theme_aleatoire.name):
+      break
 
 for content in response_data.clues:
-  database(reponse=response_data.name,theme=profession_aleatoire)
-  content_data = ContentData(clue_text=content["francais"], position=(500,800), font_size=70 , color=(0,0,0), align="center", fonts="./fonts/Sans.ttf",language="fr",clue_number=content["numero"],response=response_data.name)
-  create_template_clues(content_data,profession_aleatoire)
-
+  content_data = ContentData(
+      clue_text=content["francais"],
+      position=(500, 800),
+      font_size=70,
+      color=(0, 0, 0),
+      align="center",
+      fonts="./fonts/Sans.ttf",
+      language="fr",
+      clue_number=content["numero"],
+      response=response_data.name
+  )
+  create_template_clues(content_data, theme_aleatoire)
 
 

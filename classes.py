@@ -36,6 +36,10 @@ class TemplateData:
     content:List[ContentData]
     path:str
 
+@dataclass
+class Theme:
+    name:str
+
 
 
 
