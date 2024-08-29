@@ -11,8 +11,6 @@ app = Flask(__name__)
 app.secret_key = os.urandom(24)
 CORS(app)
 
-
-
 CLIENT_ID = os.getenv('CLIENT_KEY')
 CLIENT_SECRET = os.getenv('CLIENT_SECRET')
 REDIRECT_URI = os.getenv('REDIRECT_URI')

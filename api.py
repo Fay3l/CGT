@@ -13,14 +13,25 @@ client_secret =os.getenv("CLIENT_SECRET")
 model = "open-mistral-7b"
 
 client = Mistral(api_key=api_key)
+import enum
+import random
 
-def create_template_clues(content: ContentData):
+class Profession(enum.Enum):
+    un_sportif = 1
+    un_personnage_historique = 2
+    une_sportive = 4
+    un_personnage_de_film=6
+    un_personnage_de_manga= 7
+
+# Fonction pour choisir une valeur aléatoire parmi les membres de l'énumération
+def choisir_profession_aleatoire():
+    return random.choice(list(Profession))
+
+def create_template_clues(content: ContentData,theme:Profession):
     # Créer les images vierges
     # Ajouter les textes à l'image
-    if content.language == "fr":
-        template = Image.open(f"./template/{content.language}/{content.clue_number}.jpg")
-        draw = ImageDraw.Draw(template)
-    
+    template = Image.open(f"./template/{content.language}/{content.clue_number}.jpg")
+    draw = ImageDraw.Draw(template)
     try:
         font = ImageFont.truetype(font = content.fonts, size=content.font_size)
     except IOError:
@@ -77,15 +88,55 @@ def create_template_clues(content: ContentData):
 
     draw_res.text((text_x, text_y), content.response, font=font, fill=content.color, align=content.align)
     res.save(f"./upload/{content.language}/Response_{content.language}.jpg")
+    if "sport" in theme.name: 
+      theme_sport = Image.open(f"./template/{content.language}/theme_sport_fr.jpg")
+      theme_sport.save(f"./upload/{content.language}/theme_sport_fr.jpg")
+    if "film" in theme.name: 
+      theme_film = Image.open(f"./template/{content.language}/theme_film_fr.jpg")
+      theme_film.save(f"./upload/{content.language}/theme_film_fr.jpg")
+    if "hist" in theme.name: 
+      theme_histoire = Image.open(f"./template/{content.language}/theme_histoire_fr.jpg")
+      theme_histoire.save(f"./upload/{content.language}/theme_histoire_fr.jpg")
+    if "hist" in theme.name: 
+      theme_manga = Image.open(f"./template/{content.language}/theme_manga_fr.jpg")
+      theme_manga.save(f"./upload/{content.language}/theme_manga_fr.jpg")
 
+def database(reponse:str,theme:str):
+  filename = "./data.json"
+
+  with open(filename, 'r',encoding='utf-8') as f:
+    data = json.load(f)
+  print("data",data)
+  # Vérifier si la structure du JSON est une liste d'objets
+  if isinstance(data, list):
+      # Trouver la valeur maximale de la clé 'id'
+      max_id = max(item.get("id", 0) for item in data)
+      print(f"La valeur maximale de l'id est : {max_id}")
+      json_data = {
+        "id": max_id+1,
+        "reponse":reponse,
+        "theme": theme,
+      }
+  else:
+      print("Le fichier JSON ne contient pas une liste d'objets.")
+  # Vérifier si la réponse est "Usain Bolt" et le thème est "Sport"
+  if data.get("reponse") == reponse and data.get("theme") == theme:
+      print("La réponse est 'Usain Bolt' et le thème est 'Sport'.")
+  else:
+    with open(filename, 'w', encoding='utf-8') as json_file:
+      json.dump(json_data, json_file, ensure_ascii=False, indent=4)
+
+
+profession_aleatoire = choisir_profession_aleatoire()
+print(f"Profession choisie aléatoirement : {profession_aleatoire.name.replace('_',' ')}")
 
 chat_response = client.chat.complete(
     model= model,
     messages = [
         {
           "role": "user",
-          "content": """Créer un jeu 'Qui suis-je?' sur un sportif avec 5 indices numérotés en français,en anglais et en alemand. La réponse en JSON avec ce format
-          {
+          "content": f"Créer un jeu 'Qui suis-je?' sur {profession_aleatoire.name.replace('_',' ')} avec 5 indices numérotés en français,en anglais et en alemand. La réponse en JSON avec ce format"+
+          """{
             "reponse": "",
             "clues":[ 
             {
@@ -127,8 +178,8 @@ chat_response = client.chat.complete(
           "type": "json_object",
     }
 )
-
 response = chat_response.choices[0].message.content
+print(response)
 try:
     json_loads = json.loads(response)
 except json.JSONDecodeError as e:
@@ -138,8 +189,9 @@ response_data = Response(clues=json_loads['clues'],name=json_loads['reponse'])
 
 
 for content in response_data.clues:
+  database(reponse=response_data.name,theme=profession_aleatoire)
   content_data = ContentData(clue_text=content["francais"], position=(500,800), font_size=70 , color=(0,0,0), align="center", fonts="./fonts/Sans.ttf",language="fr",clue_number=content["numero"],response=response_data.name)
-  create_template_clues(content_data)
+  create_template_clues(content_data,profession_aleatoire)
 
 
 
