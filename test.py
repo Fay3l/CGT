@@ -1,3 +1,4 @@
+import os
 
-
-# Exemple d'utilisation
+file_path = "test.txt"
+os.remove(file_path)
