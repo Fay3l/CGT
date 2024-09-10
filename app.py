@@ -92,15 +92,18 @@ def callback():
     if token_response.status_code == 200:
         token_data = token_response.json()
         print("reponse:",token_response.json())
-        # if token_data['access_token']:
-        #     token.access_token = token_data['access_token']
-        #     token.refresh_token = token_data['refresh_token']
-        #     token.refresh_expires_in = token_data['refresh_expires_in']
-        #     token.token_type = token_data['token_type']
-        #     token.scope = token_data['scope']
-        #     token.open_id = token_data['open_id']
-            
-        return token_data
+        try :
+            if token_data['access_token']:
+                token.access_token = token_data['access_token']
+                token.refresh_token = token_data['refresh_token']
+                token.refresh_expires_in = token_data['refresh_expires_in']
+                token.token_type = token_data['token_type']
+                token.scope = token_data['scope']
+                token.open_id = token_data['open_id']
+                
+                return token_data,200
+        except:
+            return token_response.text,500
     else:
         return f'Failed to obtain access token: {token_response.text, token_response.url}', 500
     

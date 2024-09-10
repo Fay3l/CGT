@@ -215,5 +215,29 @@ for content in response_data.clues:
       response=response_data.name
   )
   create_template_clues(content_data, theme_aleatoire)
+  content_data = ContentData(
+      clue_text=content["anglais"],
+      position=(500, 800),
+      font_size=70,
+      color=(0, 0, 0),
+      align="center",
+      fonts="./fonts/Sans.ttf",
+      language="en",
+      clue_number=content["numero"],
+      response=response_data.name
+  )
+  create_template_clues(content_data, theme_aleatoire)
+  content_data = ContentData(
+      clue_text=content["allemand"],
+      position=(500, 800),
+      font_size=70,
+      color=(0, 0, 0),
+      align="center",
+      fonts="./fonts/Sans.ttf",
+      language="de",
+      clue_number=content["numero"],
+      response=response_data.name
+  )
+  create_template_clues(content_data, theme_aleatoire)
 
 
