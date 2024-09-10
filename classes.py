@@ -40,9 +40,20 @@ class TemplateData:
 class Theme:
     name:str
 
+@dataclass
+class State:
+    csrf_state:Optional[str]
+    code_verifier:Optional[str]
 
-
-
+@dataclass
+class Token:
+    access_token: Optional[str]
+    expires_in: Optional[str]
+    open_id: Optional[str]
+    refresh_expires_in: Optional[str]
+    refresh_token: Optional[str]
+    scope: Optional[str]
+    token_type: Optional[str]
 
 
 
