@@ -84,17 +84,17 @@ def create_template_clues(content: ContentData,theme:str):
     draw_res.text((text_x, text_y), content.response, font=font, fill=content.color, align=content.align)
     res.save(f"./upload/{content.language}/Response_{content.language}.jpg")
     if "sport" in theme.name: 
-      theme_sport = Image.open(f"./template/{content.language}/theme_sport_fr.jpg")
-      theme_sport.save(f"./upload/{content.language}/theme_sport_fr.jpg")
+      theme_sport = Image.open(f"./template/{content.language}/theme_sport_{content.language}.jpg")
+      theme_sport.save(f"./upload/{content.language}/theme_sport_{content.language}.jpg")
     if "film" in theme.name: 
-      theme_film = Image.open(f"./template/{content.language}/theme_film_fr.jpg")
-      theme_film.save(f"./upload/{content.language}/theme_film_fr.jpg")
+      theme_film = Image.open(f"./template/{content.language}/theme_film_{content.language}.jpg")
+      theme_film.save(f"./upload/{content.language}/theme_film_{content.language}.jpg")
     if "hist" in theme.name: 
-      theme_histoire = Image.open(f"./template/{content.language}/theme_histoire_fr.jpg")
-      theme_histoire.save(f"./upload/{content.language}/theme_histoire_fr.jpg")
+      theme_histoire = Image.open(f"./template/{content.language}/theme_histoire_{content.language}.jpg")
+      theme_histoire.save(f"./upload/{content.language}/theme_histoire_{content.language}.jpg")
     if "hist" in theme.name: 
-      theme_manga = Image.open(f"./template/{content.language}/theme_manga_fr.jpg")
-      theme_manga.save(f"./upload/{content.language}/theme_manga_fr.jpg")
+      theme_manga = Image.open(f"./template/{content.language}/theme_manga_{content.language}.jpg")
+      theme_manga.save(f"./upload/{content.language}/theme_manga_{content.language}.jpg")
 
 def database(reponse: str, theme: str):
     filename = "data.json"
