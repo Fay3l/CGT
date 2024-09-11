@@ -1,4 +1,3 @@
-from datetime import timedelta
 from flask import Flask, request, redirect, render_template
 import requests
 import os
@@ -7,7 +6,7 @@ import logging
 import random
 from flask_cors import CORS
 from dotenv import load_dotenv
-
+from pathlib import Path
 from classes import State, Token
 
 load_dotenv()
@@ -109,41 +108,86 @@ def callback():
     
 @app.route('/upload')
 def upload():
-    URL = 'https://open.tiktokapis.com/v2/post/publish/content/init/'
+    
+    # spécifiez le chemin du dossier à parcourir
+    chemin = Path('./upload')
 
-    # Préparez les données pour la requête POST
-    data = {
-        "post_info": {
-            "title": "funny cat",
-            "description": "this will be a #funny photo on your @tiktok #fyp"
-        },
-        "source_info": {
-            "source": "PULL_FROM_URL",
-            "photo_cover_index": 1,
-            "photo_images": [
-                "https://tiktokcdn.com/obj/example-image-01.webp",
-                "https://tiktokcdn.com/obj/example-image-02.webp"
+    # utilisez la méthode is_dir() pour vérifier si chaque élément dans le dossier est un dossier
+    # utilisez la méthode iterdir() pour parcourir tous les éléments dans le dossier
+    # utilisez la fonction sum() pour compter le nombre de dossiers
+    noms_de_dossiers = [element.name for element in chemin.iterdir() if element.is_dir()]
+
+    # affichez la liste des noms de dossiers
+    for i, nom in enumerate(noms_de_dossiers, start=1):
+        print(f"{i}: {nom}")
+        if(nom == "fr"):
+            photos_data = [
+                "./upload/fr/introfr.jpg",
+                "./upload/fr/butfr.jpg",
+                "./upload/fr/Clue_1_fr.jpg"
+                "./upload/fr/Clue_2_fr.jpg"
+                "./upload/fr/Clue_3_fr.jpg"
+                "./upload/fr/Clue_4_fr.jpg"
+                "./upload/fr/Clue_5_fr.jpg"
+                "./upload/fr/9.jpg"
+                "./upload/fr/Response_fr.jpg"
             ]
-        },
-        "post_mode": "MEDIA_UPLOAD",
-        "media_type": "PHOTO"
-    }
+        if(nom == "en"):
+            photos_data = [
+                "./upload/en/introen.jpg",
+                "./upload/en/buten.jpg",
+                "./upload/en/Clue_1_en.jpg"
+                "./upload/en/Clue_2_en.jpg"
+                "./upload/en/Clue_3_en.jpg"
+                "./upload/en/Clue_4_en.jpg"
+                "./upload/en/Clue_5_en.jpg"
+                "./upload/en/9.jpg"
+                "./upload/en/Response_en.jpg"
+            ]
+        if(nom == "de"):
+            photos_data = [
+                "./upload/de/introde.jpg",
+                "./upload/de/butde.jpg",
+                "./upload/de/Clue_1_de.jpg"
+                "./upload/de/Clue_2_de.jpg"
+                "./upload/de/Clue_3_de.jpg"
+                "./upload/de/Clue_4_de.jpg"
+                "./upload/de/Clue_5_de.jpg"
+                "./upload/de/9.jpg"
+                "./upload/de/Response_de.jpg"
+            ]
+        URL = 'https://open.tiktokapis.com/v2/post/publish/content/init/'
 
-    # Envoyez la requête POST
-    response = requests.post(URL,
-        headers={
-            'Authorization': f'Bearer {ACCESS_TOKEN}',
-            'Content-Type': 'application/json'
-        },
-        data=data
-    )
+        # Préparez les données pour la requête POST
+        data = {
+            "post_info": {
+                "title": "Guessing game",
+                "description": "this will be a #funny photo on your @tiktok #fyp"
+            },
+            "source_info": {
+                "source": "PULL_FROM_URL",
+                "photo_cover_index": 1,
+                "photo_images": photos_data
+            },
+            "post_mode": "MEDIA_UPLOAD",
+            "media_type": "PHOTO"
+        }
+
+        # Envoyez la requête POST
+        response = requests.post(URL,
+            headers={
+                'Authorization': f'Bearer {token.access_token}',
+                'Content-Type': 'application/json'
+            },
+            data=data
+        )
 
     # Vérifiez la réponse
     if response.status_code == 200:
         response_data = response.json()
-        print("Response:", response_data)
+        return response_data, 200
     else:
-        print()
+        return response.text, 500
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)

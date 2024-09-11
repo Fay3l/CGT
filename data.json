@@ -1,7 +1,17 @@
 [
     {
         "id": 1,
-        "reponse": "Lars Rudolph",
+        "reponse": "Rugby à 13",
+        "theme": "un_sportif"
+    },
+    {
+        "id": 2,
+        "reponse": "Jimmy Connors",
+        "theme": "un_sportif"
+    },
+    {
+        "id": 3,
+        "reponse": "Jim Carrey dans le film 'The Truman Show'",
         "theme": "un_personnage_de_film"
     }
 ]

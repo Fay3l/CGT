@@ -108,11 +108,8 @@ def database(reponse: str, theme: str):
 
     print("data", data)
 
-    # Vérifier si la structure du JSON est une liste d'objets
-    
-
     # Vérifier si la réponse est dans le fichier JSON 
-    if any(item.get("reponse") == reponse and item.get("theme") == theme for item in data):
+    if any(item.get("reponse") == reponse for item in data):
         print("La réponse est déjà dans le fichier JSON.")
         return True
     else:
@@ -146,40 +143,16 @@ while True:
         messages=[
             {
                 "role": "user",
-                "content": f"Créer un jeu 'Qui suis-je?' sur {theme_aleatoire.name.replace('_',' ')} {difficulté_choisie} avec 5 indices numérotés en français,en anglais et en alemand. La réponse en JSON avec ce format" +
+                "content": f"Créer un jeu 'Qui suis-je?' sur {theme_aleatoire.name.replace('_',' ')} {difficulté_choisie} avec 5 indices numérotés en francais,en anglais et en allemand. La réponse en JSON avec ce format:" +
                 """{
                   "reponse": "",
                   "clues":[
                   {
-                    "numero": 1,
-                    "francais": "",
-                    "anglais": "",
-                    "allemand": ""
+                    "number": 1,
+                    "french": "",
+                    "english": "",
+                    "german": ""
                   },
-                  {
-                    "numero": 2,
-                    "francais": "",
-                    "anglais": "",
-                    "allemand": ""
-                  },
-                  {
-                    "numero": 3,
-                    "francais": "",
-                    "anglais": "",
-                    "allemand": ""
-                  },
-                  {
-                    "numero": 4,
-                    "francais": "",
-                    "anglais": "",
-                    "allemand": ""
-                  },
-                  {
-                    "numero": 5,
-                    "francais": "",
-                    "anglais": "",
-                    "allemand": ""
-                  }
                 ]
                 }
                 }""",
@@ -204,38 +177,38 @@ while True:
 
 for content in response_data.clues:
   content_data = ContentData(
-      clue_text=content["francais"],
+      clue_text=content["french"],
       position=(500, 800),
       font_size=70,
       color=(0, 0, 0),
       align="center",
       fonts="./fonts/Sans.ttf",
       language="fr",
-      clue_number=content["numero"],
+      clue_number=content["number"],
       response=response_data.name
   )
   create_template_clues(content_data, theme_aleatoire)
   content_data = ContentData(
-      clue_text=content["anglais"],
+      clue_text=content["english"],
       position=(500, 800),
       font_size=70,
       color=(0, 0, 0),
       align="center",
       fonts="./fonts/Sans.ttf",
       language="en",
-      clue_number=content["numero"],
+      clue_number=content["number"],
       response=response_data.name
   )
   create_template_clues(content_data, theme_aleatoire)
   content_data = ContentData(
-      clue_text=content["allemand"],
+      clue_text=content["german"],
       position=(500, 800),
       font_size=70,
       color=(0, 0, 0),
       align="center",
       fonts="./fonts/Sans.ttf",
       language="de",
-      clue_number=content["numero"],
+      clue_number=content["number"],
       response=response_data.name
   )
   create_template_clues(content_data, theme_aleatoire)
