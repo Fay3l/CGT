@@ -1,3 +1,4 @@
+import json
 from flask import Flask, request, redirect, render_template
 import requests
 import os
@@ -7,7 +8,7 @@ import random
 from flask_cors import CORS
 from dotenv import load_dotenv
 from pathlib import Path
-from classes import State, Token
+from classes import State
 
 load_dotenv()
 
@@ -16,7 +17,6 @@ app = Flask(__name__)
 app.secret_key = os.urandom(24)
 CORS(app)
 state_code = State('','')
-token = Token('','','','','','','')
 CLIENT_KEY = os.getenv('CLIENT_KEY')
 CLIENT_SECRET = os.getenv('CLIENT_SECRET')
 REDIRECT_URI = "http://localhost:5000/callback/"
@@ -92,15 +92,23 @@ def callback():
         token_data = token_response.json()
         print("reponse:",token_response.json())
         try :
-            if token_data['access_token']:
-                token.access_token = token_data['access_token']
-                token.refresh_token = token_data['refresh_token']
-                token.refresh_expires_in = token_data['refresh_expires_in']
-                token.token_type = token_data['token_type']
-                token.scope = token_data['scope']
-                token.open_id = token_data['open_id']
+            with open('config.json', 'r') as file:
+                config = json.load(file)
+
+            # Mettre à jour les valeurs dans le fichier config.json
+            config['access_token'] = token_data.get('access_token', '')
+            config['expires_in'] = token_data.get('expires_in', 0)
+            config['open_id'] = token_data.get('open_id', '')
+            config['refresh_expires_in'] = token_data.get('refresh_expires_in', 0)
+            config['refresh_token'] = token_data.get('refresh_token', '')
+            config['scope'] = token_data.get('scope', '')
+            config['token_type'] = token_data.get('token_type', '')
+
+            # Écrire les nouvelles valeurs dans le fichier config.json
+            with open('config.json', 'w') as file:
+                json.dump(config, file, indent=4)
                 
-                return token_data,200
+            return token_data,200
         except:
             return token_response.text,500
     else:
@@ -111,12 +119,13 @@ def upload():
     
     # spécifiez le chemin du dossier à parcourir
     chemin = Path('./upload')
-
+    with open('config.json', 'r') as file:
+        config = json.load(file)
     # utilisez la méthode is_dir() pour vérifier si chaque élément dans le dossier est un dossier
     # utilisez la méthode iterdir() pour parcourir tous les éléments dans le dossier
     # utilisez la fonction sum() pour compter le nombre de dossiers
     noms_de_dossiers = [element.name for element in chemin.iterdir() if element.is_dir()]
-
+    print("Token:",token.access_token)
     # affichez la liste des noms de dossiers
     for i, nom in enumerate(noms_de_dossiers, start=1):
         print(f"{i}: {nom}")
@@ -124,6 +133,7 @@ def upload():
             photos_data = [
                 "./upload/fr/introfr.jpg",
                 "./upload/fr/butfr.jpg",
+                "./upload/fr/theme_sport_fr.jpg",
                 "./upload/fr/Clue_1_fr.jpg"
                 "./upload/fr/Clue_2_fr.jpg"
                 "./upload/fr/Clue_3_fr.jpg"
@@ -136,6 +146,7 @@ def upload():
             photos_data = [
                 "./upload/en/introen.jpg",
                 "./upload/en/buten.jpg",
+                "./upload/en/theme_sport_en.jpg",
                 "./upload/en/Clue_1_en.jpg"
                 "./upload/en/Clue_2_en.jpg"
                 "./upload/en/Clue_3_en.jpg"
@@ -148,13 +159,14 @@ def upload():
             photos_data = [
                 "./upload/de/introde.jpg",
                 "./upload/de/butde.jpg",
-                "./upload/de/Clue_1_de.jpg"
-                "./upload/de/Clue_2_de.jpg"
-                "./upload/de/Clue_3_de.jpg"
-                "./upload/de/Clue_4_de.jpg"
-                "./upload/de/Clue_5_de.jpg"
-                "./upload/de/9.jpg"
-                "./upload/de/Response_de.jpg"
+                "./upload/de/theme_sport_de.jpg",
+                "./upload/de/Clue_1_de.jpg",
+                "./upload/de/Clue_2_de.jpg",
+                "./upload/de/Clue_3_de.jpg",
+                "./upload/de/Clue_4_de.jpg",
+                "./upload/de/Clue_5_de.jpg",
+                "./upload/de/9.jpg",
+                "./upload/de/Response_de.jpg",
             ]
         URL = 'https://open.tiktokapis.com/v2/post/publish/content/init/'
 
@@ -176,7 +188,7 @@ def upload():
         # Envoyez la requête POST
         response = requests.post(URL,
             headers={
-                'Authorization': f'Bearer {token.access_token}',
+                'Authorization': f'Bearer {config['access_token']}',
                 'Content-Type': 'application/json'
             },
             data=data

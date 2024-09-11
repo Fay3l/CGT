@@ -19,7 +19,7 @@ import random
 
 # Fonction pour choisir une valeur aléatoire parmi les membres de l'énumération
 def choisir_profession_aleatoire():
-    themes = ["un_sportif","un_personnage_historique","une_sportive","un_personnage_de_film","un_personnage_de_manga"]
+    themes = ["un_sportif","une_personne_historique","une_sportive","une_personne_de_film","une_personne_de_manga"]
     return Theme(random.choice(themes))
 
 def create_template_clues(content: ContentData, theme: str):
@@ -168,12 +168,13 @@ print(f"Theme choisi aléatoirement : {theme_aleatoire.name.replace('_',' ')}")
 while True:
     difficulté = ["connu","peu connu","moins connu"]
     difficulté_choisie = random.choice(difficulté)
+    print(f"Difficulté choisi aléatoirement : {difficulté_choisie}")
     chat_response = client.chat.complete(
         model=model,
         messages=[
             {
                 "role": "user",
-                "content": f"Créer un jeu 'Qui suis-je?' sur {theme_aleatoire.name.replace('_',' ')} {difficulté_choisie} avec 5 indices numérotés en francais,en anglais et en allemand. La réponse en JSON avec ce format:" +
+                "content": f"Faire un jeu 'Qui suis-je?' sur {theme_aleatoire.name.replace('_',' ')} {difficulté_choisie} avec 5 indices numérotés en francais,en anglais et en allemand.La réponse du jeu est son nom. La réponse en JSON avec ce format:" +
                 """{
                   "reponse": {
                     "french":"",

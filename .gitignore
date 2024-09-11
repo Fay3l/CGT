@@ -1,3 +1,4 @@
 .env
 /upload
 *.pem
+config.json

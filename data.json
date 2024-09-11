@@ -1,32 +1,7 @@
 [
     {
         "id": 1,
-        "reponse": "Rugby à 13",
-        "theme": "un_sportif"
-    },
-    {
-        "id": 2,
-        "reponse": "Jimmy Connors",
-        "theme": "un_sportif"
-    },
-    {
-        "id": 3,
-        "reponse": "Jim Carrey dans le film 'The Truman Show'",
-        "theme": "un_personnage_de_film"
-    },
-    {
-        "id": 4,
-        "reponse": "Le joueur de football français qui a marqué le but de la victoire de l'équipe de France lors de la Coupe du Monde 1998.",
-        "theme": "un_sportif"
-    },
-    {
-        "id": 5,
-        "reponse": "Je suis le personnage principal du film allemand 'Der Baader Meinhof Komplex' sorti en 2008.",
-        "theme": "un_personnage_de_film"
-    },
-    {
-        "id": 6,
-        "reponse": "Je suis un acteur français connu pour son rôle dans le film 'Le Pianiste' en 2002",
-        "theme": "un_personnage_de_film"
+        "reponse": "Sarah Baumgartner",
+        "theme": "une_sportive"
     }
 ]
