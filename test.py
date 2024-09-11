@@ -1,12 +1,40 @@
 import os
-from pathlib import Path
-chemin = Path('./upload')
+import json 
+# from pathlib import Path
+# chemin = Path('./upload')
 
-    # utilisez la méthode is_dir() pour vérifier si chaque élément dans le dossier est un dossier
-    # utilisez la méthode iterdir() pour parcourir tous les éléments dans le dossier
-    # utilisez la fonction sum() pour compter le nombre de dossiers
-noms_de_dossiers = [element.name for element in chemin.iterdir() if element.is_dir()]
+#     # utilisez la méthode is_dir() pour vérifier si chaque élément dans le dossier est un dossier
+#     # utilisez la méthode iterdir() pour parcourir tous les éléments dans le dossier
+#     # utilisez la fonction sum() pour compter le nombre de dossiers
+# noms_de_dossiers = [element.name for element in chemin.iterdir() if element.is_dir()]
 
-# affichez la liste des noms de dossiers
-for i, nom in enumerate(noms_de_dossiers, start=1):
-    print(f"{i}: {nom}")
+# # affichez la liste des noms de dossiers
+# for i, nom in enumerate(noms_de_dossiers, start=1):
+#     print(f"{i}: {nom}")
+
+data = """
+{
+    "reponse": 
+        {
+            "french":"L",
+            "english":"E",
+            "german":"O"
+        },
+    "clues":[
+        {
+            "number": 1,
+            "french": "",
+            "english": "",
+            "german": ""
+        },
+        {
+            "number": 2,
+            "french": "",
+            "english": "",
+            "german": ""
+        }
+    ]
+}"""
+json_loads = json.loads(data)
+
+print("reponse:",json_loads['reponse']['french'])

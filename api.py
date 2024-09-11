@@ -22,16 +22,18 @@ def choisir_profession_aleatoire():
     themes = ["un_sportif","un_personnage_historique","une_sportive","un_personnage_de_film","un_personnage_de_manga"]
     return Theme(random.choice(themes))
 
-def create_template_clues(content: ContentData,theme:str):
+def create_template_clues(content: ContentData, theme: str):
     # Créer les images vierges
     # Ajouter les textes à l'image
     template = Image.open(f"./template/{content.language}/{content.clue_number}.jpg")
     draw = ImageDraw.Draw(template)
+
     try:
-        font = ImageFont.truetype(font = content.fonts, size=content.font_size)
+        font = ImageFont.truetype(font=content.fonts, size=content.font_size)
     except IOError:
         font = ImageFont.load_default()
         print(IOError)
+
     # Diviser le texte en mots
     words = content.clue_text.split()
     lines = []
@@ -42,17 +44,19 @@ def create_template_clues(content: ContentData,theme:str):
     for word in words:
         test_line = ' '.join(current_line + [word])
         line_width, _ = draw.textbbox((0, 0), test_line, font=font)[2:4]
+
         if line_width > max_width:
             lines.append(' '.join(current_line))
             current_line = [word]
         else:
             current_line.append(word)
+
     if current_line:
         lines.append(' '.join(current_line))
 
     # Calculer la taille de chaque ligne
     line_heights = [draw.textbbox((0, 0), line, font=font)[3] - draw.textbbox((0, 0), line, font=font)[1] for line in lines]
-    total_height = sum(line_heights)
+    total_height = sum(line_heights) + len(lines) * 10  # Ajouter un espacement de 10 pixels entre les lignes
 
     # Calculer la position centrale verticale
     y_start = (box_height - total_height) // 2
@@ -61,40 +65,66 @@ def create_template_clues(content: ContentData,theme:str):
     for i, line in enumerate(lines):
         line_width = draw.textbbox((0, 0), line, font=font)[2] - draw.textbbox((0, 0), line, font=font)[0]
         x = (box_width - line_width) // 2
-        y = y_start + sum(line_heights[:i])
+        y = y_start + sum(line_heights[:i]) + i * 10  # Ajouter un espacement de 10 pixels entre les lignes
         draw.text((x, y), line, font=font, fill=content.color)
+
     template.save(f"./upload/{content.language}/Clue_{content.clue_number}_{content.language}.jpg")
+
     # Supposons que res est votre image et content.response est votre texte
     res = Image.open(f"./template/{content.language}/10.jpg")
     draw_res = ImageDraw.Draw(res)
 
-    # Calculer le point central de l'image
-    center_x = res.width // 2
-    center_y = res.height // 2
+    # Diviser le texte de la réponse en mots
+    response_words = content.response.split()
+    response_lines = []
+    current_response_line = []
+    box_width, box_height = res.size
+    max_width = box_width * 0.9  # Laisser un peu de marge
 
-    # Utiliser textbbox pour obtenir les dimensions du texte
-    text_bbox = draw_res.textbbox((0, 0), content.response, font=font)
-    text_width = text_bbox[2] - text_bbox[0]
-    text_height = text_bbox[3] - text_bbox[1]
+    for word in response_words:
+        test_line = ' '.join(current_response_line + [word])
+        line_width, _ = draw_res.textbbox((0, 0), test_line, font=font)[2:4]
 
-    # Centrer le texte
-    text_x = center_x - text_width // 2
-    text_y = center_y - text_height // 2
+        if line_width > max_width:
+            response_lines.append(' '.join(current_response_line))
+            current_response_line = [word]
+        else:
+            current_response_line.append(word)
 
-    draw_res.text((text_x, text_y), content.response, font=font, fill=content.color, align=content.align)
+    if current_response_line:
+        response_lines.append(' '.join(current_response_line))
+
+    # Calculer la taille de chaque ligne de la réponse
+    response_line_heights = [draw_res.textbbox((0, 0), line, font=font)[3] - draw_res.textbbox((0, 0), line, font=font)[1] for line in response_lines]
+    total_response_height = sum(response_line_heights) + len(response_lines) * 10  # Ajouter un espacement de 10 pixels entre les lignes
+
+    # Calculer la position centrale verticale pour la réponse
+    y_start_response = (box_height - total_response_height) // 2
+
+    # Ajouter chaque ligne de la réponse à l'image
+    for i, line in enumerate(response_lines):
+        line_width = draw_res.textbbox((0, 0), line, font=font)[2] - draw_res.textbbox((0, 0), line, font=font)[0]
+        x = (box_width - line_width) // 2
+        y = y_start_response + sum(response_line_heights[:i]) + i * 10  # Ajouter un espacement de 10 pixels entre les lignes
+        draw_res.text((x, y), line, font=font, fill=content.color)
+
     res.save(f"./upload/{content.language}/Response_{content.language}.jpg")
-    if "sport" in theme.name: 
-      theme_sport = Image.open(f"./template/{content.language}/theme_sport_{content.language}.jpg")
-      theme_sport.save(f"./upload/{content.language}/theme_sport_{content.language}.jpg")
-    if "film" in theme.name: 
-      theme_film = Image.open(f"./template/{content.language}/theme_film_{content.language}.jpg")
-      theme_film.save(f"./upload/{content.language}/theme_film_{content.language}.jpg")
-    if "hist" in theme.name: 
-      theme_histoire = Image.open(f"./template/{content.language}/theme_histoire_{content.language}.jpg")
-      theme_histoire.save(f"./upload/{content.language}/theme_histoire_{content.language}.jpg")
-    if "hist" in theme.name: 
-      theme_manga = Image.open(f"./template/{content.language}/theme_manga_{content.language}.jpg")
-      theme_manga.save(f"./upload/{content.language}/theme_manga_{content.language}.jpg")
+
+    if "sport" in theme.name:
+        theme_sport = Image.open(f"./template/{content.language}/theme_sport_{content.language}.jpg")
+        theme_sport.save(f"./upload/{content.language}/theme_sport_{content.language}.jpg")
+
+    if "film" in theme.name:
+        theme_film = Image.open(f"./template/{content.language}/theme_film_{content.language}.jpg")
+        theme_film.save(f"./upload/{content.language}/theme_film_{content.language}.jpg")
+
+    if "hist" in theme.name:
+        theme_histoire = Image.open(f"./template/{content.language}/theme_histoire_{content.language}.jpg")
+        theme_histoire.save(f"./upload/{content.language}/theme_histoire_{content.language}.jpg")
+
+    if "manga" in theme.name:
+        theme_manga = Image.open(f"./template/{content.language}/theme_manga_{content.language}.jpg")
+        theme_manga.save(f"./upload/{content.language}/theme_manga_{content.language}.jpg")
 
 def database(reponse: str, theme: str):
     filename = "data.json"
@@ -145,7 +175,11 @@ while True:
                 "role": "user",
                 "content": f"Créer un jeu 'Qui suis-je?' sur {theme_aleatoire.name.replace('_',' ')} {difficulté_choisie} avec 5 indices numérotés en francais,en anglais et en allemand. La réponse en JSON avec ce format:" +
                 """{
-                  "reponse": "",
+                  "reponse": {
+                    "french":"",
+                    "english":"",
+                    "german":"",
+                  },
                   "clues":[
                   {
                     "number": 1,
@@ -170,7 +204,7 @@ while True:
         print(f"Erreur lors de la conversion du JSON: {e}")
         continue
 
-    response_data = Response(clues=json_loads['clues'], name=json_loads['reponse'])
+    response_data = Response(clues=json_loads['clues'], name=json_loads['reponse']['french'])
 
     if not database(reponse=response_data.name, theme=theme_aleatoire.name):
       break
@@ -185,7 +219,7 @@ for content in response_data.clues:
       fonts="./fonts/Sans.ttf",
       language="fr",
       clue_number=content["number"],
-      response=response_data.name
+      response=json_loads['reponse']['french']
   )
   create_template_clues(content_data, theme_aleatoire)
   content_data = ContentData(
@@ -197,7 +231,7 @@ for content in response_data.clues:
       fonts="./fonts/Sans.ttf",
       language="en",
       clue_number=content["number"],
-      response=response_data.name
+      response=json_loads['reponse']['english']
   )
   create_template_clues(content_data, theme_aleatoire)
   content_data = ContentData(
@@ -209,7 +243,7 @@ for content in response_data.clues:
       fonts="./fonts/Sans.ttf",
       language="de",
       clue_number=content["number"],
-      response=response_data.name
+      response=json_loads['reponse']['german']
   )
   create_template_clues(content_data, theme_aleatoire)
 
