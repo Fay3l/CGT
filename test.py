@@ -1,5 +1,5 @@
 import os
-import json 
+# import json 
 # from pathlib import Path
 # chemin = Path('./upload')
 
@@ -12,29 +12,38 @@ import json
 # for i, nom in enumerate(noms_de_dossiers, start=1):
 #     print(f"{i}: {nom}")
 
-data = """
-{
-    "reponse": 
-        {
-            "french":"L",
-            "english":"E",
-            "german":"O"
-        },
-    "clues":[
-        {
-            "number": 1,
-            "french": "",
-            "english": "",
-            "german": ""
-        },
-        {
-            "number": 2,
-            "french": "",
-            "english": "",
-            "german": ""
-        }
-    ]
-}"""
-json_loads = json.loads(data)
+# data = """
+# {
+#     "reponse": 
+#         {
+#             "french":"L",
+#             "english":"E",
+#             "german":"O"
+#         },
+#     "clues":[
+#         {
+#             "number": 1,
+#             "french": "",
+#             "english": "",
+#             "german": ""
+#         },
+#         {
+#             "number": 2,
+#             "french": "",
+#             "english": "",
+#             "german": ""
+#         }
+#     ]
+# }"""
+# json_loads = json.loads(data)
 
-print("reponse:",json_loads['reponse']['french'])
+# print("reponse:",json_loads['reponse']['french'])
+from minio import Minio
+from dotenv import load_dotenv
+load_dotenv()
+
+client = Minio("212.227.131.109:9000",
+    access_key=os.getenv("MINIO_ACCESS_KEY"),
+    secret_key=os.getenv("MINIO_SECRET_KEY"),
+)
+print(client.list_buckets())

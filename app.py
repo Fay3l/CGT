@@ -22,8 +22,7 @@ CLIENT_SECRET = os.getenv('CLIENT_SECRET')
 REDIRECT_URI = "http://localhost:5000/callback/"
 AUTH_URL = os.getenv('AUTH_URL')
 TOKEN_URL = os.getenv('TOKEN_URL')
-CODE_VERIFIER =''
-CSRF_STATE=''
+CONFIG_FILE = os.getenv('CONFIG_FILE')
 
 
 
@@ -59,7 +58,7 @@ def login():
     print('aaaaaaaaaaaaaaaaaaaaaaaaa',code_verifier)
     print('xxxxxxxxxxxxxxxxxxxxxxxxx',csrf_state)
     state_code.csrf_state = csrf_state
-    auth_url = f'{AUTH_URL}?client_key={CLIENT_KEY}&scope=user.info.basic&response_type=code&redirect_uri={REDIRECT_URI}&state={csrf_state}&code_challenge={code_challenge}&code_challenge_method=S256'
+    auth_url = f'{AUTH_URL}?client_key={CLIENT_KEY}&scope=user.info.basic,video.publish&response_type=code&redirect_uri={REDIRECT_URI}&state={csrf_state}&code_challenge={code_challenge}&code_challenge_method=S256'
     return redirect(auth_url)
 
 @app.route('/callback/')
@@ -92,7 +91,7 @@ def callback():
         token_data = token_response.json()
         print("reponse:",token_response.json())
         try :
-            with open('config.json', 'r') as file:
+            with open(CONFIG_FILE, 'r') as file:
                 config = json.load(file)
 
             # Mettre à jour les valeurs dans le fichier config.json
@@ -119,13 +118,14 @@ def upload():
     
     # spécifiez le chemin du dossier à parcourir
     chemin = Path('./upload')
-    with open('config.json', 'r') as file:
+    with open(CONFIG_FILE, 'r') as file:
         config = json.load(file)
+    token = config['access_token']
+    print("Token:",token)
     # utilisez la méthode is_dir() pour vérifier si chaque élément dans le dossier est un dossier
     # utilisez la méthode iterdir() pour parcourir tous les éléments dans le dossier
     # utilisez la fonction sum() pour compter le nombre de dossiers
     noms_de_dossiers = [element.name for element in chemin.iterdir() if element.is_dir()]
-    print("Token:",token.access_token)
     # affichez la liste des noms de dossiers
     for i, nom in enumerate(noms_de_dossiers, start=1):
         print(f"{i}: {nom}")
@@ -134,12 +134,12 @@ def upload():
                 "./upload/fr/introfr.jpg",
                 "./upload/fr/butfr.jpg",
                 "./upload/fr/theme_sport_fr.jpg",
-                "./upload/fr/Clue_1_fr.jpg"
-                "./upload/fr/Clue_2_fr.jpg"
-                "./upload/fr/Clue_3_fr.jpg"
-                "./upload/fr/Clue_4_fr.jpg"
-                "./upload/fr/Clue_5_fr.jpg"
-                "./upload/fr/9.jpg"
+                "./upload/fr/Clue_1_fr.jpg",
+                "./upload/fr/Clue_2_fr.jpg",
+                "./upload/fr/Clue_3_fr.jpg",
+                "./upload/fr/Clue_4_fr.jpg",
+                "./upload/fr/Clue_5_fr.jpg",
+                "./upload/fr/9.jpg",
                 "./upload/fr/Response_fr.jpg"
             ]
         if(nom == "en"):
@@ -147,12 +147,12 @@ def upload():
                 "./upload/en/introen.jpg",
                 "./upload/en/buten.jpg",
                 "./upload/en/theme_sport_en.jpg",
-                "./upload/en/Clue_1_en.jpg"
-                "./upload/en/Clue_2_en.jpg"
-                "./upload/en/Clue_3_en.jpg"
-                "./upload/en/Clue_4_en.jpg"
-                "./upload/en/Clue_5_en.jpg"
-                "./upload/en/9.jpg"
+                "./upload/en/Clue_1_en.jpg",
+                "./upload/en/Clue_2_en.jpg",
+                "./upload/en/Clue_3_en.jpg",
+                "./upload/en/Clue_4_en.jpg",
+                "./upload/en/Clue_5_en.jpg",
+                "./upload/en/9.jpg",
                 "./upload/en/Response_en.jpg"
             ]
         if(nom == "de"):
@@ -166,40 +166,42 @@ def upload():
                 "./upload/de/Clue_4_de.jpg",
                 "./upload/de/Clue_5_de.jpg",
                 "./upload/de/9.jpg",
-                "./upload/de/Response_de.jpg",
+                "./upload/de/Response_de.jpg"
             ]
         URL = 'https://open.tiktokapis.com/v2/post/publish/content/init/'
 
         # Préparez les données pour la requête POST
-        data = {
-            "post_info": {
-                "title": "Guessing game",
-                "description": "this will be a #funny photo on your @tiktok #fyp"
-            },
-            "source_info": {
-                "source": "PULL_FROM_URL",
-                "photo_cover_index": 1,
-                "photo_images": photos_data
-            },
-            "post_mode": "MEDIA_UPLOAD",
-            "media_type": "PHOTO"
-        }
+        print(photos_data)
 
         # Envoyez la requête POST
         response = requests.post(URL,
             headers={
-                'Authorization': f'Bearer {config['access_token']}',
-                'Content-Type': 'application/json'
+                'Authorization': f'Bearer {token}',
             },
-            data=data
+            data = {
+    "post_info": {
+        "title": "Guessing game",
+        "description": "#game #fyp"
+    },
+    "source_info": {
+        "source": "PULL_FROM_URL",
+        "photo_cover_index": 1,
+        "photo_images": photos_data
+    },
+    "post_mode": "MEDIA_UPLOAD",
+    "media_type": "PHOTO"
+}
         )
+        if response.status_code == 200:
+            response_data = response.json()
+            print(response_data)
+        else:
+            return response.text, 500
 
     # Vérifiez la réponse
-    if response.status_code == 200:
-        response_data = response.json()
-        return response_data, 200
-    else:
-        return response.text, 500
+    
+    return 'Uploaded Successfully', 200
+    
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
