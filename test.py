@@ -42,8 +42,18 @@ from minio import Minio
 from dotenv import load_dotenv
 load_dotenv()
 
-client = Minio("212.227.131.109:9000",
+client = Minio(endpoint="212.227.131.109:9000",
     access_key=os.getenv("MINIO_ACCESS_KEY"),
     secret_key=os.getenv("MINIO_SECRET_KEY"),
+    secure=False
 )
-print(client.list_buckets())
+
+if client.bucket_exists("mybucket"):
+    print("my-bucket exists")
+else:
+    print("my-bucket does not exist")
+
+objects = client.list_objects("mybucket")
+for obj in objects:
+    print(obj)
+
