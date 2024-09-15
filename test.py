@@ -55,5 +55,7 @@ else:
 
 objects = client.list_objects("mybucket")
 for obj in objects:
-    print(obj)
+    print(obj.object_name)
 
+url = client.presigned_get_object("mybucket", "téléchargement.png")
+print(url)
