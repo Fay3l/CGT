@@ -39,19 +39,19 @@ import os
 
 # print("reponse:",json_loads['reponse']['french'])
 from minio import Minio
-from dotenv import load_dotenv
-load_dotenv()
-
-client = Minio(endpoint="212.227.131.109:9000",
+# 212.227.131.109:9000
+# 100.96.211.39:9000
+print(os.getenv("MINIO_ACCESS_KEY"))
+client = Minio(endpoint="minio-ts.tail8c4493.ts.net",
     access_key=os.getenv("MINIO_ACCESS_KEY"),
     secret_key=os.getenv("MINIO_SECRET_KEY"),
-    secure=False
+    secure=True
 )
 
-if client.bucket_exists("mybucket"):
-    print("my-bucket exists")
-else:
-    print("my-bucket does not exist")
+# if client.bucket_exists("mybucket"):
+#     print("my-bucket exists")
+# else:
+#     print("my-bucket does not exist")
 
 objects = client.list_objects("mybucket")
 for obj in objects:

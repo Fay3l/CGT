@@ -129,45 +129,48 @@ def upload():
     # affichez la liste des noms de dossiers
     for i, nom in enumerate(noms_de_dossiers, start=1):
         print(f"{i}: {nom}")
-        if(nom == "fr"):
-            photos_data = [
-                "./upload/fr/introfr.jpg",
-                "./upload/fr/butfr.jpg",
-                "./upload/fr/theme_sport_fr.jpg",
-                "./upload/fr/Clue_1_fr.jpg",
-                "./upload/fr/Clue_2_fr.jpg",
-                "./upload/fr/Clue_3_fr.jpg",
-                "./upload/fr/Clue_4_fr.jpg",
-                "./upload/fr/Clue_5_fr.jpg",
-                "./upload/fr/9.jpg",
-                "./upload/fr/Response_fr.jpg"
-            ]
-        if(nom == "en"):
-            photos_data = [
-                "./upload/en/introen.jpg",
-                "./upload/en/buten.jpg",
-                "./upload/en/theme_sport_en.jpg",
-                "./upload/en/Clue_1_en.jpg",
-                "./upload/en/Clue_2_en.jpg",
-                "./upload/en/Clue_3_en.jpg",
-                "./upload/en/Clue_4_en.jpg",
-                "./upload/en/Clue_5_en.jpg",
-                "./upload/en/9.jpg",
-                "./upload/en/Response_en.jpg"
-            ]
-        if(nom == "de"):
-            photos_data = [
-                "./upload/de/introde.jpg",
-                "./upload/de/butde.jpg",
-                "./upload/de/theme_sport_de.jpg",
-                "./upload/de/Clue_1_de.jpg",
-                "./upload/de/Clue_2_de.jpg",
-                "./upload/de/Clue_3_de.jpg",
-                "./upload/de/Clue_4_de.jpg",
-                "./upload/de/Clue_5_de.jpg",
-                "./upload/de/9.jpg",
-                "./upload/de/Response_de.jpg"
-            ]
+        # if(nom == "fr"):
+        #     photos_data = [
+        #         "./upload/fr/introfr.jpg",
+        #         "./upload/fr/butfr.jpg",
+        #         "./upload/fr/theme_sport_fr.jpg",
+        #         "./upload/fr/Clue_1_fr.jpg",
+        #         "./upload/fr/Clue_2_fr.jpg",
+        #         "./upload/fr/Clue_3_fr.jpg",
+        #         "./upload/fr/Clue_4_fr.jpg",
+        #         "./upload/fr/Clue_5_fr.jpg",
+        #         "./upload/fr/9.jpg",
+        #         "./upload/fr/Response_fr.jpg"
+        #     ]
+        # if(nom == "en"):
+        #     photos_data = [
+        #         "./upload/en/introen.jpg",
+        #         "./upload/en/buten.jpg",
+        #         "./upload/en/theme_sport_en.jpg",
+        #         "./upload/en/Clue_1_en.jpg",
+        #         "./upload/en/Clue_2_en.jpg",
+        #         "./upload/en/Clue_3_en.jpg",
+        #         "./upload/en/Clue_4_en.jpg",
+        #         "./upload/en/Clue_5_en.jpg",
+        #         "./upload/en/9.jpg",
+        #         "./upload/en/Response_en.jpg"
+        #     ]
+        # if(nom == "de"):
+        #     photos_data = [
+        #         "./upload/de/introde.jpg",
+        #         "./upload/de/butde.jpg",
+        #         "./upload/de/theme_sport_de.jpg",
+        #         "./upload/de/Clue_1_de.jpg",
+        #         "./upload/de/Clue_2_de.jpg",
+        #         "./upload/de/Clue_3_de.jpg",
+        #         "./upload/de/Clue_4_de.jpg",
+        #         "./upload/de/Clue_5_de.jpg",
+        #         "./upload/de/9.jpg",
+        #         "./upload/de/Response_de.jpg"
+        #     ]
+        photos_data=[
+            "https://minio-ts.tail8c4493.ts.net/mybucket/t%C3%A9l%C3%A9chargement.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=456i3UXdKyCYLgXqAS5x%2F20240917%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240917T112205Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=6abc0ecaabf11b3030a24a29c51d1ceb81e6359182d26fde8bbd2bb4ec9eaa7b"
+        ]
         URL = 'https://open.tiktokapis.com/v2/post/publish/content/init/'
 
         # Préparez les données pour la requête POST
@@ -184,7 +187,6 @@ def upload():
         "description": "#game #fyp"
     },
     "source_info": {
-        "source": "PULL_FROM_URL",
         "photo_cover_index": 1,
         "photo_images": photos_data
     },
