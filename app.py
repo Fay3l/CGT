@@ -9,6 +9,12 @@ from flask_cors import CORS
 from dotenv import load_dotenv
 from pathlib import Path
 from classes import State
+from minio import Minio, S3Error
+client = Minio(endpoint="minio-ts.tail8c4493.ts.net",
+    access_key=os.getenv("MINIO_ACCESS_KEY"),
+    secret_key=os.getenv("MINIO_SECRET_KEY"),
+    secure=True
+)
 
 load_dotenv()
 
@@ -55,8 +61,6 @@ def login():
     state_code.code_verifier = code_verifier
     code_challenge = generate_code_challenge(code_verifier)
     csrf_state = generate_random_string(30)
-    print('aaaaaaaaaaaaaaaaaaaaaaaaa',code_verifier)
-    print('xxxxxxxxxxxxxxxxxxxxxxxxx',csrf_state)
     state_code.csrf_state = csrf_state
     auth_url = f'{AUTH_URL}?client_key={CLIENT_KEY}&scope=user.info.basic,video.publish&response_type=code&redirect_uri={REDIRECT_URI}&state={csrf_state}&code_challenge={code_challenge}&code_challenge_method=S256'
     return redirect(auth_url)
@@ -113,6 +117,14 @@ def callback():
     else:
         return f'Failed to obtain access token: {token_response.text, token_response.url}', 500
     
+@app.route('/geturlobject/<filename>',methods=['GET'])
+def get_url_object(filename):
+    try:
+        url = client.presigned_get_object("mybucket", filename)
+        return url
+    except S3Error as e:
+        return f'Error get_url_object {e}', 500
+
 @app.route('/upload')
 def upload():
     
