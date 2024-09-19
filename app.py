@@ -44,6 +44,27 @@ def generate_code_challenge(code_verifier):
     sha256 = hashlib.sha256(code_verifier.encode()).hexdigest()
     return sha256
 
+def rechercher_fichiers(dossier,list_theme,list_clue,list_response):
+    for element in dossier.iterdir():
+        if element.is_dir():
+            # Si c'est un dossier, appeler récursivement la fonction
+            print(element.name)
+            rechercher_fichiers(element,list_theme,list_clue,list_response)
+        elif element.name.startswith('theme'):
+            list_theme.append(element)
+        elif element.name.startswith('Clue'):
+            list_clue.append(element)
+        elif element.name.startswith('Response'):
+            list_response.append(element)
+
+def supprimer_fichiers(list_fichiers):
+    for fichier in list_fichiers:
+        try:
+            fichier.unlink()
+            print(f"Supprimé : {fichier}")
+        except Exception as e:
+            print(f"Erreur lors de la suppression de {fichier} : {e}")
+
 @app.route('/')
 def index():
     return '<a href="/auth">Login with TikTok</a>'
@@ -131,48 +152,58 @@ def upload():
     # utilisez la méthode iterdir() pour parcourir tous les éléments dans le dossier
     # utilisez la fonction sum() pour compter le nombre de dossiers
     noms_de_dossiers = [element.name for element in chemin.iterdir() if element.is_dir()]
+    fichiers_theme = []
+    fichiers_clue = []
+    fichiers_response = []
+    rechercher_fichiers(chemin,fichiers_theme,fichiers_clue,fichiers_response)
     # affichez la liste des noms de dossiers
     for i, nom in enumerate(noms_de_dossiers, start=1):
         print(f"{i}: {nom}")
         if(nom == "fr"):
-            photos_data = [
-                "https://fay.tail8c4493.ts.net/videos/user/upload/fr/introfr.jpg",
-                "https://fay.tail8c4493.ts.net/videos/user/upload/fr/butfr.jpg",
-                # "https://fay.tail8c4493.ts.net/videos/user/upload/fr/theme_sport_fr.jpg",
-                "https://fay.tail8c4493.ts.net/videos/user/upload/fr/Clue_1_fr.jpg",
-                "https://fay.tail8c4493.ts.net/videos/user/upload/fr/Clue_2_fr.jpg",
-                "https://fay.tail8c4493.ts.net/videos/user/upload/fr/Clue_3_fr.jpg",
-                "https://fay.tail8c4493.ts.net/videos/user/upload/fr/Clue_4_fr.jpg",
-                "https://fay.tail8c4493.ts.net/videos/user/upload/fr/Clue_5_fr.jpg",
-                "https://fay.tail8c4493.ts.net/videos/user/upload/fr/9.jpg",
-                "https://fay.tail8c4493.ts.net/videos/user/upload/fr/Response_fr.jpg"
-            ]
+            for fichier in fichiers_theme:
+                if "fr" in fichier.__str__():
+                    photos_data = [
+                        "https://fay.tail8c4493.ts.net/videos/user/upload/fr/introfr.jpg",
+                        "https://fay.tail8c4493.ts.net/videos/user/upload/fr/butfr.jpg",
+                        f"https://fay.tail8c4493.ts.net/videos/user/{fichier}",
+                        "https://fay.tail8c4493.ts.net/videos/user/upload/fr/Clue_1_fr.jpg",
+                        "https://fay.tail8c4493.ts.net/videos/user/upload/fr/Clue_2_fr.jpg",
+                        "https://fay.tail8c4493.ts.net/videos/user/upload/fr/Clue_3_fr.jpg",
+                        "https://fay.tail8c4493.ts.net/videos/user/upload/fr/Clue_4_fr.jpg",
+                        "https://fay.tail8c4493.ts.net/videos/user/upload/fr/Clue_5_fr.jpg",
+                        "https://fay.tail8c4493.ts.net/videos/user/upload/fr/9.jpg",
+                        "https://fay.tail8c4493.ts.net/videos/user/upload/fr/Response_fr.jpg"
+                    ]
         if(nom == "en"):
-            photos_data = [
-                "https://fay.tail8c4493.ts.net/videos/user/upload/en/introen.jpg",
-                "https://fay.tail8c4493.ts.net/videos/user/upload/en/buten.jpg",
-                # "https://fay.tail8c4493.ts.net/videos/user/upload/en/theme_sport_en.jpg",
-                "https://fay.tail8c4493.ts.net/videos/user/upload/en/Clue_1_en.jpg",
-                "https://fay.tail8c4493.ts.net/videos/user/upload/en/Clue_2_en.jpg",
-                "https://fay.tail8c4493.ts.net/videos/user/upload/en/Clue_3_en.jpg",
-                "https://fay.tail8c4493.ts.net/videos/user/upload/en/Clue_4_en.jpg",
-                "https://fay.tail8c4493.ts.net/videos/user/upload/en/Clue_5_en.jpg",
-                "https://fay.tail8c4493.ts.net/videos/user/upload/en/9.jpg",
-                "https://fay.tail8c4493.ts.net/videos/user/upload/en/Response_en.jpg"
-            ]
+            for fichier in fichiers_theme:
+                if "en" in fichier.__str__():
+                    photos_data = [
+                        "https://fay.tail8c4493.ts.net/videos/user/upload/en/introen.jpg",
+                        "https://fay.tail8c4493.ts.net/videos/user/upload/en/buten.jpg",
+                        f"https://fay.tail8c4493.ts.net/videos/user/{fichier}",
+                        "https://fay.tail8c4493.ts.net/videos/user/upload/en/Clue_1_en.jpg",
+                        "https://fay.tail8c4493.ts.net/videos/user/upload/en/Clue_2_en.jpg",
+                        "https://fay.tail8c4493.ts.net/videos/user/upload/en/Clue_3_en.jpg",
+                        "https://fay.tail8c4493.ts.net/videos/user/upload/en/Clue_4_en.jpg",
+                        "https://fay.tail8c4493.ts.net/videos/user/upload/en/Clue_5_en.jpg",
+                        "https://fay.tail8c4493.ts.net/videos/user/upload/en/9.jpg",
+                        "https://fay.tail8c4493.ts.net/videos/user/upload/en/Response_en.jpg"
+                    ]
         if(nom == "de"):
-            photos_data = [
-                "https://fay.tail8c4493.ts.net/videos/user/upload/de/introde.jpg",
-                "https://fay.tail8c4493.ts.net/videos/user/upload/de/butde.jpg",
-                # "https://fay.tail8c4493.ts.net/videos/user/upload/de/theme_sport_de.jpg",
-                "https://fay.tail8c4493.ts.net/videos/user/upload/de/Clue_1_de.jpg",
-                "https://fay.tail8c4493.ts.net/videos/user/upload/de/Clue_2_de.jpg",
-                "https://fay.tail8c4493.ts.net/videos/user/upload/de/Clue_3_de.jpg",
-                "https://fay.tail8c4493.ts.net/videos/user/upload/de/Clue_4_de.jpg",
-                "https://fay.tail8c4493.ts.net/videos/user/upload/de/Clue_5_de.jpg",
-                "https://fay.tail8c4493.ts.net/videos/user/upload/de/9.jpg",
-                "https://fay.tail8c4493.ts.net/videos/user/upload/de/Response_de.jpg"
-            ]
+            for fichier in fichiers_theme:
+                if "de" in fichier.__str__():
+                    photos_data = [
+                        "https://fay.tail8c4493.ts.net/videos/user/upload/de/introde.jpg",
+                        "https://fay.tail8c4493.ts.net/videos/user/upload/de/butde.jpg",
+                        f"https://fay.tail8c4493.ts.net/videos/user/{fichier}",
+                        "https://fay.tail8c4493.ts.net/videos/user/upload/de/Clue_1_de.jpg",
+                        "https://fay.tail8c4493.ts.net/videos/user/upload/de/Clue_2_de.jpg",
+                        "https://fay.tail8c4493.ts.net/videos/user/upload/de/Clue_3_de.jpg",
+                        "https://fay.tail8c4493.ts.net/videos/user/upload/de/Clue_4_de.jpg",
+                        "https://fay.tail8c4493.ts.net/videos/user/upload/de/Clue_5_de.jpg",
+                        "https://fay.tail8c4493.ts.net/videos/user/upload/de/9.jpg",
+                        "https://fay.tail8c4493.ts.net/videos/user/upload/de/Response_de.jpg"
+                    ]
         # URL de l'API TikTok
         url = 'https://open.tiktokapis.com/v2/post/publish/content/init/'
 
@@ -187,9 +218,9 @@ def upload():
             "post_info": {
                 "title": "funny cat",
                 "description": "this will be a #funny photomode on your @tiktok #fyp",
-                "disable_comment": True,
+                "disable_comment": False,
                 "privacy_level": "SELF_ONLY",
-                "auto_add_music": True
+                "auto_add_music": False
             },
             "source_info": {
                 "source": "PULL_FROM_URL",
@@ -209,11 +240,21 @@ def upload():
         if response.status_code == 200:
             response_data = response.json()
             print(response_data)
+            
         else:
             return response.text,response.status_code
 
     # Vérifiez la réponse
-    
+    supprimer_fichiers(fichiers_theme)
+    supprimer_fichiers(fichiers_clue)
+    supprimer_fichiers(fichiers_response)
+    # Lister les objets dans le dossier
+    objects = client.list_objects(os.getenv('MINIO_BUCKET'), prefix="upload", recursive=True)
+    for obj in objects:
+        # Supprimer chaque objet
+        client.remove_object(os.getenv('MINIO_BUCKET'), obj.object_name)
+    print(f"Le dossier upload a été supprimé avec succès.")
+
     return 'Uploaded Successfully', 200
 # URL Prefix à vérifier
 
@@ -228,6 +269,13 @@ def init_download(filename):
         return redirect(url)
     except S3Error as e:
         return f'Error upload_object {e}', 500
+
+
+
+# Fonction récursive pour rechercher les fichiers dont le nom commence par "theme", "Clue" ou "Response"
+
+
+# Appeler la fonction récursive sur le chemin de base
 
 
 if __name__ == '__main__':

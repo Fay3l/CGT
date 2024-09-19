@@ -60,25 +60,52 @@ import os
 # url = client.presigned_get_object("mybucket", "téléchargement.png")
 # print(url)
 
-def find_files_starting_with(directory, prefix):
-    # Liste pour stocker les chemins des fichiers trouvés
-    matching_files = []
+from pathlib import Path
 
-    # Parcourir le répertoire et ses sous-répertoires
-    for root, dirs, files in os.walk(directory):
-        for file in files:
-            if file.startswith(prefix):
-                # Ajouter le chemin complet du fichier à la liste
-                matching_files.append(os.path.join(root, file))
+# Chemin de base où se trouvent les dossiers
+chemin = Path('./upload')
 
-    return matching_files
+# Liste des noms de dossiers
+noms_de_dossiers = [element.name for element in chemin.iterdir() if element.is_dir()]
 
-# Exemple d'utilisation
-directory_to_search = '/upload/en'
-prefix = 'theme'
+# Listes pour stocker les chemins des fichiers trouvés
+fichiers_theme = []
+fichiers_clue = []
+fichiers_response = []
 
-files = find_files_starting_with(directory_to_search, prefix)
+# Fonction récursive pour rechercher les fichiers dont le nom commence par "theme", "Clue" ou "Response"
+def rechercher_fichiers(dossier):
+    for element in dossier.iterdir():
+        if element.is_dir():
+            # Si c'est un dossier, appeler récursivement la fonction
+            print(element.name)
+            rechercher_fichiers(element)
+        elif element.name.startswith('theme'):
+            fichiers_theme.append(element)
+        elif element.name.startswith('Clue'):
+            fichiers_clue.append(element)
+        elif element.name.startswith('Response'):
+            fichiers_response.append(element)
 
-# Afficher les fichiers trouvés
-for file in files:
-    print(file)
+# Appeler la fonction récursive sur le chemin de base
+rechercher_fichiers(chemin)
+
+# Afficher les chemins des fichiers trouvés
+print("Fichiers commençant par 'theme':")
+for fichier in fichiers_theme:
+    print(fichier)
+print(fichiers_theme)
+
+print("\nFichiers commençant par 'Clue':")
+for fichier in fichiers_clue:
+    print(fichier)
+print(fichiers_clue)
+
+print("\nFichiers commençant par 'Response':")
+for fichier in fichiers_response:
+    if "de" in fichier.__str__():
+        print(fichier)
+print(fichiers_response)
+
+print("\nNoms des dossiers:")
+print(noms_de_dossiers)
