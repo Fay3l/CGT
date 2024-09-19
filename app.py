@@ -1,5 +1,5 @@
 import json
-from flask import Flask, request, redirect, render_template
+from flask import Flask, jsonify, request, redirect, render_template
 import requests
 import os
 import hashlib
@@ -29,6 +29,7 @@ REDIRECT_URI = "http://localhost:5000/callback/"
 AUTH_URL = os.getenv('AUTH_URL')
 TOKEN_URL = os.getenv('TOKEN_URL')
 CONFIG_FILE = os.getenv('CONFIG_FILE')
+URL_PREFIX = "https://fay.tail8c4493.ts.net/videos/user/"
 
 
 
@@ -117,14 +118,6 @@ def callback():
     else:
         return f'Failed to obtain access token: {token_response.text, token_response.url}', 500
     
-@app.route('/geturlobject/<filename>',methods=['GET'])
-def get_url_object(filename):
-    try:
-        url = client.presigned_get_object("mybucket", filename)
-        return url
-    except S3Error as e:
-        return f'Error get_url_object {e}', 500
-
 @app.route('/upload')
 def upload():
     
@@ -141,81 +134,101 @@ def upload():
     # affichez la liste des noms de dossiers
     for i, nom in enumerate(noms_de_dossiers, start=1):
         print(f"{i}: {nom}")
-        # if(nom == "fr"):
-        #     photos_data = [
-        #         "./upload/fr/introfr.jpg",
-        #         "./upload/fr/butfr.jpg",
-        #         "./upload/fr/theme_sport_fr.jpg",
-        #         "./upload/fr/Clue_1_fr.jpg",
-        #         "./upload/fr/Clue_2_fr.jpg",
-        #         "./upload/fr/Clue_3_fr.jpg",
-        #         "./upload/fr/Clue_4_fr.jpg",
-        #         "./upload/fr/Clue_5_fr.jpg",
-        #         "./upload/fr/9.jpg",
-        #         "./upload/fr/Response_fr.jpg"
-        #     ]
-        # if(nom == "en"):
-        #     photos_data = [
-        #         "./upload/en/introen.jpg",
-        #         "./upload/en/buten.jpg",
-        #         "./upload/en/theme_sport_en.jpg",
-        #         "./upload/en/Clue_1_en.jpg",
-        #         "./upload/en/Clue_2_en.jpg",
-        #         "./upload/en/Clue_3_en.jpg",
-        #         "./upload/en/Clue_4_en.jpg",
-        #         "./upload/en/Clue_5_en.jpg",
-        #         "./upload/en/9.jpg",
-        #         "./upload/en/Response_en.jpg"
-        #     ]
-        # if(nom == "de"):
-        #     photos_data = [
-        #         "./upload/de/introde.jpg",
-        #         "./upload/de/butde.jpg",
-        #         "./upload/de/theme_sport_de.jpg",
-        #         "./upload/de/Clue_1_de.jpg",
-        #         "./upload/de/Clue_2_de.jpg",
-        #         "./upload/de/Clue_3_de.jpg",
-        #         "./upload/de/Clue_4_de.jpg",
-        #         "./upload/de/Clue_5_de.jpg",
-        #         "./upload/de/9.jpg",
-        #         "./upload/de/Response_de.jpg"
-        #     ]
-        photos_data=[
-            "https://minio-ts.tail8c4493.ts.net/mybucket/t%C3%A9l%C3%A9chargement.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=456i3UXdKyCYLgXqAS5x%2F20240917%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240917T112205Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=6abc0ecaabf11b3030a24a29c51d1ceb81e6359182d26fde8bbd2bb4ec9eaa7b"
-        ]
-        URL = 'https://open.tiktokapis.com/v2/post/publish/content/init/'
+        if(nom == "fr"):
+            photos_data = [
+                "https://fay.tail8c4493.ts.net/videos/user/upload/fr/introfr.jpg",
+                "https://fay.tail8c4493.ts.net/videos/user/upload/fr/butfr.jpg",
+                # "https://fay.tail8c4493.ts.net/videos/user/upload/fr/theme_sport_fr.jpg",
+                "https://fay.tail8c4493.ts.net/videos/user/upload/fr/Clue_1_fr.jpg",
+                "https://fay.tail8c4493.ts.net/videos/user/upload/fr/Clue_2_fr.jpg",
+                "https://fay.tail8c4493.ts.net/videos/user/upload/fr/Clue_3_fr.jpg",
+                "https://fay.tail8c4493.ts.net/videos/user/upload/fr/Clue_4_fr.jpg",
+                "https://fay.tail8c4493.ts.net/videos/user/upload/fr/Clue_5_fr.jpg",
+                "https://fay.tail8c4493.ts.net/videos/user/upload/fr/9.jpg",
+                "https://fay.tail8c4493.ts.net/videos/user/upload/fr/Response_fr.jpg"
+            ]
+        if(nom == "en"):
+            photos_data = [
+                "https://fay.tail8c4493.ts.net/videos/user/upload/en/introen.jpg",
+                "https://fay.tail8c4493.ts.net/videos/user/upload/en/buten.jpg",
+                # "https://fay.tail8c4493.ts.net/videos/user/upload/en/theme_sport_en.jpg",
+                "https://fay.tail8c4493.ts.net/videos/user/upload/en/Clue_1_en.jpg",
+                "https://fay.tail8c4493.ts.net/videos/user/upload/en/Clue_2_en.jpg",
+                "https://fay.tail8c4493.ts.net/videos/user/upload/en/Clue_3_en.jpg",
+                "https://fay.tail8c4493.ts.net/videos/user/upload/en/Clue_4_en.jpg",
+                "https://fay.tail8c4493.ts.net/videos/user/upload/en/Clue_5_en.jpg",
+                "https://fay.tail8c4493.ts.net/videos/user/upload/en/9.jpg",
+                "https://fay.tail8c4493.ts.net/videos/user/upload/en/Response_en.jpg"
+            ]
+        if(nom == "de"):
+            photos_data = [
+                "https://fay.tail8c4493.ts.net/videos/user/upload/de/introde.jpg",
+                "https://fay.tail8c4493.ts.net/videos/user/upload/de/butde.jpg",
+                # "https://fay.tail8c4493.ts.net/videos/user/upload/de/theme_sport_de.jpg",
+                "https://fay.tail8c4493.ts.net/videos/user/upload/de/Clue_1_de.jpg",
+                "https://fay.tail8c4493.ts.net/videos/user/upload/de/Clue_2_de.jpg",
+                "https://fay.tail8c4493.ts.net/videos/user/upload/de/Clue_3_de.jpg",
+                "https://fay.tail8c4493.ts.net/videos/user/upload/de/Clue_4_de.jpg",
+                "https://fay.tail8c4493.ts.net/videos/user/upload/de/Clue_5_de.jpg",
+                "https://fay.tail8c4493.ts.net/videos/user/upload/de/9.jpg",
+                "https://fay.tail8c4493.ts.net/videos/user/upload/de/Response_de.jpg"
+            ]
+        # URL de l'API TikTok
+        url = 'https://open.tiktokapis.com/v2/post/publish/content/init/'
 
-        # Préparez les données pour la requête POST
-        print(photos_data)
+        # En-têtes de la requête
+        headers = {
+            'Authorization': f'Bearer {token}',
+            'Content-Type': 'application/json'
+        }
 
-        # Envoyez la requête POST
-        response = requests.post(URL,
-            headers={
-                'Authorization': f'Bearer {token}',
+        # Données de la requête
+        data = {
+            "post_info": {
+                "title": "funny cat",
+                "description": "this will be a #funny photomode on your @tiktok #fyp",
+                "disable_comment": True,
+                "privacy_level": "SELF_ONLY",
+                "auto_add_music": True
             },
-            data = {
-    "post_info": {
-        "title": "Guessing game",
-        "description": "#game #fyp"
-    },
-    "source_info": {
-        "photo_cover_index": 1,
-        "photo_images": photos_data
-    },
-    "post_mode": "MEDIA_UPLOAD",
-    "media_type": "PHOTO"
-}
-        )
+            "source_info": {
+                "source": "PULL_FROM_URL",
+                "photo_cover_index": 0,
+                "photo_images": photos_data
+            },
+            "post_mode": "DIRECT_POST",
+            "media_type": "PHOTO"
+        }
+
+        # Convertir les données en JSON
+        json_data = json.dumps(data)
+
+        # Effectuer la requête POST
+        response = requests.post(url, headers=headers, data=json_data)
+
         if response.status_code == 200:
             response_data = response.json()
             print(response_data)
         else:
-            return response.text, 500
+            return response.text,response.status_code
 
     # Vérifiez la réponse
     
     return 'Uploaded Successfully', 200
-    
+# URL Prefix à vérifier
+
+# Endpoint pour initialiser le téléchargement
+@app.route('/videos/user/<path:filename>', methods=['GET'])
+def init_download(filename):
+    try:
+        # Upload the file to S3
+        print("File: ",filename)
+        client.fput_object(os.getenv('MINIO_BUCKET'),filename,filename)
+        url = client.presigned_get_object("mybucket", filename)
+        return redirect(url)
+    except S3Error as e:
+        return f'Error upload_object {e}', 500
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
