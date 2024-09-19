@@ -245,16 +245,27 @@ def upload():
             return response.text,response.status_code
 
     # Vérifiez la réponse
-    supprimer_fichiers(fichiers_theme)
-    supprimer_fichiers(fichiers_clue)
-    supprimer_fichiers(fichiers_response)
+    
     # Lister les objets dans le dossier
-    objects = client.list_objects(os.getenv('MINIO_BUCKET'), prefix="upload", recursive=True)
+    objects = client.list_objects(os.getenv('MINIO_BUCKET'), prefix="upload/de/", recursive=True)
+    for obj in objects:
+        # Supprimer chaque objet
+        print("Object:",obj)
+        client.remove_object(os.getenv('MINIO_BUCKET'), obj.object_name)
+        objects = client.list_objects(os.getenv('MINIO_BUCKET'), prefix="upload/en/", recursive=True)
     for obj in objects:
         # Supprimer chaque objet
         client.remove_object(os.getenv('MINIO_BUCKET'), obj.object_name)
+    objects = client.list_objects(os.getenv('MINIO_BUCKET'), prefix="upload/fr/", recursive=True)
+    for obj in objects:
+        # Supprimer chaque objet
+        client.remove_object(os.getenv('MINIO_BUCKET'), obj.object_name)
+    for theme in fichiers_theme:
+        client.remove_object(os.getenv('MINIO_BUCKET'), theme.__str__())
     print(f"Le dossier upload a été supprimé avec succès.")
-
+    supprimer_fichiers(fichiers_theme)
+    supprimer_fichiers(fichiers_clue)
+    supprimer_fichiers(fichiers_response)
     return 'Uploaded Successfully', 200
 # URL Prefix à vérifier
 
