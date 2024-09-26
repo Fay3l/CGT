@@ -24,6 +24,21 @@ services:
       context: ./
       dockerfile: Dockerfile
     restart: unless-stopped
+    environment:
+      MISTRALAPI_KEY: ${MISTRALAPI_KEY}
+      CLIENT_KEY: ${CLIENT_KEY}
+      CLIENT_SECRET: ${CLIENT_SECRET}
+      AUTH_URL: ${AUTH_URL}
+      TOKEN_URL: ${TOKEN_URL}
+      URL_PREFIX: ${URL_PREFIX}
+      NGROK_AUTH: ${NGROK_AUTH}
+      CONFIG_FILE: ${CONFIG_FILE}
+      MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY}
+      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}
+      MINIO_BUCKET: ${MINIO_BUCKET}
+      TS_AUTHKEY: ${TS_AUTHKEY}
+      TS_CLIENTID: ${TS_CLIENTID}
+      TS_CERT_DOMAIN: ${TS_CERT_DOMAIN}
     depends_on:
       - app-ts
     network_mode: service:app-ts
