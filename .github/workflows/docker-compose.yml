@@ -15,8 +15,8 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Remove Docker Compose 
-      run: docker-compose -f "docker-compose.yml" down
+      run: docker compose down
     - name: Build the Docker Compose
-      run: docker-compose -f "docker-compose.yml" --build --detach
+      run: docker compose -f "docker-compose.yml" --build --detach
     - name: Funnel Service app-ts Start
-      run: docker-compose -f "docker-compose.yml" exec app-ts tailscale funnel --bg 5000
+      run: docker compose -f "docker-compose.yml" exec app-ts tailscale funnel --bg 5000
