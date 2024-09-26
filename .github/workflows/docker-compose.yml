@@ -17,6 +17,6 @@ jobs:
     - name: Remove Docker Compose 
       run: docker compose down
     - name: Build the Docker Compose
-      run: docker compose --build --detach
+      run: docker compose up --build --detach
     - name: Funnel Service app-ts Start
       run: docker compose exec app-ts tailscale funnel --bg 5000
