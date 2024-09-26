@@ -1,0 +1,22 @@
+name: Docker Compose CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  build:
+
+    runs-on: [self-hosted]
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Remove Docker Compose 
+      run: docker-compose -f "docker-compose.yml" down
+    - name: Build the Docker Compose
+      run: docker-compose -f "docker-compose.yml" --build --detach
+    - name: Funnel Service app-ts Start
+      run: docker-compose -f "docker-compose.yml" exec app-ts tailscale funnel --bg 5000
