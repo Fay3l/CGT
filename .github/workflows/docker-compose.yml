@@ -5,11 +5,24 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+env:
+  MISTRALAPI_KEY: uL07UcC9eHGj2A6ZdNgow1VdUViZvmLI
+  CLIENT_KEY: sbawlocwewy4iped3x
+  CLIENT_SECRET: DNYOioJ3mCxxjJnYnEpVawhMp12NbJcZ
+  AUTH_URL: https://www.tiktok.com/v2/auth/authorize/
+  TOKEN_URL: https://open.tiktokapis.com/v2/oauth/token/
+  URL_PREFIX: https://fay.tail8c4493.ts.net/videos/user/
+  NGROK_AUTH: 2lkM6vjrlGNvgFwE7JIftYf2CjQ_4n45AHVDq8dBbFexMP9Vr
+  CONFIG_FILE: config.json
+  MINIO_ACCESS_KEY: 456i3UXdKyCYLgXqAS5x
+  MINIO_SECRET_KEY: m4CvSzBpMkhb6YhzsIzmnLQtryosjrXekIbFoA13
+  MINIO_BUCKET: mybucket
+  TS_AUTHKEY: tskey-client-kwSPB1PqmR11CNTRL-Ztvz2eX8nxDG2dpi6ti1xDLqdTU7cqXCP
+  TS_CLIENTID: kwSPB1PqmR11CNTRL
+  TS_CERT_DOMAIN: tail8c4493.ts.net
 
 jobs:
-
   build:
-
     runs-on: [self-hosted]
     steps:
     - uses: actions/checkout@v4
