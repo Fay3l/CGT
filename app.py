@@ -28,7 +28,7 @@ CORS(app)
 state_code = State('','')
 CLIENT_KEY = os.getenv('CLIENT_KEY')
 CLIENT_SECRET = os.getenv('CLIENT_SECRET')
-REDIRECT_URI = "http://100.80.238.53:5000/callback/"
+REDIRECT_URI = "http://localhost:5000/callback/"
 AUTH_URL = os.getenv('AUTH_URL')
 TOKEN_URL = os.getenv('TOKEN_URL')
 CONFIG_FILE = os.getenv('CONFIG_FILE')
