@@ -26,6 +26,8 @@ jobs:
     runs-on: [self-hosted]
     steps:
     - uses: actions/checkout@v4
+    - name: Ip
+      run: ifconfig
     - name: Remove Docker Compose 
       run: docker compose down
     - name: Build the Docker Compose
