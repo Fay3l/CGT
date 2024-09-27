@@ -37,7 +37,7 @@ URL_PREFIX = os.getenv("URL_PREFIX")
 
 def run_app_py():
     subprocess.run(["python", "api.py"])
-    requests.get('https://app-ts.tail8c4493.ts.net/upload')
+    requests.get('https://app-ts.tail8c4493.ts.net/upload') 
 
 
 schedule.every().day.at("08:00").do(run_app_py)
