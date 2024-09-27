@@ -33,6 +33,6 @@ jobs:
     - name: Build the Docker Compose
       run: docker compose up --build --detach
     - name: Service app-ts Start advertise route
-      run: docker compose exec app-ts tailscale up --advertise-routes=0.0.0.0/0,::/0 --accept-dns=false --advertise-exit-node=false --advertise-tags=tag:container1
+      run: docker compose exec app-ts tailscale up 
     - name: Funnel Service app-ts Start
       run: docker compose exec app-ts tailscale funnel --bg 5000

@@ -28,7 +28,7 @@ CORS(app)
 state_code = State('','')
 CLIENT_KEY = os.getenv('CLIENT_KEY')
 CLIENT_SECRET = os.getenv('CLIENT_SECRET')
-REDIRECT_URI = "http://localhost:5000/callback/"
+REDIRECT_URI = "http://212.227.131.109:5000/callback/"
 AUTH_URL = os.getenv('AUTH_URL')
 TOKEN_URL = os.getenv('TOKEN_URL')
 CONFIG_FILE = os.getenv('CONFIG_FILE')
@@ -37,7 +37,7 @@ URL_PREFIX = os.getenv("URL_PREFIX")
 
 def run_app_py():
     subprocess.run(["python", "api.py"])
-    requests.get('http://localhost:5000/upload')
+    requests.get('https://app-ts.tail8c4493.ts.net/upload')
 
 
 schedule.every().day.at("08:00").do(run_app_py)
