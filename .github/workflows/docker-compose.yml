@@ -34,4 +34,4 @@ jobs:
     - name: Service app-ts Start advertise route
       run: docker compose exec app-ts tailscale up
     - name: Funnel Service app-ts Start
-      run: docker compose exec app-ts tailscale funnel --bg 5000
+      run: docker compose exec app-ts tailscale funnel --https=443 --bg 5000
