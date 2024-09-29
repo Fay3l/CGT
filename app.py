@@ -1,18 +1,21 @@
 import json
 import subprocess
-import time
-from flask import Flask, jsonify, request, redirect, render_template
+from flask import Flask, request, redirect, render_template
 import requests
 import os
 import hashlib
 import logging
 import random
-import schedule
 from flask_cors import CORS
 from dotenv import load_dotenv
 from pathlib import Path
+from api import new_templates
 from classes import State
 from minio import Minio, S3Error
+from datetime import datetime
+from threading import Timer
+
+
 client = Minio(endpoint="minio-ts.tail8c4493.ts.net",
     access_key=os.getenv("MINIO_ACCESS_KEY"),
     secret_key=os.getenv("MINIO_SECRET_KEY"),
@@ -28,23 +31,32 @@ CORS(app)
 state_code = State('','')
 CLIENT_KEY = os.getenv('CLIENT_KEY')
 CLIENT_SECRET = os.getenv('CLIENT_SECRET')
-REDIRECT_URI = "http://212.227.131.109:5000/callback/"
+REDIRECT_URI = "https://app-ts.tail8c4493.ts.net/callback/"
 AUTH_URL = os.getenv('AUTH_URL')
 TOKEN_URL = os.getenv('TOKEN_URL')
 CONFIG_FILE = os.getenv('CONFIG_FILE')
 URL_PREFIX = os.getenv("URL_PREFIX")
+PASSWORD =os.getenv("PASSWORD")
 
+x=datetime.today()
+y=x.replace(day=x.day+1, hour=8, minute=0, second=0, microsecond=0)
+delta_t=y-x
+
+secs=delta_t.seconds+1
 
 def run_app_py():
-    subprocess.run(["python", "api.py"])
+    new_templates()
+    print("process")
     requests.get('https://app-ts.tail8c4493.ts.net/upload') 
 
+def hello():
+    print("Hello world !!!")
 
-schedule.every().day.at("08:00").do(run_app_py)
+
 
 
 def generate_random_string(length):
-    characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~'
+    characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~' 
     return ''.join(random.choice(characters) for _ in range(length))
 
 def generate_code_verifier():
@@ -87,6 +99,17 @@ def terms_of_service():
 def privacy_policy():
     return render_template('privacy_policy.html')
 
+@app.route('/create/<password>')
+def create(password):
+    try:
+        if password == PASSWORD:
+            new_templates()
+            return 200
+        else:
+            return 401
+    except :
+        return "Error", 500
+
 @app.route('/auth')
 def login():
     code_verifier = generate_code_verifier()
@@ -94,7 +117,8 @@ def login():
     code_challenge = generate_code_challenge(code_verifier)
     csrf_state = generate_random_string(30)
     state_code.csrf_state = csrf_state
-    auth_url = f'{AUTH_URL}?client_key={CLIENT_KEY}&scope=user.info.basic,video.publish&response_type=code&redirect_uri={REDIRECT_URI}&state={csrf_state}&code_challenge={code_challenge}&code_challenge_method=S256'
+    # Desktop mode &code_challenge={code_challenge}&code_challenge_method=S256
+    auth_url = f'{AUTH_URL}?client_key={CLIENT_KEY}&scope=user.info.basic,video.publish&response_type=code&redirect_uri={REDIRECT_URI}&state={csrf_state}'
     return redirect(auth_url)
 
 @app.route('/callback/')
@@ -294,6 +318,11 @@ def init_download(filename):
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
-    while True:
-        schedule.run_pending()
+    try:
+        t = Timer(secs, run_app_py)
+        t.start()
+        print('run app ...')
+        app.run(host='0.0.0.0', port=5000, debug=True)
+    except KeyboardInterrupt:
+        t.cancel()
+        

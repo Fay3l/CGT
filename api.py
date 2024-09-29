@@ -141,7 +141,7 @@ def database(reponse: str, theme: str):
     # Vérifier si la réponse est dans le fichier JSON 
     if any(item.get("reponse") == reponse for item in data):
         print("La réponse est déjà dans le fichier JSON.")
-        return True
+        return False
     else:
         print("La réponse n'est pas dans le fichier JSON.")
         # Écrire les données mises à jour dans le fichier JSON
@@ -159,93 +159,102 @@ def database(reponse: str, theme: str):
             print("Le fichier JSON ne contient pas une liste d'objets.")
         with open(filename, 'w', encoding='utf-8') as json_file:
             json.dump(data, json_file, ensure_ascii=False, indent=4)
-        return False
+        return True
 
 
-theme_aleatoire = choisir_profession_aleatoire()
-print(f"Theme choisi aléatoirement : {theme_aleatoire.name.replace('_',' ')}")
-
-while True:
-    difficulté = ["connu","peu connu","moins connu"]
-    difficulté_choisie = random.choice(difficulté)
-    print(f"Difficulté choisi aléatoirement : {difficulté_choisie}")
-    chat_response = client.chat.complete(
-        model=model,
-        messages=[
-            {
-                "role": "user",
-                "content": f"Faire un jeu 'Qui suis-je?' sur {theme_aleatoire.name.replace('_',' ')} {difficulté_choisie} avec 5 indices numérotés en francais,en anglais et en allemand.La réponse du jeu est son nom. La réponse en JSON avec ce format:" +
-                """{
-                  "reponse": {
-                    "french":"",
-                    "english":"",
-                    "german":"",
-                  },
-                  "clues":[
-                  {
-                    "number": 1,
-                    "french": "",
-                    "english": "",
-                    "german": ""
-                  },
-                ]
-                }
-                }""",
-            },
-        ],
-        response_format={
-            "type": "json_object",
-        }
-    )
-    response = chat_response.choices[0].message.content
-    print(response)
-    try:
-        json_loads = json.loads(response)
-    except json.JSONDecodeError as e:
-        print(f"Erreur lors de la conversion du JSON: {e}")
-        continue
-
-    response_data = Response(clues=json_loads['clues'], name=json_loads['reponse']['french'])
-
-    if not database(reponse=response_data.name, theme=theme_aleatoire.name):
-      break
-
-for content in response_data.clues:
-  content_data = ContentData(
-      clue_text=content["french"],
-      position=(500, 800),
-      font_size=70,
-      color=(0, 0, 0),
-      align="center",
-      fonts="./fonts/Sans.ttf",
-      language="fr",
-      clue_number=content["number"],
-      response=json_loads['reponse']['french']
-  )
-  create_template_clues(content_data, theme_aleatoire)
-  content_data = ContentData(
-      clue_text=content["english"],
-      position=(500, 800),
-      font_size=70,
-      color=(0, 0, 0),
-      align="center",
-      fonts="./fonts/Sans.ttf",
-      language="en",
-      clue_number=content["number"],
-      response=json_loads['reponse']['english']
-  )
-  create_template_clues(content_data, theme_aleatoire)
-  content_data = ContentData(
-      clue_text=content["german"],
-      position=(500, 800),
-      font_size=70,
-      color=(0, 0, 0),
-      align="center",
-      fonts="./fonts/Sans.ttf",
-      language="de",
-      clue_number=content["number"],
-      response=json_loads['reponse']['german']
-  )
-  create_template_clues(content_data, theme_aleatoire)
 
 
+def new_templates():
+    theme_aleatoire = choisir_profession_aleatoire()
+    print(f"Theme choisi aléatoirement : {theme_aleatoire.name.replace('_',' ')}")
+
+    while True:
+        difficulté = ["connu","peu connu","moins connu"]
+        difficulté_choisie = random.choice(difficulté)
+        print(f"Difficulté choisi aléatoirement : {difficulté_choisie}")
+        chat_response = client.chat.complete(
+            model=model,
+            messages=[
+                {
+                    "role": "user",
+                    "content": f"Faire un jeu 'Qui suis-je?' sur {theme_aleatoire.name.replace('_',' ')} {difficulté_choisie} avec 5 indices numérotés en francais,en anglais et en allemand.La réponse du jeu est son nom. La réponse en JSON avec ce format:" +
+                    """{
+                        "reponse": {
+                        "french":"",
+                        "english":"",
+                        "german":"",
+                        },
+                        "clues":[
+                        {
+                        "number": 1,
+                        "french": "",
+                        "english": "",
+                        "german": ""
+                        },
+                    ]
+                    }
+                    }""",
+                },
+            ],
+            response_format={
+                "type": "json_object",
+            }
+        )
+        response = chat_response.choices[0].message.content
+        print(response)
+        try:
+            json_loads = json.loads(response)
+        except json.JSONDecodeError as e:
+            print(f"Erreur lors de la conversion du JSON: {e}")
+            continue
+
+        response_data = Response(clues=json_loads['clues'], name=json_loads['reponse']['french'])
+
+        if not database(reponse=response_data.name, theme=theme_aleatoire.name):
+            print("Break! !")
+            return False
+        else:
+            print("content")
+            for content in response_data.clues:
+                print('create !!!')
+                content_data = ContentData(
+                    clue_text=content["french"],
+                    position=(500, 800),
+                    font_size=70,
+                    color=(0, 0, 0),
+                    align="center",
+                    fonts="./fonts/Sans.ttf",
+                    language="fr",
+                    clue_number=content["number"],
+                    response=json_loads['reponse']['french']
+                )
+                create_template_clues(content_data, theme_aleatoire)
+                content_data = ContentData(
+                    clue_text=content["english"],
+                    position=(500, 800),
+                    font_size=70,
+                    color=(0, 0, 0),
+                    align="center",
+                    fonts="./fonts/Sans.ttf",
+                    language="en",
+                    clue_number=content["number"],
+                    response=json_loads['reponse']['english']
+                )
+                create_template_clues(content_data, theme_aleatoire)
+                content_data = ContentData(
+                    clue_text=content["german"],
+                    position=(500, 800),
+                    font_size=70,
+                    color=(0, 0, 0),
+                    align="center",
+                    fonts="./fonts/Sans.ttf",
+                    language="de",
+                    clue_number=content["number"],
+                    response=json_loads['reponse']['german']
+                )
+                create_template_clues(content_data, theme_aleatoire)
+            return True
+        
+
+
+new_templates()

@@ -39,6 +39,7 @@ services:
       TS_AUTHKEY: ${TS_AUTHKEY}
       TS_CLIENTID: ${TS_CLIENTID}
       TS_CERT_DOMAIN: ${TS_CERT_DOMAIN}
+      PASSWORD: ${PASSWORD}
     depends_on:
       - app-ts
     network_mode: service:app-ts

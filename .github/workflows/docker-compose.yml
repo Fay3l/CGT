@@ -20,6 +20,7 @@ env:
   TS_AUTHKEY: ${{ secrets.TS_AUTHKEY }}
   TS_CLIENTID: ${{ secrets.TS_CLIENTID }}
   TS_CERT_DOMAIN: ${{ secrets.TS_CERT_DOMAIN }}
+  PASSWORD: ${{ secrets.PASSWORD }}
 
 jobs:
   build:
@@ -34,3 +35,4 @@ jobs:
       run: docker compose exec app-ts tailscale up 
     - name: Funnel Service app-ts Start
       run: docker compose exec app-ts tailscale funnel --bg 5000
+    - name: Check logs 
