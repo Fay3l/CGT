@@ -23,7 +23,7 @@ env:
   PASSWORD: ${{ secrets.PASSWORD }}
   MINIO_ROOT_USER: ${{ secrets.MINIO_ROOT_USER }}
   MINIO_ROOT_PASSWORD: ${{ secrets.MINIO_ROOT_PASSWORD }}
-  
+
 jobs:
   build:
     runs-on: [self-hosted]
@@ -40,7 +40,7 @@ jobs:
     - name: Funnel Service minio-ts dashboard Start
       run: docker compose exec minio-ts tailscale funnel --https=8443 --bg 9001
     - name: Service app-ts Start
-      run: docker compose exec app-ts tailscale up
+      run: docker compose exec app-ts tailscale up --force-reauth
     - name: Funnel Service app-ts Start
       run: docker compose exec app-ts tailscale funnel --bg 5000
     
