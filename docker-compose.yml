@@ -44,8 +44,43 @@ services:
       - app-ts
     network_mode: service:app-ts
 
+  minio-ts:
+    hostname: minio-ts
+    container_name: minio-ts
+    image: tailscale/tailscale:latest
+    environment:
+      - TS_AUTHKEY=${TS_AUTHKEY}?ephemeral=false
+      - "TS_EXTRA_ARGS=--advertise-tags=tag:container --reset"
+      - TS_STATE_DIR=/var/lib/tailscale
+      - TS_SERVE_CONFIG=/config/minio.json
+      - TS_USERSPACE=false
+    volumes:
+      - /dev/net/tun:/dev/net/tun
+      - ${PWD}/tailscale/state:/var/lib/tailscale
+      - ${PWD}/tailscale/config:/config
+    cap_add:
+      - net_admin
+      - sys_module
+    restart: unless-stopped
+
+  minio:
+    image: minio/minio:latest
+    container_name: minio
+    environment:
+      - MINIO_ROOT_USER=${MINIO_ROOT_USER}
+      - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}
+    command: server /data --address ":9000" --console-address ":9001"
+    volumes:
+      - ${PWD}/minio/data:/data
+    restart: unless-stopped
+    depends_on:
+      - minio-ts
+    network_mode: service:minio-ts
+
 volumes:
-  app:
-    driver: local
   app-ts:
+    driver: local
+  minio-ts:
+    driver: local
+  minio:
     driver: local
