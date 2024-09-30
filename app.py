@@ -39,21 +39,21 @@ URL_PREFIX = os.getenv("URL_PREFIX")
 PASSWORD =os.getenv("PASSWORD")
 
 x=datetime.today()
-y=x.replace(day=x.day+1, hour=8, minute=0, second=0, microsecond=0)
+y=x.replace(day=x.day+1, hour=12, minute=0, second=0, microsecond=0)
 delta_t=y-x
 
 secs=delta_t.seconds+1
 
 def run_app_py():
-    new_templates()
-    print("process")
-    requests.get('https://app-ts.tail8c4493.ts.net/upload') 
-
+    try:
+        new_templates()
+        print("process")
+        url = requests.get('https://app-ts.tail8c4493.ts.net/upload')
+        return url.status_code
+    except:
+        return 500
 def hello():
     print("Hello world !!!")
-
-
-
 
 def generate_random_string(length):
     characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~' 
@@ -167,7 +167,7 @@ def callback():
             with open('config.json', 'w') as file:
                 json.dump(config, file, indent=4)
                 
-            return token_data,200
+            return "token obtained",200
         except:
             return token_response.text,500
     else:
@@ -175,133 +175,136 @@ def callback():
     
 @app.route('/upload')
 def upload():
-    
-    # spécifiez le chemin du dossier à parcourir
-    chemin = Path('./upload')
-    with open(CONFIG_FILE, 'r') as file:
-        config = json.load(file)
-    token = config['access_token']
-    print("Token:",token)
-    # utilisez la méthode is_dir() pour vérifier si chaque élément dans le dossier est un dossier
-    # utilisez la méthode iterdir() pour parcourir tous les éléments dans le dossier
-    # utilisez la fonction sum() pour compter le nombre de dossiers
-    noms_de_dossiers = [element.name for element in chemin.iterdir() if element.is_dir()]
-    fichiers_theme = []
-    fichiers_clue = []
-    fichiers_response = []
-    rechercher_fichiers(chemin,fichiers_theme,fichiers_clue,fichiers_response)
-    # affichez la liste des noms de dossiers
-    for i, nom in enumerate(noms_de_dossiers, start=1):
-        print(f"{i}: {nom}")
-        if(nom == "fr"):
-            for fichier in fichiers_theme:
-                if "fr" in fichier.__str__():
-                    photos_data = [
-                        f"{URL_PREFIX}upload/fr/introfr.jpg",
-                        f"{URL_PREFIX}upload/fr/butfr.jpg",
-                        f"{URL_PREFIX}{fichier}",
-                        f"{URL_PREFIX}upload/fr/Clue_1_fr.jpg",
-                        f"{URL_PREFIX}upload/fr/Clue_2_fr.jpg",
-                        f"{URL_PREFIX}upload/fr/Clue_3_fr.jpg",
-                        f"{URL_PREFIX}upload/fr/Clue_4_fr.jpg",
-                        f"{URL_PREFIX}upload/fr/Clue_5_fr.jpg",
-                        f"{URL_PREFIX}upload/fr/9.jpg",
-                        f"{URL_PREFIX}upload/fr/Response_fr.jpg"
-                    ]
-        if(nom == "en"):
-            for fichier in fichiers_theme:
-                if "en" in fichier.__str__():
-                    photos_data = [
-                        f"{URL_PREFIX}upload/en/introen.jpg",
-                        f"{URL_PREFIX}upload/en/buten.jpg",
-                        f"{URL_PREFIX}{fichier}",
-                        f"{URL_PREFIX}upload/en/Clue_1_en.jpg",
-                        f"{URL_PREFIX}upload/en/Clue_2_en.jpg",
-                        f"{URL_PREFIX}upload/en/Clue_3_en.jpg",
-                        f"{URL_PREFIX}upload/en/Clue_4_en.jpg",
-                        f"{URL_PREFIX}upload/en/Clue_5_en.jpg",
-                        f"{URL_PREFIX}upload/en/9.jpg",
-                        f"{URL_PREFIX}upload/en/Response_en.jpg"
-                    ]
-        if(nom == "de"):
-            for fichier in fichiers_theme:
-                if "de" in fichier.__str__():
-                    photos_data = [
-                        f"{URL_PREFIX}upload/de/introde.jpg",
-                        f"{URL_PREFIX}upload/de/butde.jpg",
-                        f"{URL_PREFIX}{fichier}",
-                        f"{URL_PREFIX}upload/de/Clue_1_de.jpg",
-                        f"{URL_PREFIX}upload/de/Clue_2_de.jpg",
-                        f"{URL_PREFIX}upload/de/Clue_3_de.jpg",
-                        f"{URL_PREFIX}upload/de/Clue_4_de.jpg",
-                        f"{URL_PREFIX}upload/de/Clue_5_de.jpg",
-                        f"{URL_PREFIX}upload/de/9.jpg",
-                        f"{URL_PREFIX}upload/de/Response_de.jpg"
-                    ]
-        # URL de l'API TikTok
-        url = 'https://open.tiktokapis.com/v2/post/publish/content/init/'
+    try:
+        # spécifiez le chemin du dossier à parcourir
+        chemin = Path('./upload')
+        with open(CONFIG_FILE, 'r') as file:
+            config = json.load(file)
+        token = config['access_token']
+        print("Token:",token)
+        # utilisez la méthode is_dir() pour vérifier si chaque élément dans le dossier est un dossier
+        # utilisez la méthode iterdir() pour parcourir tous les éléments dans le dossier
+        # utilisez la fonction sum() pour compter le nombre de dossiers
+        noms_de_dossiers = [element.name for element in chemin.iterdir() if element.is_dir()]
+        fichiers_theme = []
+        fichiers_clue = []
+        fichiers_response = []
+        rechercher_fichiers(chemin,fichiers_theme,fichiers_clue,fichiers_response)
+        # affichez la liste des noms de dossiers
+        for i, nom in enumerate(noms_de_dossiers, start=1):
+            print(f"{i}: {nom}")
+            if(nom == "fr"):
+                for fichier in fichiers_theme:
+                    if "fr" in fichier.__str__():
+                        photos_data = [
+                            f"{URL_PREFIX}upload/fr/introfr.jpg",
+                            f"{URL_PREFIX}upload/fr/butfr.jpg",
+                            f"{URL_PREFIX}{fichier}",
+                            f"{URL_PREFIX}upload/fr/Clue_1_fr.jpg",
+                            f"{URL_PREFIX}upload/fr/Clue_2_fr.jpg",
+                            f"{URL_PREFIX}upload/fr/Clue_3_fr.jpg",
+                            f"{URL_PREFIX}upload/fr/Clue_4_fr.jpg",
+                            f"{URL_PREFIX}upload/fr/Clue_5_fr.jpg",
+                            f"{URL_PREFIX}upload/fr/9.jpg",
+                            f"{URL_PREFIX}upload/fr/Response_fr.jpg"
+                        ]
+            if(nom == "en"):
+                for fichier in fichiers_theme:
+                    if "en" in fichier.__str__():
+                        photos_data = [
+                            f"{URL_PREFIX}upload/en/introen.jpg",
+                            f"{URL_PREFIX}upload/en/buten.jpg",
+                            f"{URL_PREFIX}{fichier}",
+                            f"{URL_PREFIX}upload/en/Clue_1_en.jpg",
+                            f"{URL_PREFIX}upload/en/Clue_2_en.jpg",
+                            f"{URL_PREFIX}upload/en/Clue_3_en.jpg",
+                            f"{URL_PREFIX}upload/en/Clue_4_en.jpg",
+                            f"{URL_PREFIX}upload/en/Clue_5_en.jpg",
+                            f"{URL_PREFIX}upload/en/9.jpg",
+                            f"{URL_PREFIX}upload/en/Response_en.jpg"
+                        ]
+            if(nom == "de"):
+                for fichier in fichiers_theme:
+                    if "de" in fichier.__str__():
+                        photos_data = [
+                            f"{URL_PREFIX}upload/de/introde.jpg",
+                            f"{URL_PREFIX}upload/de/butde.jpg",
+                            f"{URL_PREFIX}{fichier}",
+                            f"{URL_PREFIX}upload/de/Clue_1_de.jpg",
+                            f"{URL_PREFIX}upload/de/Clue_2_de.jpg",
+                            f"{URL_PREFIX}upload/de/Clue_3_de.jpg",
+                            f"{URL_PREFIX}upload/de/Clue_4_de.jpg",
+                            f"{URL_PREFIX}upload/de/Clue_5_de.jpg",
+                            f"{URL_PREFIX}upload/de/9.jpg",
+                            f"{URL_PREFIX}upload/de/Response_de.jpg"
+                        ]
+            # URL de l'API TikTok
+            url = 'https://open.tiktokapis.com/v2/post/publish/content/init/'
 
-        # En-têtes de la requête
-        headers = {
-            'Authorization': f'Bearer {token}',
-            'Content-Type': 'application/json'
-        }
+            # En-têtes de la requête
+            headers = {
+                'Authorization': f'Bearer {token}',
+                'Content-Type': 'application/json'
+            }
 
-        # Données de la requête
-        data = {
-            "post_info": {
-                "title": "",
-                "description": " #game #fyp",
-                "disable_comment": False,
-                "privacy_level": "SELF_ONLY",
-                "auto_add_music": False
-            },
-            "source_info": {
-                "source": "PULL_FROM_URL",
-                "photo_cover_index": 0,
-                "photo_images": photos_data
-            },
-            "post_mode": "DIRECT_POST",
-            "media_type": "PHOTO"
-        }
+            # Données de la requête
+            data = {
+                "post_info": {
+                    "title": "Guessing Game",
+                    "description": " #game #fyp",
+                    "disable_comment": False,
+                    "privacy_level": "SELF_ONLY",
+                    "auto_add_music": False
+                },
+                "source_info": {
+                    "source": "PULL_FROM_URL",
+                    "photo_cover_index": 0,
+                    "photo_images": photos_data
+                },
+                "post_mode": "DIRECT_POST",
+                "media_type": "PHOTO"
+            }
 
-        # Convertir les données en JSON
-        json_data = json.dumps(data)
+            # Convertir les données en JSON
+            json_data = json.dumps(data)
 
-        # Effectuer la requête POST
-        response = requests.post(url, headers=headers, data=json_data)
+            # Effectuer la requête POST
+            response = requests.post(url, headers=headers, data=json_data)
 
-        if response.status_code == 200:
-            response_data = response.json()
-            print(response_data)
-            if noms_de_dossiers.__len__ == i:
-                break
-        else:
-            return response.text,response.status_code
+            if response.status_code == 200:
+                response_data = response.json()
+                print(response_data)
+                if noms_de_dossiers.__len__ == i:
+                    break
+            else:
+                return response.text,response.status_code
 
-    # Vérifiez la réponse
-    
-    # Lister les objets dans le dossier
-    objects = client.list_objects(os.getenv('MINIO_BUCKET'), prefix="upload/de/", recursive=True)
-    for obj in objects:
-        # Supprimer chaque objet
-        print("Object:",obj)
-        client.remove_object(os.getenv('MINIO_BUCKET'), obj.object_name)
-        objects = client.list_objects(os.getenv('MINIO_BUCKET'), prefix="upload/en/", recursive=True)
-    for obj in objects:
-        # Supprimer chaque objet
-        client.remove_object(os.getenv('MINIO_BUCKET'), obj.object_name)
-    objects = client.list_objects(os.getenv('MINIO_BUCKET'), prefix="upload/fr/", recursive=True)
-    for obj in objects:
-        # Supprimer chaque objet
-        client.remove_object(os.getenv('MINIO_BUCKET'), obj.object_name)
-    for theme in fichiers_theme:
-        client.remove_object(os.getenv('MINIO_BUCKET'), theme.__str__())
-    print(f"Le dossier upload a été supprimé avec succès.")
-    supprimer_fichiers(fichiers_clue)
-    supprimer_fichiers(fichiers_response)
-    supprimer_fichiers(fichiers_theme)
-    return 'Uploaded Successfully', 200
+        # Vérifiez la réponse
+        
+        # Lister les objets dans le dossier
+        objects = client.list_objects(os.getenv('MINIO_BUCKET'), prefix="upload/de/", recursive=True)
+        for obj in objects:
+            # Supprimer chaque objet
+            print("Object:",obj)
+            client.remove_object(os.getenv('MINIO_BUCKET'), obj.object_name)
+            objects = client.list_objects(os.getenv('MINIO_BUCKET'), prefix="upload/en/", recursive=True)
+        for obj in objects:
+            # Supprimer chaque objet
+            client.remove_object(os.getenv('MINIO_BUCKET'), obj.object_name)
+        objects = client.list_objects(os.getenv('MINIO_BUCKET'), prefix="upload/fr/", recursive=True)
+        for obj in objects:
+            # Supprimer chaque objet
+            client.remove_object(os.getenv('MINIO_BUCKET'), obj.object_name)
+        for theme in fichiers_theme:
+            client.remove_object(os.getenv('MINIO_BUCKET'), theme.__str__())
+        print(f"Le dossier upload a été supprimé avec succès.")
+        supprimer_fichiers(fichiers_clue)
+        supprimer_fichiers(fichiers_response)
+        supprimer_fichiers(fichiers_theme)
+        return 'Uploaded Successfully', 200
+    except:
+        return 'Except Upload Error', 500
+
 # URL Prefix à vérifier
 
 # Endpoint pour initialiser le téléchargement

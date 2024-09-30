@@ -8,12 +8,12 @@ services:
       - TS_AUTHKEY=${TS_AUTHKEY}?ephemeral=false
       - "TS_EXTRA_ARGS=--advertise-tags=tag:container1 --reset"
       - TS_STATE_DIR=/var/lib/tailscale
-      # - TS_SERVE_CONFIG=/config/app.json
+      - TS_SERVE_CONFIG=/config/app.json
       - TS_USERSPACE=false
     volumes:
       - /dev/net/tun:/dev/net/tun
       - ${PWD}/tailscale/state:/var/lib/tailscale
-      - ${PWD}/tailscale/config:/config 
+      - ${PWD}/tailscale/config:/config
     cap_add:
       - net_admin
       - sys_module

@@ -14,7 +14,7 @@ COPY static /code/static
 COPY images /code/images
 COPY fonts /code/fonts
 COPY upload /code/upload
-
+COPY config.json /code
 RUN pip3.10 install --no-cache-dir --upgrade -r /code/requirements.txt
 
 COPY app.py /code
