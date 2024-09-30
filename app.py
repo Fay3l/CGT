@@ -40,7 +40,7 @@ URL_PREFIX = os.getenv("URL_PREFIX")
 PASSWORD =os.getenv("PASSWORD")
 
 x=datetime.today()
-y=x + relativedelta(days=1, hour=13, minute=0, second=0, microsecond=0)
+y=x + relativedelta(days=1, hour=13, minute=30, second=0, microsecond=0)
 if y.day != x.day + 1:
     y = x + timedelta(days=1)
 delta_t=y-x

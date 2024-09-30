@@ -23,6 +23,8 @@ env:
   PASSWORD: ${{ secrets.PASSWORD }}
   MINIO_ROOT_USER: ${{ secrets.MINIO_ROOT_USER }}
   MINIO_ROOT_PASSWORD: ${{ secrets.MINIO_ROOT_PASSWORD }}
+  TS_CLIENTID1: ${{ secrets.TS_CLIENTID1 }}
+  TS_AUTHKEY1: ${{ secrets.TS_AUTHKEY1 }}
 
 jobs:
   build:
@@ -40,7 +42,7 @@ jobs:
     - name: Funnel Service minio-ts dashboard Start
       run: docker compose exec minio-ts tailscale funnel --https=8443 --bg 9001
     - name: Service app-ts Start
-      run: docker compose exec app-ts tailscale up --force-reauth --accept-dns=false --advertise-tags=tag:container1
+      run: docker compose exec app-ts tailscale up
     - name: Funnel Service app-ts Start
       run: docker compose exec app-ts tailscale funnel --bg 5000
     
