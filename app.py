@@ -12,8 +12,9 @@ from pathlib import Path
 from api import new_templates
 from classes import State
 from minio import Minio, S3Error
-from datetime import datetime
+from datetime import datetime, timedelta
 from threading import Timer
+from dateutil.relativedelta import relativedelta
 
 
 client = Minio(endpoint="minio-ts.tail8c4493.ts.net",
@@ -40,6 +41,8 @@ PASSWORD =os.getenv("PASSWORD")
 
 x=datetime.today()
 y=x.replace(day=x.day+1, hour=12, minute=0, second=0, microsecond=0)
+if y.day != x.day + 1:
+    y = x + timedelta(days=1)
 delta_t=y-x
 
 secs=delta_t.seconds+1
