@@ -6,7 +6,7 @@ services:
     image: tailscale/tailscale:latest
     environment:
       - TS_AUTHKEY=${TS_AUTHKEY}?ephemeral=false
-      - "TS_EXTRA_ARGS=--advertise-tags=tag:container1 --reset"
+      - TS_EXTRA_ARGS=--advertise-tags=tag:container1
       - TS_STATE_DIR=/var/lib/tailscale
       - TS_SERVE_CONFIG=/config/app.json
       - TS_USERSPACE=false
@@ -23,6 +23,7 @@ services:
     build:
       context: ./
       dockerfile: Dockerfile
+    container_name: app
     restart: unless-stopped
     environment:
       MISTRALAPI_KEY: ${MISTRALAPI_KEY}
@@ -42,6 +43,7 @@ services:
       PASSWORD: ${PASSWORD}
     depends_on:
       - app-ts
+      - minio
     network_mode: service:app-ts
 
   minio-ts:
@@ -50,7 +52,7 @@ services:
     image: tailscale/tailscale:latest
     environment:
       - TS_AUTHKEY=${TS_AUTHKEY1}?ephemeral=false
-      - "TS_EXTRA_ARGS=--advertise-tags=tag:container --reset"
+      - TS_EXTRA_ARGS=--advertise-tags=tag:container 
       - TS_STATE_DIR=/var/lib/tailscale
       - TS_SERVE_CONFIG=/config/minio.json
       - TS_USERSPACE=false

@@ -35,14 +35,15 @@ jobs:
       run: docker compose down
     - name: Build the Docker Compose
       run: docker compose up --build --detach
+    - name: Service app-ts Start
+      run: docker compose exec app-ts tailscale up
+    - name: Funnel Service app-ts Start
+      run: docker compose exec app-ts tailscale funnel --bg 5000
     - name: Service minio-ts Start
       run: docker compose exec minio-ts tailscale up
     - name: Funnel Service minio-ts api Start
       run: docker compose exec minio-ts tailscale funnel --https=443 --bg 9000
     - name: Funnel Service minio-ts dashboard Start
       run: docker compose exec minio-ts tailscale funnel --https=8443 --bg 9001
-    - name: Service app-ts Start
-      run: docker compose exec app-ts tailscale up
-    - name: Funnel Service app-ts Start
-      run: docker compose exec app-ts tailscale funnel --bg 5000
+    
     
