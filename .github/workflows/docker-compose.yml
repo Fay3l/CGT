@@ -40,7 +40,7 @@ jobs:
     - name: Funnel Service minio-ts dashboard Start
       run: docker compose exec minio-ts tailscale funnel --https=8443 --bg 9001
     - name: Service app-ts Start
-      run: docker compose exec app-ts tailscale up --force-reauth
+      run: docker compose exec app-ts tailscale up --force-reauth --accept-dns=false --advertise-tags=tag:container1
     - name: Funnel Service app-ts Start
       run: docker compose exec app-ts tailscale funnel --bg 5000
     
