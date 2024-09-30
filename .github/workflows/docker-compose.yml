@@ -31,7 +31,7 @@ jobs:
       run: docker compose down
     - name: Build the Docker Compose
       run: docker compose up --build --detach
-    - name: Service app-ts Start advertise route
+    - name: Service app-ts Start
       run: docker compose exec app-ts tailscale up
     - name: Funnel Service app-ts Start
       run: docker compose exec app-ts tailscale funnel --bg 5000
