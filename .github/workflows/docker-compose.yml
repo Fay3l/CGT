@@ -32,18 +32,18 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Remove Docker Compose
-      run: sudo docker compose down
+      run:  docker compose down
     - name: Build the Docker Compose
-      run: sudo docker compose up --build --detach
+      run:  docker compose up --build --detach
     - name: Service app-ts Start
-      run: sudo docker compose exec app-ts tailscale up
+      run:  docker compose exec app-ts tailscale up
     - name: Funnel Service app-ts Start
-      run: sudo docker compose exec app-ts tailscale funnel --bg 5000
+      run:  docker compose exec app-ts tailscale funnel --bg 5000
     - name: Service minio-ts Start
-      run: sudo docker compose exec minio-ts tailscale up
+      run:  docker compose exec minio-ts tailscale up
     - name: Funnel Service minio-ts api Start
-      run: sudo docker compose exec minio-ts tailscale funnel --https=443 --bg 9000
+      run:  docker compose exec minio-ts tailscale funnel --https=443 --bg 9000
     - name: Funnel Service minio-ts dashboard Start
-      run: sudo docker compose exec minio-ts tailscale funnel --https=8443 --bg 9001
+      run:  docker compose exec minio-ts tailscale funnel --https=8443 --bg 9001
     
     
