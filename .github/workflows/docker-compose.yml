@@ -6,7 +6,7 @@ on:
   pull_request:
     branches: [ "main" ]
 env_file:
-  - .env
+  - ./.env
 env:
   MISTRALAPI_KEY: ${{ secrets.MISTRALAPI_KEY }}
   CLIENT_KEY: ${{ secrets.CLIENT_KEY }}
