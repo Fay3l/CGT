@@ -25,6 +25,8 @@ services:
       dockerfile: Dockerfile
     container_name: app
     restart: unless-stopped
+    env_file:
+      - ./.env
     environment:
       MISTRALAPI_KEY: ${MISTRALAPI_KEY}
       CLIENT_KEY: ${CLIENT_KEY}
@@ -68,6 +70,8 @@ services:
   minio:
     image: minio/minio:latest
     container_name: minio
+    env_file:
+      - ./.env
     environment:
       - MINIO_ROOT_USER=${MINIO_ROOT_USER}
       - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}
