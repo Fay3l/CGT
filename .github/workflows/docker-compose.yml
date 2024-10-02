@@ -5,30 +5,31 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
-env:
-  MISTRALAPI_KEY: ${{ secrets.MISTRALAPI_KEY }}
-  CLIENT_KEY: ${{ secrets.CLIENT_KEY }}
-  CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
-  AUTH_URL: ${{ secrets.AUTH_URL }}
-  TOKEN_URL: ${{ secrets.TOKEN_URL }}
-  URL_PREFIX: ${{ secrets.URL_PREFIX }}
-  NGROK_AUTH: ${{ secrets.NGROK_AUTH }}
-  CONFIG_FILE: ${{ secrets.CONFIG_FILE }}
-  MINIO_ACCESS_KEY: ${{ secrets.MINIO_ACCESS_KEY }}
-  MINIO_SECRET_KEY: ${{ secrets.MINIO_SECRET_KEY }}
-  MINIO_BUCKET: ${{ secrets.MINIO_BUCKET }}
-  TS_AUTHKEY: ${{ secrets.TS_AUTHKEY }}
-  TS_CLIENTID: ${{ secrets.TS_CLIENTID }}
-  TS_CERT_DOMAIN: ${{ secrets.TS_CERT_DOMAIN }}
-  PASSWORD: ${{ secrets.PASSWORD }}
-  MINIO_ROOT_USER: ${{ secrets.MINIO_ROOT_USER }}
-  MINIO_ROOT_PASSWORD: ${{ secrets.MINIO_ROOT_PASSWORD }}
-  TS_CLIENTID1: ${{ secrets.TS_CLIENTID1 }}
-  TS_AUTHKEY1: ${{ secrets.TS_AUTHKEY1 }}
+
 
 jobs:
   build:
     runs-on: [self-hosted]
+    env:
+      MISTRALAPI_KEY: ${{ secrets.MISTRALAPI_KEY }}
+      CLIENT_KEY: ${{ secrets.CLIENT_KEY }}
+      CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+      AUTH_URL: ${{ secrets.AUTH_URL }}
+      TOKEN_URL: ${{ secrets.TOKEN_URL }}
+      URL_PREFIX: ${{ secrets.URL_PREFIX }}
+      NGROK_AUTH: ${{ secrets.NGROK_AUTH }}
+      CONFIG_FILE: ${{ secrets.CONFIG_FILE }}
+      MINIO_ACCESS_KEY: ${{ secrets.MINIO_ACCESS_KEY }}
+      MINIO_SECRET_KEY: ${{ secrets.MINIO_SECRET_KEY }}
+      MINIO_BUCKET: ${{ secrets.MINIO_BUCKET }}
+      TS_AUTHKEY: ${{ secrets.TS_AUTHKEY }}
+      TS_CLIENTID: ${{ secrets.TS_CLIENTID }}
+      TS_CERT_DOMAIN: ${{ secrets.TS_CERT_DOMAIN }}
+      PASSWORD: ${{ secrets.PASSWORD }}
+      MINIO_ROOT_USER: ${{ secrets.MINIO_ROOT_USER }}
+      MINIO_ROOT_PASSWORD: ${{ secrets.MINIO_ROOT_PASSWORD }}
+      TS_CLIENTID1: ${{ secrets.TS_CLIENTID1 }}
+      TS_AUTHKEY1: ${{ secrets.TS_AUTHKEY1 }}
     steps:
     - uses: actions/checkout@v4
     - name: Remove Docker Compose
