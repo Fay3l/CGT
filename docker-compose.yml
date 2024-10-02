@@ -26,21 +26,21 @@ services:
     container_name: app
     restart: unless-stopped
     environment:
-      MISTRALAPI_KEY: ${MISTRALAPI_KEY}
-      CLIENT_KEY: ${CLIENT_KEY}
-      CLIENT_SECRET: ${CLIENT_SECRET}
-      AUTH_URL: ${AUTH_URL}
-      TOKEN_URL: ${TOKEN_URL}
-      URL_PREFIX: ${URL_PREFIX}
-      NGROK_AUTH: ${NGROK_AUTH}
-      CONFIG_FILE: ${CONFIG_FILE}
-      MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY}
-      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}
-      MINIO_BUCKET: ${MINIO_BUCKET}
-      TS_AUTHKEY: ${TS_AUTHKEY}
-      TS_CLIENTID: ${TS_CLIENTID}
-      TS_CERT_DOMAIN: ${TS_CERT_DOMAIN}
-      PASSWORD: ${PASSWORD}
+      - MISTRALAPI_KEY 
+      - CLIENT_KEY 
+      - CLIENT_SECRET 
+      - AUTH_URL 
+      - TOKEN_URL 
+      - URL_PREFIX 
+      - NGROK_AUTH 
+      - CONFIG_FILE 
+      - MINIO_ACCESS_KEY 
+      - MINIO_SECRET_KEY 
+      - MINIO_BUCKET 
+      - TS_AUTHKEY 
+      - TS_CLIENTID 
+      - TS_CERT_DOMAIN 
+      - PASSWORD
     depends_on:
       - app-ts
       - minio
@@ -69,8 +69,8 @@ services:
     image: minio/minio:latest
     container_name: minio
     environment:
-      - MINIO_ROOT_USER=${MINIO_ROOT_USER}
-      - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}
+      - MINIO_ROOT_USER
+      - MINIO_ROOT_PASSWORD
     command: server /data --address ":9000" --console-address ":9001"
     volumes:
       - ${PWD}/minio/data:/data
