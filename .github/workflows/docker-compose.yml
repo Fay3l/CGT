@@ -37,13 +37,14 @@ jobs:
     - name: Build the Docker Compose
       run: sudo docker compose up --build --detach
     - name: Service app-ts Start
-      run: |
-        sudo docker compose exec -it app-ts /bin/sh
-        tailscale funnel --bg 5000
-        exit
+      run: sudo docker container exec app-ts tailscale up
+    - name: Show Tailscale Logs
+      run: sudo docker container exec app-ts tailscale status
+    - name: Funnel Service app-ts Start
+      run: sudo docker container exec app-ts tailscale funnel --bg 5000
     - name: Service minio-ts Start
-      run: | 
-        sudo docker compose exec -it minio-ts /bin/sh
-        tailscale funnel --https=443 --bg 9000
-        tailscale funnel --https=8443 --bg 9001
-        exit
+      run: sudo docker container exec minio-ts tailscale up
+    - name: Funnel Service minio-ts api Start
+      run: sudo docker container exec minio-ts tailscale funnel --https=443 --bg 9000
+    - name: Funnel Service minio-ts dashboard Start
+      run: sudo docker container exec minio-ts tailscale funnel --https=8443 --bg 9001
