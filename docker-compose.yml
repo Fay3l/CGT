@@ -73,7 +73,7 @@ services:
       - MINIO_ROOT_PASSWORD
     command: server /data --address ":9000" --console-address ":9001"
     volumes:
-      - ${PWD}/minio/data:/data
+      - /minio/data:/data
     restart: unless-stopped
     depends_on:
       - minio-ts
