@@ -5,39 +5,62 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
-  
+
+env:
+  MISTRALAPI_KEY: ${{ secrets.MISTRALAPI_KEY }}
+  CLIENT_KEY: ${{ secrets.CLIENT_KEY }}
+  CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+  AUTH_URL: ${{ secrets.AUTH_URL }}
+  TOKEN_URL: ${{ secrets.TOKEN_URL }}
+  URL_PREFIX: ${{ secrets.URL_PREFIX }}
+  NGROK_AUTH: ${{ secrets.NGROK_AUTH }}
+  CONFIG_FILE: ${{ secrets.CONFIG_FILE }}
+  MINIO_ACCESS_KEY: ${{ secrets.MINIO_ACCESS_KEY }}
+  MINIO_SECRET_KEY: ${{ secrets.MINIO_SECRET_KEY }}
+  MINIO_BUCKET: ${{ secrets.MINIO_BUCKET }}
+  TS_AUTHKEY: ${{ secrets.TS_AUTHKEY }}
+  TS_CLIENTID: ${{ secrets.TS_CLIENTID }}
+  TS_CERT_DOMAIN: ${{ secrets.TS_CERT_DOMAIN }}
+  PASSWORD: ${{ secrets.PASSWORD }}
+  MINIO_ROOT_USER: ${{ secrets.MINIO_ROOT_USER }}
+  MINIO_ROOT_PASSWORD: ${{ secrets.MINIO_ROOT_PASSWORD }}
+  TS_CLIENTID1: ${{ secrets.TS_CLIENTID1 }}
+  TS_AUTHKEY1: ${{ secrets.TS_AUTHKEY1 }}
 
 jobs:
   build:
     runs-on: [self-hosted]
-    env:
-      MISTRALAPI_KEY: ${{ secrets.MISTRALAPI_KEY }}
-      CLIENT_KEY: ${{ secrets.CLIENT_KEY }}
-      CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
-      AUTH_URL: ${{ secrets.AUTH_URL }}
-      TOKEN_URL: ${{ secrets.TOKEN_URL }}
-      URL_PREFIX: ${{ secrets.URL_PREFIX }}
-      NGROK_AUTH: ${{ secrets.NGROK_AUTH }}
-      CONFIG_FILE: ${{ secrets.CONFIG_FILE }}
-      MINIO_ACCESS_KEY: ${{ secrets.MINIO_ACCESS_KEY }}
-      MINIO_SECRET_KEY: ${{ secrets.MINIO_SECRET_KEY }}
-      MINIO_BUCKET: ${{ secrets.MINIO_BUCKET }}
-      TS_AUTHKEY: ${{ secrets.TS_AUTHKEY }}
-      TS_CLIENTID: ${{ secrets.TS_CLIENTID }}
-      TS_CERT_DOMAIN: ${{ secrets.TS_CERT_DOMAIN }}
-      PASSWORD: ${{ secrets.PASSWORD }}
-      MINIO_ROOT_USER: ${{ secrets.MINIO_ROOT_USER }}
-      MINIO_ROOT_PASSWORD: ${{ secrets.MINIO_ROOT_PASSWORD }}
-      TS_CLIENTID1: ${{ secrets.TS_CLIENTID1 }}
-      TS_AUTHKEY1: ${{ secrets.TS_AUTHKEY1 }}
     steps:
     - uses: actions/checkout@v4
+    - name: Print Environment Variables
+      run: |
+        echo "MISTRALAPI_KEY: ${MISTRALAPI_KEY}"
+        echo "CLIENT_KEY: ${CLIENT_KEY}"
+        echo "CLIENT_SECRET: ${CLIENT_SECRET}"
+        echo "AUTH_URL: ${AUTH_URL}"
+        echo "TOKEN_URL: ${TOKEN_URL}"
+        echo "URL_PREFIX: ${URL_PREFIX}"
+        echo "NGROK_AUTH: ${NGROK_AUTH}"
+        echo "CONFIG_FILE: ${CONFIG_FILE}"
+        echo "MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY}"
+        echo "MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}"
+        echo "MINIO_BUCKET: ${MINIO_BUCKET}"
+        echo "TS_AUTHKEY: ${TS_AUTHKEY}"
+        echo "TS_CLIENTID: ${TS_CLIENTID}"
+        echo "TS_CERT_DOMAIN: ${TS_CERT_DOMAIN}"
+        echo "PASSWORD: ${PASSWORD}"
+        echo "MINIO_ROOT_USER: ${MINIO_ROOT_USER}"
+        echo "MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}"
+        echo "TS_CLIENTID1: ${TS_CLIENTID1}"
+        echo "TS_AUTHKEY1: ${TS_AUTHKEY1}"
     - name: Remove Docker Compose
       run: sudo docker compose down
     - name: Build the Docker Compose
       run: sudo docker compose up --build --detach
     - name: Service app-ts Start
       run: sudo docker compose exec app-ts tailscale up
+    - name: Show Tailscale Logs
+      run: sudo docker compose exec app-ts tailscale status
     - name: Funnel Service app-ts Start
       run: sudo docker compose exec app-ts tailscale funnel --bg 5000
     - name: Service minio-ts Start
@@ -46,5 +69,3 @@ jobs:
       run: sudo docker compose exec minio-ts tailscale funnel --https=443 --bg 9000
     - name: Funnel Service minio-ts dashboard Start
       run: sudo docker compose exec minio-ts tailscale funnel --https=8443 --bg 9001
-    
-    
