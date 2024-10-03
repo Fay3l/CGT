@@ -34,7 +34,7 @@ jobs:
     - uses: actions/checkout@v4
     - name: Set up Docker Compose
       run: |
-        sudo chmod +x /usr/local/bin/docker-compose
+        sudo chmod +x /usr/libexec/docker/cli-plugins/docker-compose
         sudo groupadd docker
         sudo usermod -aG docker ubuntu
         newgrp docker
