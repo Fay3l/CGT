@@ -38,7 +38,5 @@ jobs:
       run: docker compose down
     - name: Build the Docker Compose
       run: docker compose up --build --detach
-    - name: Service app-ts Start
-      run: docker container exec app-ts tailscale funnel --bg 5000
     - name: Check App
       run: docker container logs app
