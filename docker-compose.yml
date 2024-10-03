@@ -27,9 +27,6 @@ services:
       - TS_PERMIT_CERT_UID=caddy
     volumes:
       - ${PWD}/Caddyfile:/etc/caddy/Caddyfile
-    ports:
-      - "80:80"
-      - "443:443"
     depends_on:
       - app-ts
     network_mode: service:app-ts
