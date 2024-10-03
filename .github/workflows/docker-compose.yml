@@ -43,9 +43,9 @@ jobs:
     - name: Build the Docker Compose
       run: docker compose up --build --detach
     - name: Service app-ts Start
-      env:
-        TS_AUTHKEY: ${{ secrets.TS_AUTHKEY }}
-      run: docker container exec app-ts tailscale funnel --bg 5000
+      run: |
+        docker container exec app-ts tailscale up
+        docker container exec app-ts tailscale funnel --bg 5000
     - name: Service minio-ts Start
       run: |
         sudo docker container exec -it minio-ts /bin/sh/
