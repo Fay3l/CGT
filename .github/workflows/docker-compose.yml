@@ -41,12 +41,11 @@ jobs:
     - name: Remove Docker Compose
       run: docker compose down
     - name: Build the Docker Compose
-      run: sudo docker compose up --build --detach
+      run: docker compose up --build --detach
     - name: Service app-ts Start
-      run: |
-        sudo docker container exec -it app-ts /bin/sh/ 
-        tailscale funnel --bg 5000
-        exit
+      env:
+        TS_AUTHKEY: ${{ secrets.TS_AUTHKEY }}
+      run: docker container exec app-ts tailscale funnel --bg 5000
     - name: Service minio-ts Start
       run: |
         sudo docker container exec -it minio-ts /bin/sh/
