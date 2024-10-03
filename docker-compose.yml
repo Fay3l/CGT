@@ -19,17 +19,20 @@ services:
       - sys_module
     restart: unless-stopped
   
-  caddy:
-    image: caddy:2.8.4-alpine
-    container_name: caddy
-    restart: unless-stopped
-    environment:
-      - TS_PERMIT_CERT_UID=caddy
-    volumes:
-      - ${PWD}/Caddyfile:/etc/caddy/Caddyfile
-    depends_on:
-      - app-ts
-    network_mode: service:app-ts
+  # caddy:
+  #   image: caddy:2.5-alpine
+  #   container_name: caddy
+  #   restart: unless-stopped
+  #   environment:
+  #     - TS_PERMIT_CERT_UID=caddy
+  #   volumes:
+  #     - ${PWD}/Caddyfile:/etc/caddy/Caddyfile
+  #   depends_on:
+  #     - app-ts
+  #   port:
+  #     - "80:80"
+  #     - "443:443"
+    
 
   app:
     build:
