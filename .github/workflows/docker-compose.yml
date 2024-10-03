@@ -48,7 +48,6 @@ jobs:
         docker container exec app-ts tailscale funnel --bg 5000
     - name: Service minio-ts Start
       run: |
-        sudo docker container exec -it minio-ts /bin/sh/
-        tailscale funnel --https=443 --bg 9000
-        tailscale funnel --https=8443 --bg 9001
-        exit
+        sudo docker container exec minio-ts tailscale up
+        sudo docker container tailscale funnel --https=443 --bg 9000
+        sudo docker container tailscale funnel --https=8443 --bg 9001
