@@ -1,0 +1,4 @@
+app-ts.tail8c4493.ts.net {
+    root * /var/www
+    file_server
+}
