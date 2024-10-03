@@ -22,10 +22,6 @@ env:
   TS_CLIENTID: ${{ secrets.TS_CLIENTID }}
   TS_CERT_DOMAIN: ${{ secrets.TS_CERT_DOMAIN }}
   PASSWORD: ${{ secrets.PASSWORD }}
-  MINIO_ROOT_USER: ${{ secrets.MINIO_ROOT_USER }}
-  MINIO_ROOT_PASSWORD: ${{ secrets.MINIO_ROOT_PASSWORD }}
-  TS_CLIENTID1: ${{ secrets.TS_CLIENTID1 }}
-  TS_AUTHKEY1: ${{ secrets.TS_AUTHKEY1 }}
 
 jobs:
   build:
@@ -46,8 +42,3 @@ jobs:
       run: |
         docker container exec app-ts tailscale up
         docker container exec app-ts tailscale funnel --bg 5000
-    - name: Service minio-ts Start
-      run: |
-        docker container exec minio-ts tailscale up
-        docker container exec minio-ts tailscale funnel --https=443 --bg 9000
-        docker container exec minio-ts tailscale funnel --https=8443 --bg 9001
