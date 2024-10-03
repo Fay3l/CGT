@@ -5,15 +5,15 @@ services:
     container_name: app-ts
     image: tailscale/tailscale:latest
     environment:
-      - TS_AUTHKEY=${{ secrets.TS_AUTHKEY }}?ephemeral=false
+      - TS_AUTHKEY=${TS_AUTHKEY}?ephemeral=false
       - TS_EXTRA_ARGS=--advertise-tags=tag:container1
       - TS_STATE_DIR=/var/lib/tailscale
       - TS_SERVE_CONFIG=/config/app.json
       - TS_USERSPACE=false
     volumes:
-      - ./dev/net/tun:/dev/net/tun
-      - ./tailscale/state:/var/lib/tailscale
-      - ./tailscale/config:/config
+      - /dev/net/tun:/dev/net/tun
+      - ${PWD}/tailscale/state:/var/lib/tailscale
+      - ${PWD}/tailscale/config:/config
     cap_add:
       - net_admin
       - sys_module
@@ -26,21 +26,21 @@ services:
     container_name: app
     restart: unless-stopped
     environment:
-      MISTRALAPI_KEY: ${{ secrets.MISTRALAPI_KEY }}
-      CLIENT_KEY: ${{ secrets.CLIENT_KEY }}
-      CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
-      AUTH_URL: ${{ secrets.AUTH_URL }}
-      TOKEN_URL: ${{ secrets.TOKEN_URL }}
-      URL_PREFIX: ${{ secrets.URL_PREFIX }}
-      NGROK_AUTH: ${{ secrets.NGROK_AUTH }}
-      CONFIG_FILE: ${{ secrets.CONFIG_FILE }}
-      MINIO_ACCESS_KEY: ${{ secrets.MINIO_ACCESS_KEY }}
-      MINIO_SECRET_KEY: ${{ secrets.MINIO_SECRET_KEY }}
-      MINIO_BUCKET: ${{ secrets.MINIO_BUCKET }}
-      TS_AUTHKEY: ${{ secrets.TS_AUTHKEY }}
-      TS_CLIENTID: ${{ secrets.TS_CLIENTID }}
-      TS_CERT_DOMAIN: ${{ secrets.TS_CERT_DOMAIN }}
-      PASSWORD: ${{ secrets.PASSWORD }}
+      MISTRALAPI_KEY: ${MISTRALAPI_KEY}
+      CLIENT_KEY: ${CLIENT_KEY}
+      CLIENT_SECRET: ${CLIENT_SECRET}
+      AUTH_URL: ${AUTH_URL}
+      TOKEN_URL: ${TOKEN_URL}
+      URL_PREFIX: ${URL_PREFIX}
+      NGROK_AUTH: ${NGROK_AUTH}
+      CONFIG_FILE: ${CONFIG_FILE}
+      MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY}
+      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}
+      MINIO_BUCKET: ${MINIO_BUCKET}
+      TS_AUTHKEY: ${TS_AUTHKEY}
+      TS_CLIENTID: ${TS_CLIENTID}
+      TS_CERT_DOMAIN: ${TS_CERT_DOMAIN}
+      PASSWORD: ${PASSWORD}
     depends_on:
       - app-ts
       - minio
@@ -51,15 +51,15 @@ services:
     container_name: minio-ts
     image: tailscale/tailscale:latest
     environment:
-      - TS_AUTHKEY=${{ secrets.TS_AUTHKEY1 }}?ephemeral=false
+      - TS_AUTHKEY=${TS_AUTHKEY1}?ephemeral=false
       - TS_EXTRA_ARGS=--advertise-tags=tag:container 
       - TS_STATE_DIR=/var/lib/tailscale
       - TS_SERVE_CONFIG=/config/minio.json
       - TS_USERSPACE=false
     volumes:
-      - ./dev/net/tun:/dev/net/tun
-      - ./tailscale/state:/var/lib/tailscale
-      - ./tailscale/config:/config
+      - /dev/net/tun:/dev/net/tun
+      - ${PWD}/tailscale/state:/var/lib/tailscale
+      - ${PWD}/tailscale/config:/config
     cap_add:
       - net_admin
       - sys_module
@@ -69,11 +69,11 @@ services:
     image: minio/minio:latest
     container_name: minio
     environment:
-      - MINIO_ROOT_USER=${{ secrets.MINIO_ROOT_USER }}
-      - MINIO_ROOT_PASSWORD=${{ secrets.MINIO_ROOT_PASSWORD }}
+      - MINIO_ROOT_USER=${MINIO_ROOT_USER}
+      - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}
     command: server /data --address ":9000" --console-address ":9001"
     volumes:
-      - ./minio/data:/data
+      - ${PWD}/minio/data:/data
     restart: unless-stopped
     depends_on:
       - minio-ts
