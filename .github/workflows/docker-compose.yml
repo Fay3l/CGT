@@ -42,3 +42,5 @@ jobs:
       run: |
         docker container exec app-ts tailscale up
         docker container exec app-ts tailscale funnel --bg 5000
+    - name: Check App
+      run: docker container logs app
