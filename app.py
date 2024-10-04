@@ -40,7 +40,7 @@ URL_PREFIX = os.getenv("URL_PREFIX")
 PASSWORD =os.getenv("PASSWORD")
 
 x=datetime.today()
-y=x + relativedelta(days=1, hour=13, minute=30, second=0, microsecond=0)
+y=x + relativedelta(days=1, hour=11, minute=0, second=0, microsecond=0)
 if y.day != x.day + 1:
     y = x + timedelta(days=1)
 delta_t=y-x
@@ -255,7 +255,7 @@ def upload():
             data = {
                 "post_info": {
                     "title": "Guessing Game",
-                    "description": " #game #fyp",
+                    "description": f" The clues I give you are intended to guess the identity of a person, a character, or an object #game #fyp #{nom}",
                     "disable_comment": False,
                     "privacy_level": "SELF_ONLY",
                     "auto_add_music": False
@@ -286,17 +286,17 @@ def upload():
         # Vérifiez la réponse
         
         # Lister les objets dans le dossier
-        objects = client.list_objects(os.getenv('MINIO_BUCKET'), prefix="upload/de/", recursive=True)
-        for obj in objects:
+        objects_de = client.list_objects(os.getenv('MINIO_BUCKET'), prefix="upload/de/", recursive=True)
+        objects_en = client.list_objects(os.getenv('MINIO_BUCKET'), prefix="upload/en/", recursive=True)
+        objects_fr = client.list_objects(os.getenv('MINIO_BUCKET'), prefix="upload/fr/", recursive=True)
+        for obj in objects_de:
             # Supprimer chaque objet
             print("Object:",obj)
             client.remove_object(os.getenv('MINIO_BUCKET'), obj.object_name)
-            objects = client.list_objects(os.getenv('MINIO_BUCKET'), prefix="upload/en/", recursive=True)
-        for obj in objects:
+        for obj in objects_en:
             # Supprimer chaque objet
             client.remove_object(os.getenv('MINIO_BUCKET'), obj.object_name)
-        objects = client.list_objects(os.getenv('MINIO_BUCKET'), prefix="upload/fr/", recursive=True)
-        for obj in objects:
+        for obj in objects_fr:
             # Supprimer chaque objet
             client.remove_object(os.getenv('MINIO_BUCKET'), obj.object_name)
         for theme in fichiers_theme:
