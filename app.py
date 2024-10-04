@@ -278,17 +278,15 @@ def upload():
             if response.status_code == 200:
                 response_data = response.json()
                 print(response_data)
-                if noms_de_dossiers.__len__ == i:
-                    break
             else:
                 return response.text,response.status_code
 
         # Vérifiez la réponse
         
         # Lister les objets dans le dossier
-        objects_de = client.list_objects(os.getenv('MINIO_BUCKET'), prefix="upload/de/", recursive=True)
-        objects_en = client.list_objects(os.getenv('MINIO_BUCKET'), prefix="upload/en/", recursive=True)
-        objects_fr = client.list_objects(os.getenv('MINIO_BUCKET'), prefix="upload/fr/", recursive=True)
+        objects_de = client.list_objects(os.getenv('MINIO_BUCKET'), prefix="upload/de/")
+        objects_en = client.list_objects(os.getenv('MINIO_BUCKET'), prefix="upload/en/")
+        objects_fr = client.list_objects(os.getenv('MINIO_BUCKET'), prefix="upload/fr/")
         for obj in objects_de:
             # Supprimer chaque objet
             print("Object:",obj)
