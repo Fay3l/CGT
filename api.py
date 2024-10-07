@@ -19,7 +19,7 @@ import random
 
 # Fonction pour choisir une valeur aléatoire parmi les membres de l'énumération
 def choisir_profession_aleatoire():
-    themes = ["un_sportif","une_personne_historique","une_sportive","une_personne_de_film","une_personne_de_manga"]
+    themes = ["un_sportif","une_personne_historique","une_sportive","un_personnage_de_fiction","un_personnage_de_manga"]
     return Theme(random.choice(themes))
 
 def create_template_clues(content: ContentData, theme: str):
@@ -114,7 +114,7 @@ def create_template_clues(content: ContentData, theme: str):
         theme_sport = Image.open(f"./template/{content.language}/theme_sport_{content.language}.jpg")
         theme_sport.save(f"./upload/{content.language}/theme_sport_{content.language}.jpg")
 
-    if "film" in theme.name:
+    if "fiction" in theme.name:
         theme_film = Image.open(f"./template/{content.language}/theme_film_{content.language}.jpg")
         theme_film.save(f"./upload/{content.language}/theme_film_{content.language}.jpg")
 
@@ -170,7 +170,7 @@ def new_templates():
         print(f"Theme choisi aléatoirement : {theme_aleatoire.name.replace('_',' ')}")
 
         while True:
-            difficulté = ["connu","peu connu","moins connu"]
+            difficulté = ["célèbre","peu connu"]
             difficulté_choisie = random.choice(difficulté)
             print(f"Difficulté choisi aléatoirement : {difficulté_choisie}")
             chat_response = client.chat.complete(
@@ -178,7 +178,7 @@ def new_templates():
                 messages=[
                     {
                         "role": "user",
-                        "content": f"Faire un jeu 'Qui suis-je?' sur {theme_aleatoire.name.replace('_',' ')} {difficulté_choisie} avec 5 indices numérotés en francais,en anglais et en allemand.La réponse est son prénom et son nom. La réponse en JSON avec ce format:" +
+                        "content": f"Faire le jeu 'Qui suis-je?' sur {theme_aleatoire.name.replace('_',' ')} {difficulté_choisie} avec 5 indices en francais,en anglais et en allemand. La réponse doit être son prénom et son nom de famille. Mettre le résultat en JSON avec ce format:" +
                         """{
                             "reponse": {
                             "french":"",
@@ -257,6 +257,3 @@ def new_templates():
                 return True
     except:
         return False
-
-
-new_templates()

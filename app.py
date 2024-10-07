@@ -1,5 +1,5 @@
 import json
-import subprocess
+import time
 from flask import Flask, request, redirect, render_template
 import requests
 import os
@@ -9,12 +9,14 @@ import random
 from flask_cors import CORS
 from dotenv import load_dotenv
 from pathlib import Path
+# from api import new_templates
 from api import new_templates
 from classes import State
 from minio import Minio, S3Error
-from datetime import datetime, timedelta
-from threading import Timer
-from dateutil.relativedelta import relativedelta
+from flask_apscheduler import APScheduler
+class Config:
+    SCHEDULER_API_ENABLED = True
+    
 
 
 client = Minio(endpoint="minio-ts.tail8c4493.ts.net",
@@ -27,38 +29,38 @@ load_dotenv()
 
 logging.basicConfig(level=logging.INFO)
 app = Flask(__name__)
+app.config.from_object(Config())
 app.secret_key = os.urandom(24)
 CORS(app)
+scheduler = APScheduler()
+scheduler.init_app(app)
+scheduler.start()
 state_code = State('','')
 CLIENT_KEY = os.getenv('CLIENT_KEY')
 CLIENT_SECRET = os.getenv('CLIENT_SECRET')
-REDIRECT_URI = "https://app-ts1.tail8c4493.ts.net/callback/"
+# "https://app-ts1.tail8c4493.ts.net/callback/"
+REDIRECT_URI = f"{os.getenv('URL')}/callback/"
 AUTH_URL = os.getenv('AUTH_URL')
 TOKEN_URL = os.getenv('TOKEN_URL')
 CONFIG_FILE = os.getenv('CONFIG_FILE')
 URL_PREFIX = os.getenv("URL_PREFIX")
 PASSWORD =os.getenv("PASSWORD")
+UPLOAD_URL = f'{os.getenv("URL")}/upload'
 
-x=datetime.today()
-y=x + relativedelta(days=1, hour=11, minute=0, second=0, microsecond=0)
-if y.day != x.day + 1:
-    y = x + timedelta(days=1)
-delta_t=y-x
-
-secs=delta_t.seconds+1
-
-def run_app_py():
+def send_request():
     try:
         new_templates()
-        print("process")
-        url = requests.get('https://app-ts1.tail8c4493.ts.net/upload')
-        return url.status_code
-    except:
-        return 500
-    
-def hello():
-    print("Hello world !!!")
+        response = requests.get("http://localhost:5000/upload")
+        if response.status_code == 200:
+            print("Requête réussie")
+        else:
+            print(f"Erreur lors de la requête: {response.text} {response.status_code} ")
+    except Exception as e:
+        print(f"Exception lors de la fonction send_request(): {e} ")
 
+# Configuration du job pour qu'il s'exécute tous les jours à une heure spécifique
+scheduler.add_job(id='send_request_job', func=send_request, trigger='cron', day_of_week='mon-sun', hour=9, minute=0)
+    
 def generate_random_string(length):
     characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~' 
     return ''.join(random.choice(characters) for _ in range(length))
@@ -92,8 +94,12 @@ def supprimer_fichiers(list_fichiers):
             print(f"Erreur lors de la suppression de {fichier} : {e}")
 
 @app.route('/')
+def hello():
+    return '<h1>Api Flask</h1>'
+
+@app.route('/login')
 def index():
-    return '<a href="/auth">Login with TikTok</a>'
+    return '<a id="login" href="/auth">Login with TikTok</a>'
 
 @app.route('/terms-of-service')
 def terms_of_service():
@@ -111,8 +117,8 @@ def create(password):
             return 200
         else:
             return 401
-    except :
-        return "Error", 500
+    except Exception as e:
+        return f"Error {e}", 500
 
 @app.route('/auth')
 def login():
@@ -122,7 +128,7 @@ def login():
     csrf_state = generate_random_string(30)
     state_code.csrf_state = csrf_state
     # Desktop mode &code_challenge={code_challenge}&code_challenge_method=S256
-    auth_url = f'{AUTH_URL}?client_key={CLIENT_KEY}&scope=user.info.basic,video.publish&response_type=code&redirect_uri={REDIRECT_URI}&state={csrf_state}'
+    auth_url = f'{AUTH_URL}?client_key={CLIENT_KEY}&scope=user.info.basic,video.publish&response_type=code&redirect_uri={REDIRECT_URI}&state={csrf_state}&code_challenge={code_challenge}&code_challenge_method=S256'
     return redirect(auth_url)
 
 @app.route('/callback/')
@@ -255,7 +261,7 @@ def upload():
             data = {
                 "post_info": {
                     "title": "Guessing Game",
-                    "description": f" The clues I give you are intended to guess the identity of a person, a character, or an object #game #fyp #{nom}",
+                    "description": f" #game #fyp #{nom}",
                     "disable_comment": False,
                     "privacy_level": "SELF_ONLY",
                     "auto_add_music": False
@@ -271,41 +277,46 @@ def upload():
 
             # Convertir les données en JSON
             json_data = json.dumps(data)
-
+            print(photos_data)
             # Effectuer la requête POST
             response = requests.post(url, headers=headers, data=json_data)
 
             if response.status_code == 200:
                 response_data = response.json()
                 print(response_data)
+                time.sleep(5)
             else:
                 return response.text,response.status_code
 
         # Vérifiez la réponse
         
         # Lister les objets dans le dossier
-        objects_de = client.list_objects(os.getenv('MINIO_BUCKET'), prefix="upload/de/")
-        objects_en = client.list_objects(os.getenv('MINIO_BUCKET'), prefix="upload/en/")
-        objects_fr = client.list_objects(os.getenv('MINIO_BUCKET'), prefix="upload/fr/")
+        objects_de = client.list_objects(os.getenv('MINIO_BUCKET'), prefix="upload/de/",recursive=True)
+        objects_en = client.list_objects(os.getenv('MINIO_BUCKET'), prefix="upload/en/",recursive=True)
+        objects_fr = client.list_objects(os.getenv('MINIO_BUCKET'), prefix="upload/fr/",recursive=True)
         for obj in objects_de:
             # Supprimer chaque objet
             print("Object:",obj)
             client.remove_object(os.getenv('MINIO_BUCKET'), obj.object_name)
+        time.sleep(2)
         for obj in objects_en:
             # Supprimer chaque objet
             client.remove_object(os.getenv('MINIO_BUCKET'), obj.object_name)
+        time.sleep(2)
         for obj in objects_fr:
             # Supprimer chaque objet
             client.remove_object(os.getenv('MINIO_BUCKET'), obj.object_name)
+        time.sleep(2)
         for theme in fichiers_theme:
             client.remove_object(os.getenv('MINIO_BUCKET'), theme.__str__())
+        time.sleep(2)
         print(f"Le dossier upload a été supprimé avec succès.")
         supprimer_fichiers(fichiers_clue)
         supprimer_fichiers(fichiers_response)
         supprimer_fichiers(fichiers_theme)
         return 'Uploaded Successfully', 200
-    except:
-        return 'Except Upload Error', 500
+    except Exception as e :
+        return f'Except Upload Error {e}', 500
 
 # URL Prefix à vérifier
 
@@ -323,11 +334,5 @@ def init_download(filename):
 
 
 if __name__ == '__main__':
-    try:
-        t = Timer(secs, run_app_py)
-        t.start()
-        print('run app ...')
-        app.run(host='0.0.0.0', port=5000, debug=True)
-    except KeyboardInterrupt:
-        t.cancel()
+    app.run(host='0.0.0.0', port=5000, debug=True)
         
