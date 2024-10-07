@@ -59,7 +59,7 @@ def send_request():
         print(f"Exception lors de la fonction send_request(): {e} ")
 
 # Configuration du job pour qu'il s'exécute tous les jours à une heure spécifique
-scheduler.add_job(id='send_request_job', func=send_request, trigger='cron', day_of_week='mon-sun', hour=9, minute=0)
+scheduler.add_job(id='send_request_job', func=send_request, trigger='cron', day_of_week='mon-sun', hour=11, minute=0)
     
 def generate_random_string(length):
     characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~' 
@@ -263,7 +263,7 @@ def upload():
                     "title": "Guessing Game",
                     "description": f" #game #fyp #{nom}",
                     "disable_comment": False,
-                    "privacy_level": "SELF_ONLY",
+                    "privacy_level": "PUBLIC_TO_EVERYONE",
                     "auto_add_music": False
                 },
                 "source_info": {
