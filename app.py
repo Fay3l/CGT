@@ -114,9 +114,9 @@ def create(password):
     try:
         if password == PASSWORD:
             new_templates()
-            return 200
+            return 'Success',200
         else:
-            return 401
+            return 'Error',401
     except Exception as e:
         return f"Error {e}", 500
 

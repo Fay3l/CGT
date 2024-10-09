@@ -8,5 +8,10 @@
         "id": 2,
         "reponse": "Penny Hardaway",
         "theme": "un_sportif"
+    },
+    {
+        "id": 3,
+        "reponse": "Edgar Allan Poe",
+        "theme": "une_personne_historique"
     }
 ]
