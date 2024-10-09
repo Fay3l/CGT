@@ -1,0 +1,198 @@
+1. Jules César
+2. Alexandre le Grand
+3. Napoléon Bonaparte
+4. Abraham Lincoln
+5. Mahatma Gandhi
+6. Martin Luther King Jr.
+7. Albert Einstein
+8. Isaac Newton
+9. Galileo Galilei
+10. Charles Darwin
+11. Marie Curie
+12. Léonard de Vinci
+13. William Shakespeare
+14. Wolfgang Amadeus Mozart
+15. Ludwig van Beethoven
+16. Vincent van Gogh
+17. Pablo Picasso
+18. Michel-Ange
+19. Johannes Gutenberg
+20. Nikola Tesla
+21. Thomas Edison
+22. Benjamin Franklin
+23. George Washington
+24. Thomas Jefferson
+25. Winston Churchill
+26. Franklin D. Roosevelt
+27. Nelson Mandela
+28. Rosa Parks
+29. Malcolm X
+30. Che Guevara
+31. Fidel Castro
+32. Mao Zedong
+35. Benito Mussolini
+36. Vladimir Lénine
+37. Karl Marx
+38. Friedrich Engels
+39. Sigmund Freud
+40. Carl Jung
+41. Jean-Jacques Rousseau
+42. Voltaire
+43. René Descartes
+44. Immanuel Kant
+45. Friedrich Nietzsche
+46. Platon
+47. Aristote
+48. Socrate
+49. Confucius
+50. Lao Tseu
+51. Bouddha
+52. Jésus-Christ
+53. Moïse
+54. Mahomet
+55. Jeanne d'Arc
+56. Christophe Colomb
+57. Vasco de Gama
+58. Ferdinand Magellan
+59. Marco Polo
+60. Amelia Earhart
+61. Neil Armstrong
+62. Yuri Gagarin
+63. Charles Lindbergh
+64. Louis Pasteur
+65. Alexander Fleming
+66. Jonas Salk
+67. Marie Curie
+68. Albert Schweitzer
+69. Florence Nightingale
+70. Clara Barton
+71. Louis Braille
+72. Helen Keller
+73. Anne Frank
+74. Harriet Tubman
+75. Sojourner Truth
+76. Susan B. Anthony
+77. Elizabeth Cady Stanton
+78. Emmeline Pankhurst
+79. Simone de Beauvoir
+80. Gloria Steinem
+81. Betty Friedan
+82. Angela Davis
+83. Malala Yousafzai
+84. Aung San Suu Kyi
+85. Indira Gandhi
+86. Golda Meir
+87. Margaret Thatcher
+88. Angela Merkel
+89. Hillary Clinton
+90. Eleanor Roosevelt
+91. Jacqueline Kennedy Onassis
+92. Marilyn Monroe
+93. Audrey Hepburn
+94. Grace Kelly
+95. Coco Chanel
+96. Yves Saint Laurent
+97. Christian Dior
+98. Karl Lagerfeld
+99. Andy Warhol
+100. Salvador Dalí
+101. Frida Kahlo
+102. Georgia O'Keeffe
+103. Pablo Neruda
+104. Gabriel García Márquez
+105. Ernest Hemingway
+106. F. Scott Fitzgerald
+107. Mark Twain
+108. Edgar Allan Poe
+109. Herman Melville
+110. Emily Dickinson
+111. Jane Austen
+112. Charlotte Brontë
+113. Emily Brontë
+114. Virginia Woolf
+115. George Orwell
+116. Aldous Huxley
+117. Franz Kafka
+118. Fyodor Dostoevsky
+119. Leo Tolstoy
+120. Anton Chekhov
+121. Victor Hugo
+122. Honoré de Balzac
+123. Gustave Flaubert
+124. Émile Zola
+125. Guy de Maupassant
+126. Marcel Proust
+127. Jean-Paul Sartre
+128. Simone de Beauvoir
+129. Albert Camus
+130. Samuel Beckett
+131. James Joyce
+132. T.S. Eliot
+133. Ezra Pound
+134. William Faulkner
+135. John Steinbeck
+136. Harper Lee
+137. Toni Morrison
+138. Maya Angelou
+139. Langston Hughes
+140. Zora Neale Hurston
+141. Ralph Waldo Emerson
+142. Henry David Thoreau
+143. Walt Whitman
+144. Emily Dickinson
+145. Edgar Allan Poe
+146. Herman Melville
+147. Mark Twain
+148. Nathaniel Hawthorne
+149. Henry James
+150. F. Scott Fitzgerald
+151. Ernest Hemingway
+152. William Faulkner
+153. John Steinbeck
+154. Harper Lee
+155. Toni Morrison
+156. Maya Angelou
+157. Langston Hughes
+158. Zora Neale Hurston
+159. Ralph Waldo Emerson
+160. Henry David Thoreau
+161. Walt Whitman
+162. Emily Dickinson
+163. Edgar Allan Poe
+164. Herman Melville
+165. Mark Twain
+166. Nathaniel Hawthorne
+167. Henry James
+168. F. Scott Fitzgerald
+169. Ernest Hemingway
+170. William Faulkner
+171. John Steinbeck
+172. Harper Lee
+173. Toni Morrison
+174. Maya Angelou
+175. Langston Hughes
+176. Zora Neale Hurston
+177. Ralph Waldo Emerson
+178. Henry David Thoreau
+179. Walt Whitman
+180. Emily Dickinson
+181. Edgar Allan Poe
+182. Herman Melville
+183. Mark Twain
+184. Nathaniel Hawthorne
+185. Henry James
+186. F. Scott Fitzgerald
+187. Ernest Hemingway
+188. William Faulkner
+189. John Steinbeck
+190. Harper Lee
+191. Toni Morrison
+192. Maya Angelou
+193. Langston Hughes
+194. Zora Neale Hurston
+195. Ralph Waldo Emerson
+196. Henry David Thoreau
+197. Walt Whitman
+198. Emily Dickinson
+199. Edgar Allan Poe
+200. Herman Melville

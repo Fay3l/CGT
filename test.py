@@ -60,52 +60,74 @@ import os
 # url = client.presigned_get_object("mybucket", "téléchargement.png")
 # print(url)
 
-from pathlib import Path
+# from pathlib import Path
 
-# Chemin de base où se trouvent les dossiers
-chemin = Path('./upload')
+# # Chemin de base où se trouvent les dossiers
+# chemin = Path('./upload')
 
-# Liste des noms de dossiers
-noms_de_dossiers = [element.name for element in chemin.iterdir() if element.is_dir()]
+# # Liste des noms de dossiers
+# noms_de_dossiers = [element.name for element in chemin.iterdir() if element.is_dir()]
 
-# Listes pour stocker les chemins des fichiers trouvés
-fichiers_theme = []
-fichiers_clue = []
-fichiers_response = []
+# # Listes pour stocker les chemins des fichiers trouvés
+# fichiers_theme = []
+# fichiers_clue = []
+# fichiers_response = []
 
-# Fonction récursive pour rechercher les fichiers dont le nom commence par "theme", "Clue" ou "Response"
-def rechercher_fichiers(dossier):
-    for element in dossier.iterdir():
-        if element.is_dir():
-            # Si c'est un dossier, appeler récursivement la fonction
-            print(element.name)
-            rechercher_fichiers(element)
-        elif element.name.startswith('theme'):
-            fichiers_theme.append(element)
-        elif element.name.startswith('Clue'):
-            fichiers_clue.append(element)
-        elif element.name.startswith('Response'):
-            fichiers_response.append(element)
+# # Fonction récursive pour rechercher les fichiers dont le nom commence par "theme", "Clue" ou "Response"
+# def rechercher_fichiers(dossier):
+#     for element in dossier.iterdir():
+#         if element.is_dir():
+#             # Si c'est un dossier, appeler récursivement la fonction
+#             print(element.name)
+#             rechercher_fichiers(element)
+#         elif element.name.startswith('theme'):
+#             fichiers_theme.append(element)
+#         elif element.name.startswith('Clue'):
+#             fichiers_clue.append(element)
+#         elif element.name.startswith('Response'):
+#             fichiers_response.append(element)
 
-# Appeler la fonction récursive sur le chemin de base
-rechercher_fichiers(chemin)
+# # Appeler la fonction récursive sur le chemin de base
+# rechercher_fichiers(chemin)
 
-# Afficher les chemins des fichiers trouvés
-print("Fichiers commençant par 'theme':")
-for fichier in fichiers_theme:
-    print(fichier)
-print(fichiers_theme)
+# # Afficher les chemins des fichiers trouvés
+# print("Fichiers commençant par 'theme':")
+# for fichier in fichiers_theme:
+#     print(fichier)
+# print(fichiers_theme)
 
-print("\nFichiers commençant par 'Clue':")
-for fichier in fichiers_clue:
-    print(fichier)
-print(fichiers_clue)
+# print("\nFichiers commençant par 'Clue':")
+# for fichier in fichiers_clue:
+#     print(fichier)
+# print(fichiers_clue)
 
-print("\nFichiers commençant par 'Response':")
-for fichier in fichiers_response:
-    if "de" in fichier.__str__():
-        print(fichier)
-print(fichiers_response)
+# print("\nFichiers commençant par 'Response':")
+# for fichier in fichiers_response:
+#     if "de" in fichier.__str__():
+#         print(fichier)
+# print(fichiers_response)
 
-print("\nNoms des dossiers:")
-print(noms_de_dossiers)
+# print("\nNoms des dossiers:")
+# print(noms_de_dossiers)
+
+import random
+
+def lire_fichier(nom_fichier):
+    with open(nom_fichier, 'r', encoding='utf-8') as fichier:
+        lignes = fichier.readlines()
+    return lignes
+
+def choisir_personne(lignes):
+    # Supprimer la première ligne qui contient le titre
+    lignes = lignes[1:]
+    # Supprimer les lignes vides et les numéros de ligne
+    sportifs = [ligne.split('. ')[1].strip() for ligne in lignes if ligne.strip()]
+    return random.choice(sportifs)
+
+def main():
+    nom_fichier = 'list/historiques.txt'
+    lignes = lire_fichier(nom_fichier)
+    personne_choisi = choisir_personne(lignes)
+    print(f"Le sportif choisi est : {personne_choisi}")
+    
+main()

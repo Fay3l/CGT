@@ -19,8 +19,20 @@ import random
 
 # Fonction pour choisir une valeur aléatoire parmi les membres de l'énumération
 def choisir_profession_aleatoire():
-    themes = ["un_sportif","une_personne_historique","une_sportive","un_personnage_de_fiction","un_personnage_de_manga"]
+    themes = ["un_sportif","une_personne_historique","un_personnage_de_fiction","un_personnage_de_manga"]
     return Theme(random.choice(themes))
+
+def lire_fichier(nom_fichier):
+    with open(nom_fichier, 'r', encoding='utf-8') as fichier:
+        lignes = fichier.readlines()
+    return lignes
+
+def choisir_personne(lignes):
+    # Supprimer la première ligne qui contient le titre
+    # lignes = lignes[1:]
+    # Supprimer les lignes vides et les numéros de ligne
+    sportifs = [ligne.split('. ')[1].strip() for ligne in lignes if ligne.strip()]
+    return random.choice(sportifs)
 
 def create_template_clues(content: ContentData, theme: str):
     # Créer les images vierges
@@ -168,17 +180,33 @@ def new_templates():
     try:
         theme_aleatoire = choisir_profession_aleatoire()
         print(f"Theme choisi aléatoirement : {theme_aleatoire.name.replace('_',' ')}")
+        match theme_aleatoire:
+            case Theme("un_sportif"):
+                nom_fichier = 'list/sportifs.txt'
+                lignes = lire_fichier(nom_fichier)
+                personne_choisi = choisir_personne(lignes)
+            case Theme("une_personne_historique"):
+                nom_fichier = 'list/historiques.txt'
+                lignes = lire_fichier(nom_fichier)
+                personne_choisi = choisir_personne(lignes)
+            case Theme("un_personnage_de_manga"):
+                nom_fichier = 'list/manga.txt'
+                lignes = lire_fichier(nom_fichier)
+                personne_choisi = choisir_personne(lignes)
+            case Theme("un_personnage_de_fiction"):
+                nom_fichier = 'list/film.txt'
+                lignes = lire_fichier(nom_fichier)
+                personne_choisi = choisir_personne(lignes)
+            
 
         while True:
-            difficulté = ["célèbre","peu connu"]
-            difficulté_choisie = random.choice(difficulté)
-            print(f"Difficulté choisi aléatoirement : {difficulté_choisie}")
+            print(f"Personnage choisi aléatoirement : {personne_choisi}")
             chat_response = client.chat.complete(
                 model=model,
                 messages=[
                     {
                         "role": "user",
-                        "content": f"Faire le jeu 'Qui suis-je?' sur {theme_aleatoire.name.replace('_',' ')} {difficulté_choisie} avec 5 indices en francais,en anglais et en allemand. La réponse doit être son prénom et son nom de famille. Mettre le résultat en JSON avec ce format:" +
+                        "content": f"Faire le jeu 'Qui suis-je?' sur {personne_choisi} avec 5 indices en francais,en anglais et en allemand. La réponse doit être son prénom et son nom de famille. Mettre le résultat en JSON avec ce format:" +
                         """{
                             "reponse": {
                             "french":"",
@@ -257,3 +285,4 @@ def new_templates():
                 return True
     except:
         return False
+

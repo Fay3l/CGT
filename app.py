@@ -59,7 +59,7 @@ def send_request():
         print(f"Exception lors de la fonction send_request(): {e} ")
 
 # Configuration du job pour qu'il s'exécute tous les jours à une heure spécifique
-scheduler.add_job(id='send_request_job', func=send_request, trigger='cron', day_of_week='mon-sun', hour=11, minute=0)
+scheduler.add_job(id='send_request_job', func=send_request, trigger='cron', day_of_week='mon-sun', hour=11, minute=20)
     
 def generate_random_string(length):
     characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~' 
@@ -128,7 +128,7 @@ def login():
     csrf_state = generate_random_string(30)
     state_code.csrf_state = csrf_state
     # Desktop mode &code_challenge={code_challenge}&code_challenge_method=S256
-    auth_url = f'{AUTH_URL}?client_key={CLIENT_KEY}&scope=user.info.basic,video.publish&response_type=code&redirect_uri={REDIRECT_URI}&state={csrf_state}&code_challenge={code_challenge}&code_challenge_method=S256'
+    auth_url = f'{AUTH_URL}?client_key={CLIENT_KEY}&scope=user.info.basic,video.upload,video.publish&response_type=code&redirect_uri={REDIRECT_URI}&state={csrf_state}&code_challenge={code_challenge}&code_challenge_method=S256'
     return redirect(auth_url)
 
 @app.route('/callback/')
@@ -262,16 +262,13 @@ def upload():
                 "post_info": {
                     "title": "Guessing Game",
                     "description": f" #game #fyp #{nom}",
-                    "disable_comment": False,
-                    "privacy_level": "PUBLIC_TO_EVERYONE",
-                    "auto_add_music": False
                 },
                 "source_info": {
                     "source": "PULL_FROM_URL",
                     "photo_cover_index": 0,
                     "photo_images": photos_data
                 },
-                "post_mode": "DIRECT_POST",
+                "post_mode": "MEDIA_UPLOAD",
                 "media_type": "PHOTO"
             }
 
