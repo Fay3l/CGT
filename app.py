@@ -50,7 +50,7 @@ UPLOAD_URL = f'{os.getenv("URL")}/upload'
 def send_request():
     try:
         new_templates()
-        response = requests.get("http://localhost:5000/upload")
+        response = requests.get("http://localhost:5000/upload",timeout=None)
         if response.status_code == 200:
             print("Requête réussie")
         else:
@@ -59,7 +59,7 @@ def send_request():
         print(f"Exception lors de la fonction send_request(): {e} ")
 
 # Configuration du job pour qu'il s'exécute tous les jours à une heure spécifique
-scheduler.add_job(id='send_request_job', func=send_request, trigger='cron', day_of_week='mon-sun', hour=11, minute=20)
+scheduler.add_job(id='send_request_job', func=send_request, trigger='cron', day_of_week='mon-sun', hour=15, minute=32)
     
 def generate_random_string(length):
     characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~' 
@@ -280,8 +280,34 @@ def upload():
 
             if response.status_code == 200:
                 response_data = response.json()
+                get_data = response_data['data']
+                print(get_data)
+                publish_id = get_data['publish_id']
+                print(publish_id)
                 print(response_data)
-                time.sleep(5)
+                
+                # Vérifier l'état de l'upload
+                status_url = 'https://open.tiktokapis.com/v2/post/publish/status/fetch/'
+                
+                status_data = {
+                    "publish_id": publish_id
+                }
+                status_json_data = json.dumps(status_data)
+                print(f'status xxxxx data ----- {status_data} ')
+                while True:
+                    status_response = requests.post(status_url, headers=headers, data=status_json_data)
+                    status_response_data = status_response.json()
+                    print(status_response_data)
+                    status = status_response_data['data']['status']
+                    if status == 'SUCCESS' or status == 'SEND_TO_USER_INBOX':
+                        print("Upload completed successfully.")
+                        break
+                    elif status == 'FAILED':
+                        print("Upload failed.")
+                        return "Upload failed.", 500
+                    else:
+                        print("Upload in progress. Waiting...")
+                        time.sleep(5)  # Attendre 60 secondes avant de vérifier à nouveau
             else:
                 return response.text,response.status_code
 

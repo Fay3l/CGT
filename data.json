@@ -1,17 +1,12 @@
 [
     {
         "id": 1,
-        "reponse": "Nunnally Lamperouge",
-        "theme": "un_personnage_de_manga"
-    },
-    {
-        "id": 2,
-        "reponse": "Penny Hardaway",
+        "reponse": "Clyde Drexler",
         "theme": "un_sportif"
     },
     {
-        "id": 3,
-        "reponse": "Edgar Allan Poe",
-        "theme": "une_personne_historique"
+        "id": 2,
+        "reponse": "Shawn Kemp-Carrington",
+        "theme": "un_sportif"
     }
 ]
