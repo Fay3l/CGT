@@ -119,12 +119,10 @@ def privacy_policy():
 @basic_auth.required
 def create():
     try:
-        if new_templates():
-            return 'Success',200
-        else:
-            return 'Error',401
+        new_templates()
+        return 'Success',200
     except Exception as e:
-        return f"Error {e}", 500
+        return f"Error {e}", 401
 
 @app.route('/auth')
 def login():
