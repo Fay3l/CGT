@@ -42,7 +42,6 @@ scheduler.start()
 state_code = State('','')
 CLIENT_KEY = os.getenv('CLIENT_KEY')
 CLIENT_SECRET = os.getenv('CLIENT_SECRET')
-# "https://app-ts1.tail8c4493.ts.net/callback/"
 REDIRECT_URI = f"{os.getenv('URL')}/callback/"
 AUTH_URL = os.getenv('AUTH_URL')
 TOKEN_URL = os.getenv('TOKEN_URL')
@@ -206,7 +205,7 @@ def upload():
         rechercher_fichiers(chemin,fichiers_theme,fichiers_clue,fichiers_response)
         # affichez la liste des noms de dossiers
         for i, nom in enumerate(noms_de_dossiers, start=1):
-            print(f"{i}: {nom}")
+            logging.info(f"{i}: {nom}")
             if(nom == "fr"):
                 for fichier in fichiers_theme:
                     if "fr" in fichier.__str__():
@@ -287,7 +286,7 @@ def upload():
                 get_data = response_data['data']
                 print(get_data)
                 publish_id = get_data['publish_id']
-                print(publish_id)
+                logging.info(publish_id)
                 print(response_data)
                 
                 # Vérifier l'état de l'upload
@@ -305,13 +304,16 @@ def upload():
                     status = status_response_data['data']['status']
                     logging.info(status)
                     if status == 'PUBLISH_COMPLETE':
-                        print("Upload completed successfully.")
+                        logging.info("Upload completed successfully.")
+                        break
+                    elif status == 'SEND_TO_USER_INBOX':
+                        logging.info("Upload send user inbox.")
                         break
                     elif status == 'FAILED':
-                        print("Upload failed.")
+                        logging.info("Upload failed.")
                         return "Upload failed.", 500
                     else:
-                        print("Upload in progress. Waiting...")
+                        logging.info("Upload in progress. Waiting...")
                         time.sleep(5)  # Attendre 60 secondes avant de vérifier à nouveau
             else:
                 return response.text,response.status_code
