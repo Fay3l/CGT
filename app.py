@@ -4,7 +4,6 @@ from flask import Flask, request, redirect, render_template
 import requests
 import os
 import hashlib
-import logging
 import random
 from flask_cors import CORS
 from dotenv import load_dotenv
@@ -15,6 +14,7 @@ from classes import State
 from minio import Minio, S3Error
 from flask_apscheduler import APScheduler
 from flask_basicauth import BasicAuth
+import logging
 class Config:
     SCHEDULER_API_ENABLED = True
     
@@ -54,7 +54,7 @@ UPLOAD_URL = f'{os.getenv("URL")}/upload'
 def send_request():
     try:
         new_templates()
-        response = requests.get("https://app-ts1.tail8c4493.ts.net/upload")
+        response = requests.get("https://app-ts1.tail8c4493.ts.net/upload",timeout=None)
         if response.status_code == 200:
             print("Requête réussie")
         else:
@@ -305,7 +305,8 @@ def upload():
                     status_response_data = status_response.json()
                     print(status_response_data)
                     status = status_response_data['data']['status']
-                    if status == 'SUCCESS' or status == 'SEND_TO_USER_INBOX':
+                    logging.info(status)
+                    if status == 'PUBLISH_COMPLETE':
                         print("Upload completed successfully.")
                         break
                     elif status == 'FAILED':
