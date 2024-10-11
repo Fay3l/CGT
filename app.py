@@ -14,6 +14,7 @@ from api import new_templates
 from classes import State
 from minio import Minio, S3Error
 from flask_apscheduler import APScheduler
+from flask_basicauth import BasicAuth
 class Config:
     SCHEDULER_API_ENABLED = True
     
@@ -30,8 +31,11 @@ load_dotenv()
 logging.basicConfig(level=logging.INFO)
 app = Flask(__name__)
 app.config.from_object(Config())
+app.config['BASIC_AUTH_USERNAME'] = 'username'
+app.config['BASIC_AUTH_PASSWORD'] = 'password'
 app.secret_key = os.urandom(24)
 CORS(app)
+basic_auth = BasicAuth(app)
 scheduler = APScheduler()
 scheduler.init_app(app)
 scheduler.start()
@@ -50,7 +54,7 @@ UPLOAD_URL = f'{os.getenv("URL")}/upload'
 def send_request():
     try:
         new_templates()
-        response = requests.get("http://localhost:5000/upload",timeout=None)
+        response = requests.get("http://localhost:5000/auth")
         if response.status_code == 200:
             print("Requête réussie")
         else:
@@ -58,8 +62,9 @@ def send_request():
     except Exception as e:
         print(f"Exception lors de la fonction send_request(): {e} ")
 
+
 # Configuration du job pour qu'il s'exécute tous les jours à une heure spécifique
-scheduler.add_job(id='send_request_job', func=send_request, trigger='cron', day_of_week='mon-sun', hour=15, minute=32)
+scheduler.add_job(id='send_request_job', func=send_request, trigger='cron', day_of_week='mon-sun', hour=9, minute=33)
     
 def generate_random_string(length):
     characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~' 
@@ -98,6 +103,7 @@ def hello():
     return '<h1>Api Flask</h1>'
 
 @app.route('/login')
+@basic_auth.required
 def index():
     return '<a id="login" href="/auth">Login with TikTok</a>'
 
@@ -109,11 +115,11 @@ def terms_of_service():
 def privacy_policy():
     return render_template('privacy_policy.html')
 
-@app.route('/create/<password>')
-def create(password):
+@app.route('/create')
+@basic_auth.required
+def create():
     try:
-        if password == PASSWORD:
-            new_templates()
+        if new_templates():
             return 'Success',200
         else:
             return 'Error',401

@@ -1,9 +1,9 @@
 {
-    "access_token": "act.HciZ0rKjBW6WBdsFgzfmGvjGVqVhFkHehSKyF4ECR9SdwgrVce8RIt3ejNMy!4865.e1",
-    "expires_in": 86400,
-    "open_id": "-000EK3asvQTzQ0jz9I7_FFzZa_HhDbFKP3y",
-    "refresh_expires_in": 31536000,
-    "refresh_token": "rft.YrJTgGnv6IqV5S94EjxPd6C9kAw5ovh7v0RI0BWOTnH1gIBC3P418ySWryVP!4899.e1",
-    "scope": "user.info.basic,video.upload,video.publish",
-    "token_type": "Bearer"
+    "access_token": "",
+    "expires_in": 0,
+    "open_id": "",
+    "refresh_expires_in": 0,
+    "refresh_token": "",
+    "scope": "",
+    "token_type": ""
 }

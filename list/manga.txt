@@ -113,3 +113,4 @@
 89.Armin Arlert (Attaque des titans)
 90.Levi Ackerman (Attaque des titans)
 91.Erwin Smith (Attaque des titans)
+92.Conan Edogawa (Détective Conan)
