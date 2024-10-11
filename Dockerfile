@@ -10,11 +10,13 @@ COPY requirements.txt /code
 
 COPY templates /code/templates
 COPY template /code/template
+COPY list /code/list
 COPY static /code/static
 COPY images /code/images
 COPY fonts /code/fonts
 COPY upload /code/upload
 COPY config.json /code
+COPY data.json /code
 RUN pip3.10 install --no-cache-dir --upgrade -r /code/requirements.txt
 
 COPY app.py /code
