@@ -22,6 +22,7 @@ env:
   TS_CLIENTID: ${{ secrets.TS_CLIENTID }}
   TS_CERT_DOMAIN: ${{ secrets.TS_CERT_DOMAIN }}
   PASSWORD: ${{ secrets.PASSWORD }}
+  USERNAME: ${{ secrets.USERNAME }}
   URL: ${{ secrets.URL }}
 
 jobs:

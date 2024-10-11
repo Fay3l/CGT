@@ -31,8 +31,8 @@ load_dotenv()
 logging.basicConfig(level=logging.INFO)
 app = Flask(__name__)
 app.config.from_object(Config())
-app.config['BASIC_AUTH_USERNAME'] = 'username'
-app.config['BASIC_AUTH_PASSWORD'] = 'password'
+app.config['BASIC_AUTH_USERNAME'] = os.getenv('USERNAME')
+app.config['BASIC_AUTH_PASSWORD'] = os.getenv('PASSWORD')
 app.secret_key = os.urandom(24)
 CORS(app)
 basic_auth = BasicAuth(app)
@@ -54,7 +54,7 @@ UPLOAD_URL = f'{os.getenv("URL")}/upload'
 def send_request():
     try:
         new_templates()
-        response = requests.get("http://localhost:5000/auth")
+        response = requests.get("https://app-ts1.tail8c4493.ts.net/upload")
         if response.status_code == 200:
             print("Requête réussie")
         else:
@@ -64,7 +64,7 @@ def send_request():
 
 
 # Configuration du job pour qu'il s'exécute tous les jours à une heure spécifique
-scheduler.add_job(id='send_request_job', func=send_request, trigger='cron', day_of_week='mon-sun', hour=9, minute=33)
+scheduler.add_job(id='send_request_job', func=send_request, trigger='cron', day_of_week='mon-sun', hour=9, minute=0)
     
 def generate_random_string(length):
     characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~' 
