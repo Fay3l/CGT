@@ -1,8 +1,8 @@
 version: '4'
 services:
-  app-ts1:
-    hostname: app-ts1
-    container_name: app-ts1
+  app-ts2:
+    hostname: app-ts2
+    container_name: app-ts2
     image: tailscale/tailscale:latest
     environment:
       - TS_AUTHKEY=${TS_AUTHKEY}?ephemeral=false
@@ -59,12 +59,12 @@ services:
       USERNAME: ${USERNAME}
       URL: ${URL}
     depends_on:
-      - app-ts1
-    network_mode: service:app-ts1
+      - app-ts2
+    network_mode: service:app-ts2
 
 volumes:
   app:
     driver: local
-  app-ts1:
+  app-ts2:
     driver: local
 

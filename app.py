@@ -53,7 +53,7 @@ UPLOAD_URL = f'{os.getenv("URL")}/upload'
 def send_request():
     try:
         new_templates()
-        response = requests.get("https://app-ts1.tail8c4493.ts.net/upload",timeout=None)
+        response = requests.get("https://app-ts2.tail8c4493.ts.net/upload",timeout=None)
         if response.status_code == 200:
             print("Requête réussie")
         else:
