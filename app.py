@@ -53,7 +53,7 @@ UPLOAD_URL = f'{os.getenv("URL")}/upload'
 def send_request():
     try:
         new_templates()
-        response = requests.get("https://app-ts2.tail8c4493.ts.net/upload",timeout=None)
+        response = requests.get("https://fay.tail8c4493.ts.net/upload",timeout=None)
         if response.status_code == 200:
             print("Requête réussie")
         else:
@@ -63,7 +63,7 @@ def send_request():
 
 
 # Configuration du job pour qu'il s'exécute tous les jours à une heure spécifique
-scheduler.add_job(id='send_request_job', func=send_request, trigger='cron', day_of_week='mon-sun', hour=9, minute=0)
+scheduler.add_job(id='send_request_job', func=send_request, trigger='cron', day_of_week='mon-sun', hour=20, minute=140,max_instances=1)
     
 def generate_random_string(length):
     characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~' 
