@@ -63,7 +63,7 @@ def send_request():
 
 
 # Configuration du job pour qu'il s'exécute tous les jours à une heure spécifique
-scheduler.add_job(id='send_request_job', func=send_request, trigger='cron', day_of_week='mon-sun', hour=20, minute=140,max_instances=1)
+scheduler.add_job(id='send_request_job', func=send_request, trigger='cron', day_of_week='mon-sun', hour=9, minute=0,max_instances=1)
     
 def generate_random_string(length):
     characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~' 
@@ -361,6 +361,38 @@ def init_download(filename):
         return redirect(url)
     except S3Error as e:
         return f'Error upload_object {e}', 500
+    
+@app.route('delete/templates')
+def remove():
+    chemin = Path('./upload')
+    fichiers_theme = []
+    fichiers_clue = []
+    fichiers_response = []
+    rechercher_fichiers(chemin,fichiers_theme,fichiers_clue,fichiers_response)
+    # Lister les objets dans le dossier
+    objects_de = client.list_objects(os.getenv('MINIO_BUCKET'), prefix="upload/de/",recursive=True)
+    objects_en = client.list_objects(os.getenv('MINIO_BUCKET'), prefix="upload/en/",recursive=True)
+    objects_fr = client.list_objects(os.getenv('MINIO_BUCKET'), prefix="upload/fr/",recursive=True)
+    for obj in objects_de:
+        # Supprimer chaque objet
+        print("Object:",obj)
+        client.remove_object(os.getenv('MINIO_BUCKET'), obj.object_name)
+    time.sleep(2)
+    for obj in objects_en:
+        # Supprimer chaque objet
+        client.remove_object(os.getenv('MINIO_BUCKET'), obj.object_name)
+    time.sleep(2)
+    for obj in objects_fr:
+        # Supprimer chaque objet
+        client.remove_object(os.getenv('MINIO_BUCKET'), obj.object_name)
+    time.sleep(2)
+    for theme in fichiers_theme:
+        client.remove_object(os.getenv('MINIO_BUCKET'), theme.__str__())
+    time.sleep(2)
+    print(f"Le dossier upload a été supprimé avec succès.")
+    supprimer_fichiers(fichiers_clue)
+    supprimer_fichiers(fichiers_response)
+    supprimer_fichiers(fichiers_theme)
 
 
 if __name__ == '__main__':

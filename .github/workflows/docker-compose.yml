@@ -42,5 +42,3 @@ jobs:
       run: docker compose up --build --detach
     - name: Check App
       run: docker container logs app
-    - name: App Funnel
-      run: docker exec app-ts2 tailscale funnel --bg 5000
