@@ -53,7 +53,7 @@ UPLOAD_URL = f'{os.getenv("URL")}/upload'
 def send_request():
     try:
         new_templates()
-        response = requests.get("https://fay.tail8c4493.ts.net/upload",timeout=None)
+        response = requests.get("https://app-ts2.tail8c4493.ts.net/upload",timeout=None)
         if response.status_code == 200:
             print("Requête réussie")
         else:
@@ -362,37 +362,41 @@ def init_download(filename):
     except S3Error as e:
         return f'Error upload_object {e}', 500
     
-@app.route('delete/templates')
+@app.route('/delete/templates')
 def remove():
-    chemin = Path('./upload')
-    fichiers_theme = []
-    fichiers_clue = []
-    fichiers_response = []
-    rechercher_fichiers(chemin,fichiers_theme,fichiers_clue,fichiers_response)
-    # Lister les objets dans le dossier
-    objects_de = client.list_objects(os.getenv('MINIO_BUCKET'), prefix="upload/de/",recursive=True)
-    objects_en = client.list_objects(os.getenv('MINIO_BUCKET'), prefix="upload/en/",recursive=True)
-    objects_fr = client.list_objects(os.getenv('MINIO_BUCKET'), prefix="upload/fr/",recursive=True)
-    for obj in objects_de:
-        # Supprimer chaque objet
-        print("Object:",obj)
-        client.remove_object(os.getenv('MINIO_BUCKET'), obj.object_name)
-    time.sleep(2)
-    for obj in objects_en:
-        # Supprimer chaque objet
-        client.remove_object(os.getenv('MINIO_BUCKET'), obj.object_name)
-    time.sleep(2)
-    for obj in objects_fr:
-        # Supprimer chaque objet
-        client.remove_object(os.getenv('MINIO_BUCKET'), obj.object_name)
-    time.sleep(2)
-    for theme in fichiers_theme:
-        client.remove_object(os.getenv('MINIO_BUCKET'), theme.__str__())
-    time.sleep(2)
-    print(f"Le dossier upload a été supprimé avec succès.")
-    supprimer_fichiers(fichiers_clue)
-    supprimer_fichiers(fichiers_response)
-    supprimer_fichiers(fichiers_theme)
+    try:
+        chemin = Path('./upload')
+        fichiers_theme = []
+        fichiers_clue = []
+        fichiers_response = []
+        rechercher_fichiers(chemin,fichiers_theme,fichiers_clue,fichiers_response)
+        # Lister les objets dans le dossier
+        objects_de = client.list_objects(os.getenv('MINIO_BUCKET'), prefix="upload/de/",recursive=True)
+        objects_en = client.list_objects(os.getenv('MINIO_BUCKET'), prefix="upload/en/",recursive=True)
+        objects_fr = client.list_objects(os.getenv('MINIO_BUCKET'), prefix="upload/fr/",recursive=True)
+        for obj in objects_de:
+            # Supprimer chaque objet
+            print("Object:",obj)
+            client.remove_object(os.getenv('MINIO_BUCKET'), obj.object_name)
+        time.sleep(2)
+        for obj in objects_en:
+            # Supprimer chaque objet
+            client.remove_object(os.getenv('MINIO_BUCKET'), obj.object_name)
+        time.sleep(2)
+        for obj in objects_fr:
+            # Supprimer chaque objet
+            client.remove_object(os.getenv('MINIO_BUCKET'), obj.object_name)
+        time.sleep(2)
+        for theme in fichiers_theme:
+            client.remove_object(os.getenv('MINIO_BUCKET'), theme.__str__())
+        time.sleep(2)
+        print(f"Le dossier upload a été supprimé avec succès.")
+        supprimer_fichiers(fichiers_clue)
+        supprimer_fichiers(fichiers_response)
+        supprimer_fichiers(fichiers_theme)
+        return 'Success',200
+    except Exception as e:
+        return f'Error remove {e}',500
 
 
 if __name__ == '__main__':
