@@ -178,28 +178,26 @@ def database(reponse: str, theme: str):
 
 def new_templates():
     try:
-        theme_aleatoire = choisir_profession_aleatoire()
-        print(f"Theme choisi aléatoirement : {theme_aleatoire.name.replace('_',' ')}")
-        match theme_aleatoire:
-            case Theme("un_sportif"):
-                nom_fichier = 'list/sportifs.txt'
-                lignes = lire_fichier(nom_fichier)
-                personne_choisi = choisir_personne(lignes)
-            case Theme("une_personne_historique"):
-                nom_fichier = 'list/historiques.txt'
-                lignes = lire_fichier(nom_fichier)
-                personne_choisi = choisir_personne(lignes)
-            case Theme("un_personnage_de_manga"):
-                nom_fichier = 'list/manga.txt'
-                lignes = lire_fichier(nom_fichier)
-                personne_choisi = choisir_personne(lignes)
-            case Theme("un_personnage_de_fiction"):
-                nom_fichier = 'list/film.txt'
-                lignes = lire_fichier(nom_fichier)
-                personne_choisi = choisir_personne(lignes)
-            
-
         while True:
+            theme_aleatoire = choisir_profession_aleatoire()
+            print(f"Theme choisi aléatoirement : {theme_aleatoire.name.replace('_',' ')}")
+            match theme_aleatoire:
+                case Theme("un_sportif"):
+                    nom_fichier = 'list/sportifs.txt'
+                    lignes = lire_fichier(nom_fichier)
+                    personne_choisi = choisir_personne(lignes)
+                case Theme("une_personne_historique"):
+                    nom_fichier = 'list/historiques.txt'
+                    lignes = lire_fichier(nom_fichier)
+                    personne_choisi = choisir_personne(lignes)
+                case Theme("un_personnage_de_manga"):
+                    nom_fichier = 'list/manga.txt'
+                    lignes = lire_fichier(nom_fichier)
+                    personne_choisi = choisir_personne(lignes)
+                case Theme("un_personnage_de_fiction"):
+                    nom_fichier = 'list/film.txt'
+                    lignes = lire_fichier(nom_fichier)
+                    personne_choisi = choisir_personne(lignes)
             print(f"Personnage choisi aléatoirement : {personne_choisi}")
             chat_response = client.chat.complete(
                 model=model,
