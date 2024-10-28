@@ -1,4 +1,6 @@
 import os
+
+import requests
 # import json 
 # from pathlib import Path
 # chemin = Path('./upload')
@@ -110,24 +112,31 @@ import os
 # print("\nNoms des dossiers:")
 # print(noms_de_dossiers)
 
-import random
+# import random
 
-def lire_fichier(nom_fichier):
-    with open(nom_fichier, 'r', encoding='utf-8') as fichier:
-        lignes = fichier.readlines()
-    return lignes
+# def lire_fichier(nom_fichier):
+#     with open(nom_fichier, 'r', encoding='utf-8') as fichier:
+#         lignes = fichier.readlines()
+#     return lignes
 
-def choisir_personne(lignes):
-    # Supprimer la première ligne qui contient le titre
-    lignes = lignes[1:]
-    # Supprimer les lignes vides et les numéros de ligne
-    sportifs = [ligne.split('. ')[1].strip() for ligne in lignes if ligne.strip()]
-    return random.choice(sportifs)
+# def choisir_personne(lignes):
+#     # Supprimer la première ligne qui contient le titre
+#     lignes = lignes[1:]
+#     # Supprimer les lignes vides et les numéros de ligne
+#     sportifs = [ligne.split('. ')[1].strip() for ligne in lignes if ligne.strip()]
+#     return random.choice(sportifs)
 
-def main():
-    nom_fichier = 'list/historiques.txt'
-    lignes = lire_fichier(nom_fichier)
-    personne_choisi = choisir_personne(lignes)
-    print(f"Le sportif choisi est : {personne_choisi}")
+# def main():
+#     nom_fichier = 'list/historiques.txt'
+#     lignes = lire_fichier(nom_fichier)
+#     personne_choisi = choisir_personne(lignes)
+#     print(f"Le sportif choisi est : {personne_choisi}")
     
-main()
+# main()
+
+session = requests.Session()
+session.auth = (os.getenv('USERNAME'),os.getenv('PASSWORD') )
+
+
+response = session.get(os.getenv('URL') + '/login')
+print(response.text,response.status_code)

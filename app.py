@@ -52,18 +52,20 @@ UPLOAD_URL = f'{os.getenv("URL")}/upload'
 
 def send_request():
     try:
-        new_templates()
-        response = requests.get("https://app-ts2.tail8c4493.ts.net/upload",timeout=None)
-        if response.status_code == 200:
-            print("Requête réussie")
-        else:
-            print(f"Erreur lors de la requête: {response.text} {response.status_code} ")
+        create_response = requests.get(os.getenv('URL') + '/create',timeout=None,auth=(os.getenv('USERNAME'),os.getenv('PASSWORD')))
+        if create_response.status_code == 200:
+            url = f"{os.getenv('URL')}/upload"
+            response = requests.get(url,timeout=None)
+            if response.status_code == 200:
+                print("Requête réussie")
+            else:
+                print(f"Erreur lors de la requête: {response.text} {response.status_code} ")
     except Exception as e:
         print(f"Exception lors de la fonction send_request(): {e} ")
 
 
 # Configuration du job pour qu'il s'exécute tous les jours à une heure spécifique
-scheduler.add_job(id='send_request_job', func=send_request, trigger='cron', day_of_week='mon-sun', hour=9, minute=0,max_instances=1)
+scheduler.add_job(id='send_request_job', func=send_request, trigger='cron', day_of_week='mon-sun', hour=12, minute=15,max_instances=1)
     
 def generate_random_string(length):
     characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~' 
@@ -400,5 +402,5 @@ def remove():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True,use_reloader=False)
         
