@@ -60,12 +60,17 @@ def send_request():
                 print("Requête réussie")
             else:
                 print(f"Erreur lors de la requête: {response.text} {response.status_code} ")
+                remove_response = requests.get(os.getenv('URL')+'/delete/templates',timeout=None)
+                if remove_response.status_code == 200:
+                    print("Templates supprimés")
+                else:
+                    print(f"Erreur lors de la suppression des templates: {remove_response.text} {remove_response}")
     except Exception as e:
         print(f"Exception lors de la fonction send_request(): {e} ")
 
 
 # Configuration du job pour qu'il s'exécute tous les jours à une heure spécifique
-scheduler.add_job(id='send_request_job', func=send_request, trigger='cron', day_of_week='mon-sun', hour=12, minute=15,max_instances=1)
+scheduler.add_job(id='send_request_job', func=send_request, trigger='cron', day_of_week='mon-sun', hour=9, minute=0,max_instances=1)
     
 def generate_random_string(length):
     characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~' 
