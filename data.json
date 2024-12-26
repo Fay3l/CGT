@@ -8,5 +8,60 @@
         "id": 2,
         "reponse": "Indira Priyadarshini Gandhi",
         "theme": "une_personne_historique"
+    },
+    {
+        "id": 3,
+        "reponse": "Staffan Olsson",
+        "theme": "un_sportif"
+    },
+    {
+        "id": 4,
+        "reponse": "Andy Dufresne",
+        "theme": "un_personnage_de_fiction"
+    },
+    {
+        "id": 5,
+        "reponse": "Mohamed Salah Hussain",
+        "theme": "un_sportif"
+    },
+    {
+        "id": 6,
+        "reponse": "Virgil Van Dijk",
+        "theme": "un_sportif"
+    },
+    {
+        "id": 7,
+        "reponse": "Johann Gutenberg",
+        "theme": "une_personne_historique"
+    },
+    {
+        "id": 8,
+        "reponse": "Russell Westbrook",
+        "theme": "un_sportif"
+    },
+    {
+        "id": 9,
+        "reponse": "Andy Warhol",
+        "theme": "une_personne_historique"
+    },
+    {
+        "id": 10,
+        "reponse": "Aurelio",
+        "theme": "un_personnage_de_fiction"
+    },
+    {
+        "id": 11,
+        "reponse": "Leonard de Vinci",
+        "theme": "une_personne_historique"
+    },
+    {
+        "id": 12,
+        "reponse": "Luther Stickell",
+        "theme": "un_personnage_de_fiction"
+    },
+    {
+        "id": 13,
+        "reponse": "Charlie",
+        "theme": "un_personnage_de_fiction"
     }
 ]

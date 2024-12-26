@@ -19,7 +19,7 @@ import random
 
 # Fonction pour choisir une valeur aléatoire parmi les membres de l'énumération
 def choisir_profession_aleatoire():
-    themes = ["un_sportif","une_personne_historique","un_personnage_de_fiction","un_personnage_de_manga"]
+    themes = ["un_sportif","une_personne_historique","un_personnage_de_fiction","un_personnage_de_manga","un_scientifique"]
     return Theme(random.choice(themes))
 
 def lire_fichier(nom_fichier):
@@ -137,6 +137,10 @@ def create_template_clues(content: ContentData, theme: str):
     if "manga" in theme.name:
         theme_manga = Image.open(f"./template/{content.language}/theme_manga_{content.language}.jpg")
         theme_manga.save(f"./upload/{content.language}/theme_manga_{content.language}.jpg")
+    
+    if "scien" in theme.name:
+        theme_manga = Image.open(f"./template/{content.language}/theme_science_{content.language}.jpg")
+        theme_manga.save(f"./upload/{content.language}/theme_science_{content.language}.jpg")
 
 def database(reponse: str, theme: str):
     filename = "data.json"
@@ -198,13 +202,17 @@ def new_templates():
                     nom_fichier = 'list/film.txt'
                     lignes = lire_fichier(nom_fichier)
                     personne_choisi = choisir_personne(lignes)
+                case Theme("un_scientifique"):
+                    nom_fichier = 'list/scientifiques.txt'
+                    lignes = lire_fichier(nom_fichier)
+                    personne_choisi = choisir_personne(lignes)
             print(f"Personnage choisi aléatoirement : {personne_choisi}")
             chat_response = client.chat.complete(
                 model=model,
                 messages=[
                     {
                         "role": "user",
-                        "content": f"Faire le jeu 'Qui suis-je?' sur {personne_choisi} avec 5 indices en francais,en anglais et en allemand. La réponse doit être son prénom et son nom de famille. Mettre le résultat en JSON avec ce format:" +
+                        "content": f"Faire le jeu 'Qui suis-je?' sur {personne_choisi} avec 5 indices en francais, en anglais et en allemand. La réponse du jeu doit avoir son prénom et son nom de famille. Mettre le résultat en JSON avec ce format:" +
                         """{
                             "reponse": {
                             "french":"",

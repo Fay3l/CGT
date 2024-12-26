@@ -1,0 +1,150 @@
+1. Albert Einstein
+2. Isaac Newton
+3. Marie Curie
+4. Galileo Galilei
+5. Charles Darwin
+6. Nikola Tesla
+7. Thomas Edison
+8. Stephen Hawking
+9. Louis Pasteur
+10. Michael Faraday
+11. Johannes Kepler
+12. Niels Bohr
+13. Werner Heisenberg
+14. Max Planck
+15. James Clerk Maxwell
+16. Ernest Rutherford
+17. Enrico Fermi
+18. Richard Feynman
+19. Paul Dirac
+20. Erwin Schrödinger
+21. Wolfgang Pauli
+22. J. Robert Oppenheimer
+23. Linus Pauling
+24. Francis Crick
+25. James Watson
+26. Rosalind Franklin
+27. Barbara McClintock
+28. Ada Lovelace
+29. Alan Turing
+30. John von Neumann
+31. Carl Sagan
+32. Edwin Hubble
+33. Subrahmanyan Chandrasekhar
+34. Henri Becquerel
+35. Pierre Curie
+36. Antoine Lavoisier
+37. Dmitri Mendeleev
+38. Gregor Mendel
+39. Alfred Nobel
+40. Wilhelm Röntgen
+41. André-Marie Ampère
+42. Hans Christian Ørsted
+43. André-Marie Ampère
+44. Alessandro Volta
+45. Georg Simon Ohm
+46. Heinrich Hertz
+47. Guglielmo Marconi
+48. Alexander Graham Bell
+49. Thomas Young
+50. Augustin-Jean Fresnel
+51. Christian Doppler
+52. Joseph von Fraunhofer
+53. James Prescott Joule
+54. Hermann von Helmholtz
+55. Gustav Kirchhoff
+56. Robert Bunsen
+57. John Dalton
+58. Amedeo Avogadro
+59. Stanislao Cannizzaro
+60. Dmitri Ivanovich Mendeleev
+61. Friedrich Wöhler
+62. Justus von Liebig
+63. Louis Pasteur
+64. Robert Koch
+65. Alexander Fleming
+66. Edward Jenner
+67. Jonas Salk
+68. Frederick Banting
+69. Charles Best
+70. James Collip
+71. John Macleod
+72. Frederick Sanger
+73. Kary Mullis
+74. Craig Venter
+75. Francis Collins
+76. James Dewey Watson
+77. Sydney Brenner
+78. Seymour Benzer
+79. Barbara McClintock
+80. François Jacob
+81. Jacques Monod
+82. André Lwoff
+83. Joshua Lederberg
+84. George Wells Beadle
+85. Edward Lawrie Tatum
+86. Salvador Luria
+87. Max Delbrück
+88. Alfred Hershey
+89. Martha Chase
+90. Oswald Avery
+91. Colin MacLeod
+92. Maclyn McCarty
+93. Frederick Griffith
+94. Har Gobind Khorana
+95. Marshall Warren Nirenberg
+96. Robert W. Holley
+97. Paul Berg
+98. Walter Gilbert
+99. Allan Maxam
+100. Frederick Sanger
+101. Kary Mullis
+102. Phillip Sharp
+103. Richard Roberts
+104. Sydney Altman
+105. Thomas Cech
+106. Carol Greider
+107. Elizabeth Blackburn
+108. Jack Szostak
+109. Shinya Yamanaka
+110. John Gurdon
+111. Bruce Beutler
+112. Jules Hoffmann
+113. Ralph Steinman
+114. Françoise Barré-Sinoussi
+115. Luc Montagnier
+116. Harald zur Hausen
+117. Barry Marshall
+118. Robin Warren
+119. Tasuku Honjo
+120. James P. Allison
+121. Yoshinori Ohsumi
+122. Tu Youyou
+123. William C. Campbell
+124. Satoshi Ōmura
+125. John O'Keefe
+126. May-Britt Moser
+127. Edvard Moser
+128. Eric Kandel
+129. Paul Greengard
+130. Arvid Carlsson
+131. Rita Levi-Montalcini
+132. Stanley Cohen
+133. Roger Guillemin
+134. Andrew Schally
+135. Rosalyn Yalow
+136. Solomon Berson
+137. Georges Köhler
+138. César Milstein
+139. Niels Kaj Jerne
+140. Susumu Tonegawa
+141. Georges J.F. Köhler
+142. César Milstein
+143. Bruce Beutler
+144. Jules A. Hoffmann
+145. Ralph M. Steinman
+146. Shinya Yamanaka
+147. John B. Gurdon
+148. Elizabeth H. Blackburn
+149. Carol W. Greider
+150. Jack Szostak

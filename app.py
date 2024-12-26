@@ -271,7 +271,7 @@ def upload():
             data = {
                 "post_info": {
                     "title": "Guessing Game",
-                    "description": f" #game #fyp #{nom}",
+                    "description": f" Guessing game Guess the identity of a famous person or fictional character with 5 given clues. #game #guessing #fyp #{nom}",
                 },
                 "source_info": {
                     "source": "PULL_FROM_URL",
@@ -405,7 +405,10 @@ def remove():
     except Exception as e:
         return f'Error remove {e}',500
 
+@app.route("/cuty")
+def url():
+    return '<p><a href="https://cuty.io/kPW3w2">Link</a></p><a href="https://cuty.io/lMWhCQ">Link2</a>'
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True,use_reloader=False)
+    app.run(host='0.0.0.0', port=5000, debug=True)
         
