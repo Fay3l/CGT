@@ -410,5 +410,5 @@ def url():
     return '<p><a href="https://cuty.io/kPW3w2">Link</a></p><a href="https://cuty.io/lMWhCQ">Link2</a>'
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True,use_reloader=False)
         

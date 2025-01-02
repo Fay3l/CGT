@@ -139,8 +139,8 @@ def create_template_clues(content: ContentData, theme: str):
         theme_manga.save(f"./upload/{content.language}/theme_manga_{content.language}.jpg")
     
     if "scien" in theme.name:
-        theme_manga = Image.open(f"./template/{content.language}/theme_science_{content.language}.jpg")
-        theme_manga.save(f"./upload/{content.language}/theme_science_{content.language}.jpg")
+        theme_science = Image.open(f"./template/{content.language}/theme_science_{content.language}.jpg")
+        theme_science.save(f"./upload/{content.language}/theme_science_{content.language}.jpg")
 
 def database(reponse: str, theme: str):
     filename = "data.json"

@@ -1,3 +1,4 @@
+
 [
     {
         "id": 1,
@@ -63,5 +64,60 @@
         "id": 13,
         "reponse": "Charlie",
         "theme": "un_personnage_de_fiction"
+    },
+    {
+        "id": 14,
+        "reponse": "Louis Pasteur",
+        "theme": "un_scientifique"
+    },
+    {
+        "id": 15,
+        "reponse": "Ernest Hemingway",
+        "theme": "une_personne_historique"
+    },
+    {
+        "id": 16,
+        "reponse": "Truman Burbank",
+        "theme": "un_personnage_de_fiction"
+    },
+    {
+        "id": 17,
+        "reponse": "Wolverine",
+        "theme": "un_personnage_de_fiction"
+    },
+    {
+        "id": 18,
+        "reponse": "Richard P. Feynman",
+        "theme": "un_scientifique"
+    },
+    {
+        "id": 19,
+        "reponse": "Francis Harry Compton Crick",
+        "theme": "un_scientifique"
+    },
+    {
+        "id": 20,
+        "reponse": "Geraint Thomas",
+        "theme": "un_sportif"
+    },
+    {
+        "id": 21,
+        "reponse": "Warden Samuel Norton",
+        "theme": "un_personnage_de_fiction"
+    },
+    {
+        "id": 22,
+        "reponse": "Florence Nightingale",
+        "theme": "une_personne_historique"
+    },
+    {
+        "id": 23,
+        "reponse": "Tasuku Honjo",
+        "theme": "un_scientifique"
+    },
+    {
+        "id": 24,
+        "reponse": "Filip Jicha",
+        "theme": "un_sportif"
     }
 ]
