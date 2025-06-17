@@ -130,6 +130,10 @@ def create_template_clues(content: ContentData, theme: str):
         theme_film = Image.open(f"./template/{content.language}/theme_film_{content.language}.jpg")
         theme_film.save(f"./upload/{content.language}/theme_film_{content.language}.jpg")
 
+    if "scien" in theme.name:
+        theme_science = Image.open(f"./template/{content.language}/theme_science_{content.language}.jpg")
+        theme_science.save(f"./upload/{content.language}/theme_science_{content.language}.jpg")
+
     if "hist" in theme.name:
         theme_histoire = Image.open(f"./template/{content.language}/theme_histoire_{content.language}.jpg")
         theme_histoire.save(f"./upload/{content.language}/theme_histoire_{content.language}.jpg")
@@ -138,9 +142,7 @@ def create_template_clues(content: ContentData, theme: str):
         theme_manga = Image.open(f"./template/{content.language}/theme_manga_{content.language}.jpg")
         theme_manga.save(f"./upload/{content.language}/theme_manga_{content.language}.jpg")
     
-    if "scien" in theme.name:
-        theme_science = Image.open(f"./template/{content.language}/theme_science_{content.language}.jpg")
-        theme_science.save(f"./upload/{content.language}/theme_science_{content.language}.jpg")
+    
 
 def database(reponse: str, theme: str):
     filename = "data.json"
@@ -289,6 +291,7 @@ def new_templates():
                     )
                     create_template_clues(content_data, theme_aleatoire)
                 return True
-    except:
+    except (OSError, IOError, json.JSONDecodeError) as e:
+        print(f"An error occurred: {e}")
         return False
 
